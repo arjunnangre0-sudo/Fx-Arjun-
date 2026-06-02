@@ -106,7 +106,7 @@
             <button class="nav-btn" onclick="switchTab(this, 'hist')">Trade History</button>
             <button class="nav-btn" onclick="switchTab(this, 'ai')">Jarvis AI Analysis</button>
             <button class="nav-btn" onclick="switchTab(this, 'calendar')">Macro Calendar</button>
-            <button class="nav-btn" onclick="triggerGoogleLogin()">Account Connect</button>
+            <button class="nav-btn" onclick="switchTab(this, 'acc')">Account Connect</button>
             <button class="nav-btn" id="mgmt-nav-btn" onclick="switchTab(this, 'peoples')">Traders (Mgmt)</button>
         </div>
         <div class="sidebar-footer">ALGO ENGINE V4.0.2</div>
@@ -225,37 +225,31 @@
             </div>
         </div>
 
-        <div id="peoples" class="page">
+        <div id="acc" class="page">
             <div class="boundary-box">
-                <div class="header-label">Management Control | Synchronized Network Traders</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Trader Account</th>
-                            <th>Registered Email</th>
-                            <th>Status Profile</th>
-                            <th>Risk Exposure</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="font-weight: bold; color: var(--gold-accent);">Fx_arjun (Admin)</td>
-                            <td>tradingjournalmanagement@gmail.com</td>
-                            <td><span class="badge-active">MANAGEMENT</span></td>
-                            <td>0.00%</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold;">Sample_Trader_01</td>
-                            <td>trader.alpha@gmail.com</td>
-                            <td><span class="badge-med">ACTIVE USER</span></td>
-                            <td>1.50%</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="header-label">MetaTrader 5 / Broker Synchronization</div>
+                <div class="calculator-grid" style="margin-top: 15px;">
+                    <div class="input-group">
+                        <label>Broker Name</label>
+                        <input type="text" class="input-field" placeholder="e.g. V Prop Trader, FTMO...">
+                    </div>
+                    <div class="input-group">
+                        <label>Server Name</label>
+                        <input type="text" class="input-field" placeholder="e.g. Broker-Live01">
+                    </div>
+                    <div class="input-group">
+                        <label>MT5 Account ID</label>
+                        <input type="number" class="input-field" placeholder="Enter Login ID">
+                    </div>
+                    <div class="input-group">
+                        <label>Read-Only / Investor Password</label>
+                        <input type="password" class="input-field" placeholder="••••••••">
+                    </div>
+                    <button class="action-btn" onclick="simulateBrokerConnection()">Secure Connect Node</button>
+                </div>
             </div>
         </div>
 
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10                            
+        <div id="peoples" class="page">
+            <div class="boundary-box">
+                <div class="header-label">Management C                            
