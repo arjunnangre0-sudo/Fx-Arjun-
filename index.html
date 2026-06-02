@@ -2,78 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FX_ARJUN | PRO TERMINAL</title>
+    <title>FX_ARJUN | AI TERMINAL</title>
     <style>
-        :root {
-            --bg-dark: #050505;
-            --card-bg: #0d0d0d;
-            --sidebar-bg: #0a0a0a;
-            --gold: #d4af37;
-            --accent: #1a1a1a;
-            --text-main: #ffffff;
-            --text-dim: #777777;
-        }
-
+        :root { --bg: #030303; --card: #0a0a0a; --gold: #d4af37; --text: #e0e0e0; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        body { background: var(--bg); color: var(--text); display: flex; height: 100vh; }
 
-        /* Sidebar Styling */
-        .sidebar { width: 280px; background: var(--sidebar-bg); border-right: 1px solid var(--accent); padding: 40px; display: flex; flex-direction: column; }
-        .logo { font-size: 26px; font-weight: 800; color: var(--gold); margin-bottom: 60px; letter-spacing: 1px; }
-        .nav-link { padding: 20px 0; color: var(--text-dim); font-size: 14px; cursor: pointer; border-bottom: 1px solid var(--accent); transition: 0.3s; }
+        /* Sidebar */
+        .sidebar { width: 260px; background: #050505; border-right: 1px solid #1a1a1a; padding: 30px; }
+        .logo { font-size: 24px; font-weight: 900; color: var(--gold); margin-bottom: 50px; }
+        .nav-link { padding: 15px 0; color: #666; font-size: 14px; border-bottom: 1px solid #111; cursor: pointer; }
         .nav-link:hover { color: var(--gold); }
 
-        /* Main Content */
-        .main { flex: 1; padding: 40px; display: flex; flex-direction: column; gap: 30px; }
-        
-        /* Stats Grid - High-end cards */
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .card { 
-            background: var(--card-bg); 
-            padding: 25px; 
-            border-radius: 8px; 
-            border: 1px solid var(--accent);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-        .label { color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; }
-        .value { font-size: 24px; font-weight: 700; margin-top: 10px; color: var(--text-main); }
-        .profit { color: #00ff88; }
+        /* Main */
+        .main { flex: 1; padding: 30px; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; overflow-y: auto; }
+        .col { display: flex; flex-direction: column; gap: 20px; }
 
-        /* Chart Area */
-        .chart-container { 
-            flex: 1; 
-            background: var(--card-bg); 
-            border-radius: 8px; 
-            border: 1px solid var(--accent);
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: var(--text-dim);
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
+        /* Card Style */
+        .box { background: var(--card); border: 1px solid #1a1a1a; padding: 25px; border-radius: 10px; }
+        .box-title { color: var(--gold); font-size: 12px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Specific Sections */
+        .ai-engine { border-left: 3px solid var(--gold); }
+        .trade-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .trade-table th { color: #555; text-align: left; padding: 10px; font-size: 12px; }
+        .trade-table td { padding: 10px; font-size: 13px; border-bottom: 1px solid #111; }
     </style>
 </head>
 <body>
     <div class="sidebar">
         <div class="logo">FX_ARJUN</div>
         <div class="nav-link">DASHBOARD</div>
-        <div class="nav-link">LIVE XAUUSD</div>
-        <div class="nav-link">MARKET ANALYSIS</div>
-        <div class="nav-link">ORDER HISTORY</div>
-        <div class="nav-link">SETTINGS</div>
+        <div class="nav-link">AI ANALYSIS (DEEP)</div>
+        <div class="nav-link">TRADE HISTORY (SYNC)</div>
+        <div class="nav-link" onclick="alert('Google Auth Logic Here')">CONNECT TRADING ACCOUNT</div>
     </div>
-    
+
     <div class="main">
-        <div class="grid">
-            <div class="card"><div class="label">EQUITY BALANCE</div><div class="value">$24,500.00</div></div>
-            <div class="card"><div class="label">DAILY PROFIT</div><div class="value profit">+$1,240.50</div></div>
-            <div class="card"><div class="label">MARGIN LEVEL</div><div class="value">3250%</div></div>
-            <div class="card"><div class="label">TRADE COUNT</div><div class="value">4 ORDERS</div></div>
+        <div class="col">
+            <div class="box">
+                <div class="box-title">MARKET CHART & JARVIS ENGINE</div>
+                <div style="height: 400px; display: flex; align-items: center; justify-content: center; color: #333;">[Chart + Jarvis AI Overlay]</div>
+            </div>
+            <div class="box">
+                <div class="box-title">TRADE HISTORY (LIVE SYNC)</div>
+                <table class="trade-table">
+                    <tr><th>SYMBOL</th><th>TYPE</th><th>RESULT</th></tr>
+                    <tr><td>XAUUSD</td><td>BUY</td><td style="color: #00ff88;">+$450</td></tr>
+                </table>
+            </div>
         </div>
         
-        <div class="chart-container">
-            [ PROFESSIONAL MARKET CHART - INTEGRATION PENDING ]
+        <div class="col">
+            <div class="box ai-engine">
+                <div class="box-title">JARVIS DEEP ANALYSIS</div>
+                <p style="font-size: 14px; line-height: 1.6;">AI processing liquidity sweeps... IDM confirmed. Target: 2045.00 level.</p>
+            </div>
+            <div class="box">
+                <div class="box-title">ACCOUNT STATUS</div>
+                <div style="font-size: 20px; font-weight: bold; margin-top: 10px;">$24,500.00</div>
+            </div>
         </div>
     </div>
 </body>
