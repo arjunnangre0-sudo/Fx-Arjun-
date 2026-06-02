@@ -3,114 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | Professional Terminal</title>
+    <title>FX_ARJUN | PROFESSIONAL TRADING TERMINAL</title>
     <style>
+        /* CSS Root and Reset */
         :root {
             --bg-color: #030303;
-            --sidebar-color: #050505;
+            --sidebar-bg: #050505;
             --card-bg: #0a0a0a;
             --border-color: #1a1a1a;
             --gold-accent: #d4af37;
             --text-main: #ffffff;
             --text-dim: #777777;
+            --profit-green: #00ff88;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
-        /* Sidebar Structure */
+        /* Sidebar Section */
         .sidebar { 
             width: 280px; 
-            background-color: var(--sidebar-color); 
+            background-color: var(--sidebar-bg); 
             border-right: 1px solid var(--border-color); 
             padding: 40px 20px; 
             display: flex; 
             flex-direction: column; 
         }
-        .brand-logo { font-size: 24px; font-weight: 900; color: var(--gold-accent); margin-bottom: 60px; letter-spacing: 1px; text-align: center; }
-        .nav-button { 
+        .brand-name { font-size: 26px; font-weight: 900; color: var(--gold-accent); margin-bottom: 60px; text-align: center; letter-spacing: 1px; }
+        .nav-btn { 
             padding: 20px; 
             color: var(--text-dim); 
             border: 1px solid var(--border-color); 
             margin-bottom: 15px; 
             cursor: pointer; 
-            transition: 0.3s; 
+            transition: 0.4s; 
             text-align: center;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
         }
-        .nav-button:hover { border-color: var(--gold-accent); color: var(--gold-accent); }
+        .nav-btn:hover { border-color: var(--gold-accent); color: var(--gold-accent); }
 
-        /* Main Content Area */
-        .main-workspace { flex: 1; padding: 40px; overflow-y: auto; }
-        .page-content { display: none; }
-        .page-content.active { display: block; }
+        /* Main Workspace Section */
+        .workspace { flex: 1; padding: 40px; overflow-y: auto; }
+        .page { display: none; }
+        .page.active { display: block; }
 
-        /* Component Boxes with Boundaries */
-        .dashboard-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .box-boundary { 
+        /* Boundary Box Styling */
+        .boundary-box { 
             border: 1px solid var(--border-color); 
             background: var(--card-bg); 
             padding: 30px; 
             border-radius: 8px; 
+            margin-bottom: 25px;
         }
-        .section-header { color: var(--gold-accent); font-size: 12px; text-transform: uppercase; margin-bottom: 25px; letter-spacing: 2px; }
+        .header-label { color: var(--gold-accent); font-size: 11px; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .stat-card { border: 1px solid var(--border-color); background: var(--card-bg); padding: 25px; border-radius: 8px; }
+        .stat-value { font-size: 24px; font-weight: bold; margin-top: 10px; }
+
+        /* Table */
         table { width: 100%; border-collapse: collapse; }
-        th { color: var(--text-dim); text-align: left; padding: 10px; font-size: 11px; }
-        td { padding: 15px 10px; border-top: 1px solid var(--border-color); font-size: 14px; }
+        th { color: var(--text-dim); text-align: left; padding: 12px; font-size: 11px; }
+        td { padding: 15px 12px; border-top: 1px solid var(--border-color); font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="brand-logo">FX_ARJUN</div>
-        <div class="nav-button" onclick="openPage('dash')">DASHBOARD</div>
-        <div class="nav-button" onclick="openPage('hist')">TRADE HISTORY</div>
-        <div class="nav-button" onclick="openPage('ai')">JARVIS AI ANALYSIS</div>
-        <div class="nav-button" onclick="openPage('acc')">ACCOUNT CONNECT</div>
+        <div class="brand-name">FX_ARJUN</div>
+        <div class="nav-btn" onclick="switchPage('dash')">Dashboard</div>
+        <div class="nav-btn" onclick="switchPage('hist')">Trade History</div>
+        <div class="nav-btn" onclick="switchPage('ai')">Jarvis AI Analysis</div>
+        <div class="nav-btn" onclick="switchPage('acc')">Account Connect</div>
     </div>
 
-    <div class="main-workspace">
-        <div id="dash" class="page-content active">
-            <div class="dashboard-container">
-                <div class="box-boundary">
-                    <div class="section-header">ACCOUNT SUMMARY</div>
-                    <p style="font-size: 24px;">Balance: $24,500.00</p>
-                </div>
-                <div class="box-boundary">
-                    <div class="section-header">LIVE STATUS</div>
-                    <p>Jarvis AI: <span style="color:#00ff88">Active & Monitoring</span></p>
-                </div>
+    <div class="workspace">
+        <div id="dash" class="page active">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="header-label">EQUITY</div><div class="stat-value">$24,500.00</div></div>
+                <div class="stat-card"><div class="header-label">DAILY PROFIT</div><div class="stat-value" style="color:var(--profit-green)">+$1,240.50</div></div>
+                <div class="stat-card"><div class="header-label">WIN RATE</div><div class="stat-value">78%</div></div>
+                <div class="stat-card"><div class="header-label">MARGIN</div><div class="stat-value">3250%</div></div>
+            </div>
+            <div class="boundary-box" style="margin-top: 20px;">
+                <div class="header-label">EQUITY GROWTH</div>
+                <div style="height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-dim);">[ Equity Growth Chart Placeholder ]</div>
             </div>
         </div>
 
-        <div id="hist" class="page-content">
-            <div class="box-boundary">
-                <div class="section-header">FULL TRADE HISTORY</div>
+        <div id="hist" class="page">
+            <div class="boundary-box">
+                <div class="header-label">COMPLETE TRADE HISTORY</div>
                 <table>
-                    <tr><th>PAIR</th><th>TYPE</th><th>RESULT</th></tr>
-                    <tr><td>XAUUSD</td><td>BUY</td><td>+$420.00</td></tr>
+                    <tr><th>PAIR</th><th>TYPE</th><th>LOTS</th><th>RESULT</th></tr>
+                    <tr><td>XAUUSD</td><td>BUY</td><td>0.50</td><td style="color:var(--profit-green)">+$420.00</td></tr>
+                    <tr><td>XAUUSD</td><td>SELL</td><td>1.20</td><td style="color:#ff4444">-$150.00</td></tr>
                 </table>
             </div>
         </div>
 
-        <div id="ai" class="page-content">
-            <div class="box-boundary">
-                <div class="section-header">JARVIS DEEP ANALYSIS</div>
-                <p>Analyzing liquidity sweeps and order blocks...</p>
+        <div id="ai" class="page">
+            <div class="boundary-box">
+                <div class="header-label">JARVIS AI ANALYSIS</div>
+                <p>Status: Initializing Liquidity Sweep Logic...</p>
+                <p style="margin-top: 15px; color: var(--text-dim);">Analyzing XAUUSD Order Blocks and Fair Value Gaps (FVG). Ready to provide entry signals.</p>
             </div>
         </div>
 
-        <div id="acc" class="page-content">
-            <div class="box-boundary">
-                <div class="section-header">GOOGLE AUTHENTICATION</div>
-                <button style="padding: 10px 20px; background:var(--gold-accent); border:none; cursor:pointer;">Login with Google</button>
+        <div id="acc" class="page">
+            <div class="boundary-box">
+                <div class="header-label">CONNECT TRADING ACCOUNT</div>
+                <button style="padding: 15px 30px; background:var(--gold-accent); border:none; color:#000; font-weight:bold; cursor:pointer;">Authorize Google Trading API</button>
             </div>
         </div>
     </div>
 
     <script>
-        function openPage(pageId) {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
     </script>
