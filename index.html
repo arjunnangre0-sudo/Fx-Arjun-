@@ -2,28 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FX_ARJUN | Professional Terminal</title>
+    <title>FX_ARJUN | PRO TERMINAL</title>
     <style>
+        :root {
+            --bg-dark: #050505;
+            --card-bg: #0d0d0d;
+            --sidebar-bg: #0a0a0a;
+            --gold: #d4af37;
+            --accent: #1a1a1a;
+            --text-main: #ffffff;
+            --text-dim: #777777;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: #050505; color: #fff; display: flex; height: 100vh; overflow: hidden; }
+        body { background: var(--bg-dark); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
-        /* Sidebar - Fixed width */
-        .sidebar { width: 280px; background: #0a0a0a; border-right: 1px solid #1a1a1a; padding: 40px; display: flex; flex-direction: column; }
-        .logo { font-size: 28px; font-weight: 900; color: #d4af37; margin-bottom: 60px; }
-        .nav-link { padding: 18px 0; color: #777; font-size: 15px; cursor: pointer; border-bottom: 1px solid #1a1a1a; transition: 0.3s; }
-        .nav-link:hover { color: #fff; }
+        /* Sidebar Styling */
+        .sidebar { width: 280px; background: var(--sidebar-bg); border-right: 1px solid var(--accent); padding: 40px; display: flex; flex-direction: column; }
+        .logo { font-size: 26px; font-weight: 800; color: var(--gold); margin-bottom: 60px; letter-spacing: 1px; }
+        .nav-link { padding: 20px 0; color: var(--text-dim); font-size: 14px; cursor: pointer; border-bottom: 1px solid var(--accent); transition: 0.3s; }
+        .nav-link:hover { color: var(--gold); }
 
-        /* Main Content - Takes full remaining space */
+        /* Main Content */
         .main { flex: 1; padding: 40px; display: flex; flex-direction: column; gap: 30px; }
         
-        /* Stats Grid - High-end look */
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
-        .card { background: #0d0d0d; padding: 30px; border-radius: 12px; border: 1px solid #222; }
-        .label { color: #555; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-        .value { font-size: 26px; font-weight: 700; margin-top: 10px; }
+        /* Stats Grid - High-end cards */
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .card { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 8px; 
+            border: 1px solid var(--accent);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .label { color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; }
+        .value { font-size: 24px; font-weight: 700; margin-top: 10px; color: var(--text-main); }
+        .profit { color: #00ff88; }
 
-        /* Full Width Chart Area */
-        .chart-area { flex: 1; width: 100%; background: #0d0d0d; border-radius: 12px; border: 1px solid #222; display: flex; align-items: center; justify-content: center; color: #333; }
+        /* Chart Area */
+        .chart-container { 
+            flex: 1; 
+            background: var(--card-bg); 
+            border-radius: 8px; 
+            border: 1px solid var(--accent);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: var(--text-dim);
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
@@ -31,21 +59,21 @@
         <div class="logo">FX_ARJUN</div>
         <div class="nav-link">DASHBOARD</div>
         <div class="nav-link">LIVE XAUUSD</div>
-        <div class="nav-link">MARKET NEWS</div>
-        <div class="nav-link">TRADE HISTORY</div>
-        <div class="nav-link">ACCOUNT SETTINGS</div>
+        <div class="nav-link">MARKET ANALYSIS</div>
+        <div class="nav-link">ORDER HISTORY</div>
+        <div class="nav-link">SETTINGS</div>
     </div>
     
     <div class="main">
         <div class="grid">
-            <div class="card"><div class="label">EQUITY</div><div class="value">$24,500.00</div></div>
-            <div class="card"><div class="label">PROFIT</div><div class="value" style="color: #00ff88;">+$1,240.50</div></div>
-            <div class="card"><div class="label">MARGIN</div><div class="value">3250%</div></div>
-            <div class="card"><div class="label">ACTIVE</div><div class="value">4 ORDERS</div></div>
+            <div class="card"><div class="label">EQUITY BALANCE</div><div class="value">$24,500.00</div></div>
+            <div class="card"><div class="label">DAILY PROFIT</div><div class="value profit">+$1,240.50</div></div>
+            <div class="card"><div class="label">MARGIN LEVEL</div><div class="value">3250%</div></div>
+            <div class="card"><div class="label">TRADE COUNT</div><div class="value">4 ORDERS</div></div>
         </div>
         
-        <div class="chart-area">
-            [ PROFESSIONAL CHART AREA - READY FOR INTEGRATION ]
+        <div class="chart-container">
+            [ PROFESSIONAL MARKET CHART - INTEGRATION PENDING ]
         </div>
     </div>
 </body>
