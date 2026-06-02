@@ -2,108 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fx_arjun | Professional Terminal</title>
+    <title>Fx_arjun | Terminal</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { margin: 0; background-color: #000; color: #fff; font-family: 'Segoe UI', Arial, sans-serif; display: flex; }
         
-        body { 
-            display: flex; 
-            height: 100vh; 
-            background: #050505; 
-            color: #d1d5db; 
-            overflow: hidden; 
-        }
-
         /* Sidebar */
-        .sidebar { 
-            width: 280px; 
-            background: #0a0a0a; 
-            border-right: 1px solid #1f1f1f; 
-            padding: 30px; 
-            display: flex; 
-            flex-direction: column; 
-        }
-        .brand { 
-            font-size: 1.8rem; 
-            font-weight: 700; 
-            color: #ffffff; 
-            margin-bottom: 50px; 
-            letter-spacing: -1px;
-        }
-        .brand span { color: #f59e0b; } /* Gold accent for FX */
+        .sidebar { width: 220px; height: 100vh; border-right: 1px solid #333; padding: 20px; }
+        .logo { font-weight: bold; font-size: 20px; color: #fff; margin-bottom: 40px; display: block; }
+        .menu-item { color: #888; padding: 10px 0; cursor: pointer; font-size: 14px; }
+        .menu-item:hover { color: #fff; }
+
+        /* Main Area */
+        .content { flex-grow: 1; padding: 30px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
         
-        .nav-item { 
-            padding: 15px 0; 
-            color: #6b7280; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            font-weight: 500;
-        }
-        .nav-item:hover { color: #ffffff; }
-
-        /* Main Content */
-        .main-content { 
-            flex: 1; 
-            padding: 40px; 
-            overflow-y: auto; 
-            background: radial-gradient(circle at top right, #111827, #050505);
-        }
-
-        .header-section { margin-bottom: 40px; }
-        .header-section h1 { font-size: 2rem; color: #fff; margin-bottom: 10px; }
-        .header-section p { color: #9ca3af; }
-
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 25px; 
-        }
-        
-        .card { 
-            background: rgba(255, 255, 255, 0.03); 
-            padding: 30px; 
-            border-radius: 16px; 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(10px);
-        }
-        .card h3 { color: #9ca3af; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
-        .card p { font-size: 2rem; font-weight: 700; color: #fff; margin-top: 10px; }
-        .card .trend { color: #10b981; font-size: 0.9rem; margin-top: 5px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .box { border: 1px solid #333; padding: 20px; background: #0a0a0a; }
+        .label { color: #666; font-size: 12px; text-transform: uppercase; }
+        .value { font-size: 22px; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
+
     <div class="sidebar">
-        <div class="brand">Fx<span>_</span>Arjun</div>
-        <div class="nav-item">Dashboard</div>
-        <div class="nav-item">XAUUSD Analysis</div>
-        <div class="nav-item">Trade Journal</div>
-        <div class="nav-item">Account Settings</div>
+        <div class="logo">Fx_arjun</div>
+        <div class="menu-item">DASHBOARD</div>
+        <div class="menu-item">MARKETS</div>
+        <div class="menu-item">TRADES</div>
+        <div class="menu-item">ANALYSIS</div>
     </div>
-    <div class="main-content">
-        <div class="header-section">
-            <h1>Market Overview</h1>
-            <p>Welcome back, Fx_arjun. Analyzing liquidity and price action.</p>
+
+    <div class="content">
+        <div class="top-bar">
+            <h1>Overview</h1>
         </div>
-        <div class="stats-grid">
-            <div class="card">
-                <h3>Balance (USD)</h3>
-                <p>$25,420.00</p>
-                <div class="trend">+2.4% vs last week</div>
+        
+        <div class="dashboard-grid">
+            <div class="box">
+                <div class="label">BALANCE</div>
+                <div class="value">$12,450.00</div>
             </div>
-            <div class="card">
-                <h3>XAUUSD Equity</h3>
-                <p>$8,190.00</p>
-                <div class="trend">Stable</div>
+            <div class="box">
+                <div class="label">EQUITY</div>
+                <div class="value">$11,890.00</div>
             </div>
-            <div class="card">
-                <h3>Win Rate</h3>
-                <p>72.5%</p>
-                <div class="trend">Performance High</div>
+            <div class="box">
+                <div class="label">MARGIN LEVEL</div>
+                <div class="value">2450%</div>
             </div>
         </div>
     </div>
+
 </body>
 </html>
