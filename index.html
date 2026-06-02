@@ -11,7 +11,6 @@
             --bg-card: #0a0a0a;
             --bg-sidebar: #050505;
             --border-color: #1a1a1a;
-            --border-hover: #333333;
             --gold-accent: #d4af37;
             --text-main: #ffffff;
             --text-dim: #777777;
@@ -20,279 +19,62 @@
             --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         }
 
-        /* Core Reset & Full Screen Layout */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
         
-        body { 
-            background-color: var(--bg-primary); 
-            color: var(--text-main); 
-            display: flex; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
+        body { background-color: var(--bg-primary); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
         /* Premium Sidebar Navigation */
-        .sidebar { 
-            width: 280px; 
-            background-color: var(--bg-sidebar); 
-            border-right: 1px solid var(--border-color); 
-            padding: 40px 24px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between;
-        }
-
-        .brand-section h1 { 
-            font-size: 26px; 
-            font-weight: 900; 
-            color: var(--gold-accent); 
-            text-align: center; 
-            letter-spacing: 2px; 
-            margin-bottom: 50px;
-        }
-
-        .nav-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            flex: 1;
-        }
+        .sidebar { width: 280px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 40px 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        .brand-section h1 { font-size: 26px; font-weight: 900; color: var(--gold-accent); text-align: center; letter-spacing: 2px; margin-bottom: 50px; }
+        .nav-group { display: flex; flex-direction: column; gap: 12px; flex: 1; }
 
         .nav-btn { 
-            padding: 16px 20px; 
-            color: var(--text-dim); 
-            border: 1px solid var(--border-color); 
-            background: transparent;
-            border-radius: 6px;
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            text-align: left;
-            text-transform: uppercase;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            outline: none;
+            padding: 16px 20px; color: var(--text-dim); border: 1px solid var(--border-color); 
+            background: transparent; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; 
+            text-align: left; text-transform: uppercase; font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
         }
-
-        .nav-btn:hover { 
-            border-color: var(--gold-accent); 
-            color: var(--gold-accent); 
-            background: rgba(212, 175, 55, 0.02);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.05);
-        }
-
-        .nav-btn.active {
-            border-color: var(--gold-accent);
-            color: var(--text-main);
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
-            border-left: 4px solid var(--gold-accent);
-        }
-
-        .sidebar-footer {
-            color: var(--text-dim);
-            font-size: 11px;
-            text-align: center;
-            letter-spacing: 1px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
-        }
+        .nav-btn:hover { border-color: var(--gold-accent); color: var(--gold-accent); background: rgba(212, 175, 55, 0.02); }
+        .nav-btn.active { border-color: var(--gold-accent); color: var(--text-main); background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%); border-left: 4px solid var(--gold-accent); }
+        
+        .sidebar-footer { color: var(--text-dim); font-size: 11px; text-align: center; letter-spacing: 1px; border-top: 1px solid var(--border-color); padding-top: 20px; }
 
         /* Workspace Core Container */
-        .workspace { 
-            flex: 1; 
-            padding: 40px; 
-            overflow-y: auto; 
-            background: radial-gradient(circle at top right, #0f1218 0%, var(--bg-primary) 60%);
-        }
-
-        .page { 
-            display: none; 
-            animation: fadeIn 0.4s ease-out;
-        }
+        .workspace { flex: 1; padding: 40px; overflow-y: auto; background: radial-gradient(circle at top right, #0f1218 0%, var(--bg-primary) 60%); }
+        .page { display: none; animation: fadeIn 0.4s ease-out; }
+        .page.active { display: block; }
         
-        .page.active { 
-            display: block; 
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* Technical Components */
+        .boundary-box { border: 1px solid var(--border-color); background-color: var(--bg-card); padding: 30px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--card-shadow); }
+        .header-label { color: var(--gold-accent); font-size: 11px; text-transform: uppercase; margin-bottom: 22px; letter-spacing: 2px; font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; display: flex; justify-content: space-between; }
+        
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 24px; }
+        .stat-card { border: 1px solid var(--border-color); background-color: var(--bg-card); padding: 24px; border-radius: 8px; box-shadow: var(--card-shadow); }
+        .stat-card .label { color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .stat-value { font-size: 28px; font-weight: 700; margin-top: 12px; letter-spacing: -0.5px; }
+        .stat-sub { font-size: 12px; color: var(--gold-accent); margin-top: 6px; }
 
-        /* Technical Components & Boundary Boxes */
-        .boundary-box { 
-            border: 1px solid var(--border-color); 
-            background-color: var(--bg-card); 
-            padding: 30px; 
-            border-radius: 8px; 
-            margin-bottom: 24px;
-            box-shadow: var(--card-shadow);
-        }
+        /* Tables & Inputs */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { color: var(--text-dim); text-align: left; padding: 14px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--border-color); }
+        td { padding: 16px 14px; border-bottom: 1px solid var(--border-color); font-size: 14px; color: #e0e0e0; }
+        tr:hover td { background-color: rgba(255, 255, 255, 0.01); }
 
-        .header-label { 
-            color: var(--gold-accent); 
-            font-size: 11px; 
-            text-transform: uppercase; 
-            margin-bottom: 22px; 
-            letter-spacing: 2px; 
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-color); 
-            padding-bottom: 12px; 
-        }
+        .calculator-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .input-group { display: flex; flex-direction: column; gap: 10px; }
+        .input-group label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .input-field { background-color: #000; border: 1px solid var(--border-color); color: var(--text-main); padding: 14px; font-size: 14px; border-radius: 6px; outline: none; transition: 0.3s; }
+        .input-field:focus { border-color: var(--gold-accent); }
+        .action-btn { grid-column: span 2; background-color: var(--gold-accent); color: #000; font-weight: 700; border: none; padding: 16px; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; border-radius: 6px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .action-btn:hover { opacity: 0.9; }
+        .calc-result-box { grid-column: span 2; background: rgba(212, 175, 55, 0.02); border: 1px dashed var(--gold-accent); padding: 20px; border-radius: 6px; margin-top: 15px; display: none; }
 
-        /* Performance Metrics Grid */
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 20px; 
-            margin-bottom: 24px;
-        }
-
-        .stat-card { 
-            border: 1px solid var(--border-color); 
-            background-color: var(--bg-card); 
-            padding: 24px; 
-            border-radius: 8px; 
-            box-shadow: var(--card-shadow);
-        }
-
-        .stat-card .label {
-            color: var(--text-dim);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .stat-value { 
-            font-size: 28px; 
-            font-weight: 700; 
-            margin-top: 12px; 
-            letter-spacing: -0.5px;
-        }
-
-        .stat-sub {
-            font-size: 12px;
-            color: var(--gold-accent);
-            margin-top: 6px;
-        }
-
-        /* Clean Functional Tables */
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-top: 10px;
-        }
-
-        th { 
-            color: var(--text-dim); 
-            text-align: left; 
-            padding: 14px; 
-            font-size: 11px; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        td { 
-            padding: 16px 14px; 
-            border-bottom: 1px solid var(--border-color); 
-            font-size: 14px; 
-            color: #e0e0e0;
-        }
-
-        tr:hover td {
-            background-color: rgba(255, 255, 255, 0.01);
-        }
-
-        /* Risk Calculator Form Inputs */
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .input-group label {
-            font-size: 12px;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .input-field {
-            background-color: #000;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 14px;
-            font-size: 14px;
-            border-radius: 6px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .input-field:focus {
-            border-color: var(--gold-accent);
-        }
-
-        .action-btn {
-            grid-column: span 2;
-            background-color: var(--gold-accent);
-            color: #000;
-            font-weight: 700;
-            border: none;
-            padding: 16px;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: opacity 0.3s;
-            margin-top: 10px;
-        }
-
-        .action-btn:hover {
-            opacity: 0.9;
-        }
-
-        .calc-result-box {
-            grid-column: span 2;
-            background: rgba(212, 175, 55, 0.02);
-            border: 1px dashed var(--gold-accent);
-            padding: 20px;
-            border-radius: 6px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        /* Modern Badges */
+        .dashboard-split { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        .flex-col { display: flex; flex-direction: column; gap: 24px; }
         .badge-high { color: var(--loss-red); font-weight: bold; background: rgba(255, 68, 68, 0.1); padding: 4px 8px; border-radius: 4px; font-size: 11px; }
         .badge-med { color: var(--gold-accent); font-weight: bold; background: rgba(212, 175, 55, 0.1); padding: 4px 8px; border-radius: 4px; font-size: 11px; }
-        
-        /* Layout Configurations */
-        .dashboard-split {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-        }
-
-        .flex-col {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
     </style>
 </head>
 <body>
@@ -309,46 +91,24 @@
             <button class="nav-btn" onclick="switchTab(this, 'calendar')">Macro Calendar</button>
             <button class="nav-btn" onclick="switchTab(this, 'acc')">Account Connect</button>
         </div>
-        <div class="sidebar-footer">
-            ALGO ENGINE V4.0.2
-        </div>
+        <div class="sidebar-footer">ALGO ENGINE V4.0.2</div>
     </div>
 
     <div class="workspace">
         
         <div id="dash" class="page active">
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="label">Equity Balance</div>
-                    <div class="stat-value">$24,500.00</div>
-                    <div class="stat-sub">Live Secured Funds</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Daily Floating P&L</div>
-                    <div class="stat-value" style="color: var(--profit-green);">+$1,240.50</div>
-                    <div class="stat-sub">Smart Money Gains</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Terminal Win Rate</div>
-                    <div class="stat-value">78.4%</div>
-                    <div class="stat-sub">High Probability Ratio</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Margin Level</div>
-                    <div class="stat-value">3250%</div>
-                    <div class="stat-sub">Risk Profile Optimized</div>
-                </div>
+                <div class="stat-card"><div class="label">Equity Balance</div><div class="stat-value">$24,500.00</div><div class="stat-sub">Live Secured Funds</div></div>
+                <div class="stat-card"><div class="label">Daily Floating P&L</div><div class="stat-value" style="color: var(--profit-green);">+$1,240.50</div><div class="stat-sub">Smart Money Gains</div></div>
+                <div class="stat-card"><div class="label">Terminal Win Rate</div><div class="stat-value">78.4%</div><div class="stat-sub">High Probability Ratio</div></div>
+                <div class="stat-card"><div class="label">Margin Level</div><div class="stat-value">3250%</div><div class="stat-sub">Risk Profile Optimized</div></div>
             </div>
-
             <div class="dashboard-split">
                 <div class="flex-col">
                     <div class="boundary-box" style="margin-bottom: 0;">
                         <div class="header-label">Equity Curve Growth</div>
                         <div style="height: 300px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: 20px 0;">
                             <div style="display: flex; justify-content: space-between; height: 100%; align-items: flex-end; border-left: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding-left: 15px; position: relative;">
-                                <div style="position: absolute; width: 100%; height: 1px; background: #111; bottom: 25%;"></div>
-                                <div style="position: absolute; width: 100%; height: 1px; background: #111; bottom: 50%;"></div>
-                                <div style="position: absolute; width: 100%; height: 1px; background: #111; bottom: 75%;"></div>
                                 <div style="width: 12%; height: 35%; background: linear-gradient(to top, #111, rgba(0,255,136,0.2)); border-top: 2px solid var(--profit-green);"></div>
                                 <div style="width: 12%; height: 48%; background: linear-gradient(to top, #111, rgba(0,255,136,0.2)); border-top: 2px solid var(--profit-green);"></div>
                                 <div style="width: 12%; height: 42%; background: linear-gradient(to top, #111, rgba(255,68,68,0.1)); border-top: 2px solid var(--loss-red);"></div>
@@ -357,21 +117,15 @@
                                 <div style="width: 12%; height: 72%; background: linear-gradient(to top, #111, rgba(255,68,68,0.1)); border-top: 2px solid var(--loss-red);"></div>
                                 <div style="width: 12%; height: 95%; background: linear-gradient(to top, #111, rgba(0,255,136,0.3)); border-top: 2px solid var(--profit-green);"></div>
                             </div>
-                            <div style="display: flex; justify-content: space-between; padding-left: 15px; color: var(--text-dim); font-size: 11px;">
-                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-                            </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="flex-col">
                     <div class="boundary-box" style="height: 100%; margin-bottom: 0;">
                         <div class="header-label">Jarvis Core Bias</div>
                         <div style="padding: 10px 0;">
                             <div style="font-size: 24px; color: var(--profit-green); font-weight: 800; letter-spacing: 1px; margin-bottom: 15px;">BULLISH SENTIMENT</div>
-                            <p style="color: var(--text-dim); font-size: 13px; line-height: 1.6; margin-bottom: 20px;">
-                                Higher timeframe order blocks hold firm. Lower timeframe liquidity sweeps tracking perfectly under structural ranges.
-                            </p>
+                            <p style="color: var(--text-dim); font-size: 13px; line-height: 1.6; margin-bottom: 20px;">Higher timeframe order blocks hold firm. Lower timeframe liquidity sweeps tracking perfectly under structural ranges.</p>
                             <div style="border-top: 1px solid var(--border-color); padding-top: 15px;">
                                 <div style="font-size: 11px; color: var(--gold-accent); font-weight: bold; text-transform: uppercase; margin-bottom: 8px;">Target Zone</div>
                                 <div style="font-size: 16px; font-weight: bold; font-family: monospace;">XAUUSD @ 2345.50</div>
@@ -386,33 +140,14 @@
             <div class="boundary-box">
                 <div class="header-label">Risk Management & Position Sizing Calculator</div>
                 <div class="calculator-grid">
-                    <div class="input-group">
-                        <label>Account Capital (USD)</label>
-                        <input type="number" id="calc-balance" class="input-field" value="24500">
-                    </div>
-                    <div class="input-group">
-                        <label>Risk Percentage (%)</label>
-                        <input type="number" id="calc-risk" class="input-field" value="1" step="0.1">
-                    </div>
-                    <div class="input-group">
-                        <label>Entry Price</label>
-                        <input type="number" id="calc-entry" class="input-field" value="2320.50" step="0.01">
-                    </div>
-                    <div class="input-group">
-                        <label>Stop Loss (SL) Price</label>
-                        <input type="number" id="calc-sl" class="input-field" value="2315.00" step="0.01">
-                    </div>
+                    <div class="input-group"><label>Account Capital (USD)</label><input type="number" id="calc-balance" class="input-field" value="24500"></div>
+                    <div class="input-group"><label>Risk Percentage (%)</label><input type="number" id="calc-risk" class="input-field" value="1" step="0.1"></div>
+                    <div class="input-group"><label>Entry Price</label><input type="number" id="calc-entry" class="input-field" value="2320.50" step="0.01"></div>
+                    <div class="input-group"><label>Stop Loss (SL) Price</label><input type="number" id="calc-sl" class="input-field" value="2315.00" step="0.01"></div>
                     <button class="action-btn" onclick="calculateRiskMetrics()">Process Lot Allocation</button>
-                    
                     <div id="risk-result" class="calc-result-box">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span style="color: var(--text-dim); font-size: 13px;">Cash At Risk:</span>
-                            <span id="res-cash" style="font-weight: bold; color: var(--loss-red);"></span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <span style="color: var(--text-dim); font-size: 13px;">Allocated Lot Size:</span>
-                            <span id="res-lots" style="font-weight: bold; color: var(--profit-green); font-size: 18px;"></span>
-                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;"><span style="color: var(--text-dim); font-size: 13px;">Cash At Risk:</span><span id="res-cash" style="font-weight: bold; color: var(--loss-red);"></span></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-dim); font-size: 13px;">Allocated Lot Size:</span><span id="res-lots" style="font-weight: bold; color: var(--profit-green); font-size: 18px;"></span></div>
                     </div>
                 </div>
             </div>
@@ -422,54 +157,10 @@
             <div class="boundary-box">
                 <div class="header-label">Algorithmic Trade Synchronization Log</div>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Execution Date</th>
-                            <th>Asset Pair</th>
-                            <th>Order Type</th>
-                            <th>Volume (Lots)</th>
-                            <th>Execution Level</th>
-                            <th>Exit Level</th>
-                            <th>Net Profit / Loss</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Execution Date</th><th>Asset Pair</th><th>Order Type</th><th>Volume</th><th>Execution Level</th><th>Exit Level</th><th>Net Profit / Loss</th></tr></thead>
                     <tbody>
-                        <tr>
-                            <td>2026-06-02 18:24</td>
-                            <td style="font-weight: bold;">XAUUSD</td>
-                            <td style="color: var(--profit-green); font-weight: bold;">BUY</td>
-                            <td>0.50</td>
-                            <td>2312.40</td>
-                            <td>2320.80</td>
-                            <td style="color: var(--profit-green); font-weight: bold;">+$420.00</td>
-                        </tr>
-                        <tr>
-                            <td>2026-06-01 14:10</td>
-                            <td style="font-weight: bold;">XAUUSD</td>
-                            <td style="color: var(--loss-red); font-weight: bold;">SELL</td>
-                            <td>1.20</td>
-                            <td>2331.00</td>
-                            <td>2332.25</td>
-                            <td style="color: var(--loss-red); font-weight: bold;">-$150.00</td>
-                        </tr>
-                        <tr>
-                            <td>2026-05-29 20:15</td>
-                            <td style="font-weight: bold;">XAUUSD</td>
-                            <td style="color: var(--profit-green); font-weight: bold;">BUY</td>
-                            <td>0.80</td>
-                            <td>2295.10</td>
-                            <td>2306.50</td>
-                            <td style="color: var(--profit-green); font-weight: bold;">+$912.00</td>
-                        </tr>
-                        <tr>
-                            <td>2026-05-28 11:05</td>
-                            <td style="font-weight: bold;">XAUUSD</td>
-                            <td style="color: var(--profit-green); font-weight: bold;">BUY</td>
-                            <td>0.50</td>
-                            <td>2301.00</td>
-                            <td>2307.20</td>
-                            <td style="color: var(--profit-green); font-weight: bold;">+$310.00</td>
-                        </tr>
+                        <tr><td>2026-06-02 18:24</td><td style="font-weight: bold;">XAUUSD</td><td style="color: var(--profit-green); font-weight: bold;">BUY</td><td>0.50</td><td>2312.40</td><td>2320.80</td><td style="color: var(--profit-green); font-weight: bold;">+$420.00</td></tr>
+                        <tr><td>2026-06-01 14:10</td><td style="font-weight: bold;">XAUUSD</td><td style="color: var(--loss-red); font-weight: bold;">SELL</td><td>1.20</td><td>2331.00</td><td>2332.25</td><td style="color: var(--loss-red); font-weight: bold;">-$150.00</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -479,7 +170,88 @@
             <div class="boundary-box">
                 <div class="header-label">Jarvis Smart Money Concepts Engine</div>
                 <div style="line-height: 1.8; font-size: 14px;">
-                    <p style="margin-bottom: 15px; border-left: 3px solid var(--gold-accent); padding-left: 15px; color: var(--gold-accent); font-weight: bold;">
-                        Status: Execution Algorithms Synchronized & Live
-                    </p>
-                    <p style="margin-bottom: 20px; color: 
+                    <p style="margin-bottom: 15px; border-left: 3px solid var(--gold-accent); padding-left: 15px; color: var(--gold-accent); font-weight: bold;">Status: Execution Algorithms Synchronized & Live</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px;">
+                        <div style="border: 1px solid var(--border-color); padding: 20px; background: #070707; border-radius: 6px;">
+                            <div style="color: var(--gold-accent); font-size: 11px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;">Market Character Metrics</div>
+                            <div style="display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid #111;"><span style="color: var(--text-dim);">Change of Character (ChoCh)</span><span style="color: var(--profit-green); font-weight: bold;">CONFIRMED (Bullish)</span></div>
+                        </div>
+                        <div style="border: 1px solid var(--border-color); padding: 20px; background: #070707; border-radius: 6px;">
+                            <div style="color: var(--gold-accent); font-size: 11px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;">Liquidity Sweeps & Gaps</div>
+                            <div style="display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid #111;"><span style="color: var(--text-dim);">Inducement (IDM) Level</span><span style="font-family: monospace;">2308.20 (Swept)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="calendar" class="page">
+            <div class="boundary-box">
+                <div class="header-label">High-Impact Global Economic Calendar</div>
+                <table>
+                    <thead><tr><th>Time</th><th>Currency</th><th>Event</th><th>Impact Level</th><th>Previous</th><th>Forecast</th></tr></thead>
+                    <tbody>
+                        <tr><td>18:00</td><td>USD</td><td style="font-weight: bold;">Core CPI (MoM)</td><td><span class="badge-high">HIGH IMPACT</span></td><td>0.3%</td><td>0.2%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="acc" class="page">
+            <div class="boundary-box">
+                <div class="header-label">Google Secure Infrastructure Sync</div>
+                <div style="text-align: center; padding: 40px 20px;">
+                    <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 30px;">Connect your active trading environment cleanly to allow Jarvis AI to process structural histories.</p>
+                    <button class="action-btn" style="width: auto; padding: 16px 40px; display: inline-block;">Authorize Terminal via Google API</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchTab(buttonElement, targetTabId) {
+            // 1. Remove active class from all buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 2. Add active class to the clicked button
+            buttonElement.classList.add('active');
+
+            // 3. Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // 4. Show the target page
+            const targetPage = document.getElementById(targetTabId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            } else {
+                console.error("Error: Page section not found!");
+            }
+        }
+
+        function calculateRiskMetrics() {
+            const capital = parseFloat(document.getElementById('calc-balance').value);
+            const riskPct = parseFloat(document.getElementById('calc-risk').value);
+            const entry = parseFloat(document.getElementById('calc-entry').value);
+            const sl = parseFloat(document.getElementById('calc-sl').value);
+
+            if (isNaN(capital) || isNaN(riskPct) || isNaN(entry) || isNaN(sl) || entry === sl) {
+                alert("Please ensure all parameters are entered correctly.");
+                return;
+            }
+
+            const cashRisk = capital * (riskPct / 100);
+            const pipsRisk = Math.abs(entry - sl);
+            const standardLots = cashRisk / (pipsRisk * 100);
+
+            document.getElementById('res-cash').innerText = "$" + cashRisk.toFixed(2);
+            document.getElementById('res-lots').innerText = standardLots.toFixed(2) + " Standard Lots";
+            document.getElementById('risk-result').style.display = "block";
+        }
+    </script>
+</body>
+</html>
