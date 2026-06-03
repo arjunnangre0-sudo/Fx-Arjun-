@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.22 PRO TERMINAL</title>
+    <title>FX_ARJUN | V4.0.23 ULTIMATE LIVE TERMINAL</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -266,9 +266,9 @@
             height: 100%;
         }
 
-        /* Bottom Editor Panel (Jarvis Editor remains custom) */
+        /* Bottom Editor Panel */
         .tv-bottom-editor { 
-            height: 250px; 
+            height: 220px; 
             background-color: #0a0a0a; 
             border-top: 1px solid var(--border-color); 
             display: none; 
@@ -304,6 +304,26 @@
             font-size: 14px; 
         }
 
+        .boundary-box {
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .header-label {
+            color: var(--gold-accent);
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
     </style>
 </head>
 <body>
@@ -314,8 +334,13 @@
         </div>
         <div class="nav-group">
             <button class="nav-btn active" onclick="switchTab(this, 'chart-page')">Live Engine</button>
+            <button class="nav-btn" onclick="switchTab(this, 'risk-page')">Risk Manager</button>
+            <button class="nav-btn" onclick="switchTab(this, 'history-page')">Trade History</button>
+            <button class="nav-btn" onclick="switchTab(this, 'jarvis-page')">Jarvis AI Analysis</button>
+            <button class="nav-btn" onclick="switchTab(this, 'calendar-page')">Macro Calendar</button>
+            <button class="nav-btn" onclick="switchTab(this, 'connect-page')">Account Connect</button>
         </div>
-        <div class="sidebar-footer">ALGO ENGINE V4.0.22</div>
+        <div class="sidebar-footer">ALGO ENGINE V4.0.23</div>
     </div>
 
     <div class="workspace" id="main-workspace">
@@ -353,28 +378,58 @@
                         </div>
                     </div>
                     <textarea class="editor-textarea" spellcheck="false">// Welcome to Jarvis Algo Editor
-// Native Bridge to FX_ARJUN Backend
-// Author: Fx_arjun
-
 study("SMC Liquidity Sweep Algorithm", overlay=true)
 
-// Define parameters
 length = input(14, title="Lookback Period")
 inducementLevel = ta.highest(high, length)
 
-// Execution Logic
 if (close > inducementLevel)
     strategy.entry("Long", strategy.long)
-    alert("Sweep Confirmed - Executing Trade")
                     </textarea>
                 </div>
 
             </div>
         </div>
+
+        <div id="risk-page" class="page">
+            <div class="boundary-box">
+                <div class="header-label">Risk Management Protocol</div>
+                <p style="color: var(--text-dim);">Institutional risk matrix calculation standing by.</p>
+            </div>
+        </div>
+
+        <div id="history-page" class="page">
+            <div class="boundary-box">
+                <div class="header-label">Terminal Trade Log</div>
+                <p style="color: var(--text-dim);">Synchronizing encrypted trading logs...</p>
+            </div>
+        </div>
+
+        <div id="jarvis-page" class="page">
+            <div class="boundary-box">
+                <div class="header-label">Jarvis AI Analysis Core</div>
+                <p style="color: var(--text-dim);">Scanning order blocks and liquidity voids in raw data layers...</p>
+            </div>
+        </div>
+
+        <div id="calendar-page" class="page">
+            <div class="boundary-box">
+                <div class="header-label">Macro Economic Calendar</div>
+                <p style="color: var(--text-dim);">Fetching high impact news events from server nodes...</p>
+            </div>
+        </div>
+
+        <div id="connect-page" class="page">
+            <div class="boundary-box">
+                <div class="header-label">Account Node Sync</div>
+                <p style="color: var(--text-dim);">Secure link channel active. Awaiting protocol engagement.</p>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // --- TRADINGVIEW WIDGET INITIALIZATION ---
+        // --- TRADINGVIEW CORE CONFIGURATION ---
         let tvWidget;
 
         function initTradingView(theme) {
@@ -384,14 +439,18 @@ if (close > inducementLevel)
                 "interval": "15",
                 "timezone": "Asia/Kolkata",
                 "theme": theme,
-                "style": "1", // 1 = Candles
+                "style": "1", 
                 "locale": "en",
                 "enable_publishing": false,
-                "backgroundColor": theme === "dark" ? "#020202" : "#ffffff", // Matches our custom wrapper
-                "gridColor": theme === "dark" ? "#111111" : "#f1f5f9",
+                
+                // UNLOCK ALL NATIVE TOOLS (Fibonacci, Long/Short Box, Rectangle, Path)
+                "hide_side_toolbar": false, 
+                "allow_symbol_change": true,
                 "hide_top_toolbar": false,
                 "hide_legend": false,
-                "save_image": false,
+                
+                "backgroundColor": theme === "dark" ? "#020202" : "#ffffff", 
+                "gridColor": theme === "dark" ? "#111111" : "#f1f5f9",
                 "container_id": "tradingview_container",
                 "toolbar_bg": theme === "dark" ? "#0a0a0a" : "#f1f5f9",
                 "withdateranges": true,
@@ -401,10 +460,10 @@ if (close > inducementLevel)
             });
         }
 
-        // Initialize with default dark theme
+        // Default run state
         initTradingView("dark");
 
-        // --- UI LOGIC ---
+        // --- INTERFACE NAV LOGIC ---
         function toggleTheme() {
             document.body.classList.toggle('light-theme');
             const icon = document.getElementById('theme-icon');
@@ -418,8 +477,6 @@ if (close > inducementLevel)
                 icon.classList.remove('fa-sun'); 
                 icon.classList.add('fa-moon');
             }
-            
-            // Re-initialize the widget with the new theme
             initTradingView(newTheme);
         }
 
@@ -432,7 +489,11 @@ if (close > inducementLevel)
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            
+            const targetPage = document.getElementById(tabId);
+            if(targetPage) {
+                targetPage.classList.add('active');
+            }
         }
     </script>
 </body>
