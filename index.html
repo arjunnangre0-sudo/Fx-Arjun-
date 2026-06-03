@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.18 NATIVE ENGINE</title>
+    <title>FX_ARJUN | V4.0.19 NATIVE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -293,6 +293,25 @@
             margin: 0 8px; 
         }
 
+        /* NEW: Top Bar Settings Inputs (Replaces Floating Box) */
+        .settings-input-color { 
+            background: transparent; 
+            border: 1px solid var(--tv-border); 
+            border-radius: 4px; 
+            width: 26px; 
+            height: 26px; 
+            cursor: pointer; 
+            padding: 1px; 
+            margin-left: 5px;
+        }
+
+        .settings-input-range { 
+            width: 70px; 
+            accent-color: var(--gold-accent); 
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
         /* Main Row */
         .tv-main-row { 
             display: flex; 
@@ -376,9 +395,7 @@
             height: 100%; 
         }
 
-        /* =========================================================
-           NEW: CUSTOM TOAST NOTIFICATION (Replaces alert())
-           ========================================================= */
+        /* Custom Toast Notification */
         #custom-toast {
             visibility: hidden;
             min-width: 250px;
@@ -406,9 +423,7 @@
             bottom: 50px;
         }
 
-        /* =========================================================
-           NEW: CHART SETTINGS MODAL (TradingView Style)
-           ========================================================= */
+        /* CHART SETTINGS MODAL */
         .settings-modal-overlay {
             display: none;
             position: fixed;
@@ -490,61 +505,6 @@
         .settings-control-label {
             font-size: 13px;
             color: var(--text-dim);
-        }
-
-        /* Floating Tool Settings Panel */
-        .floating-settings-panel { 
-            position: absolute; 
-            top: 20px; 
-            left: 20px; 
-            background-color: var(--tv-toolbar-bg); 
-            border: 1px solid var(--tv-border); 
-            border-radius: 8px; 
-            padding: 15px; 
-            width: 220px; 
-            box-shadow: var(--card-shadow); 
-            display: none; 
-            flex-direction: column; 
-            gap: 12px; 
-            z-index: 100; 
-        }
-
-        .settings-header { 
-            font-size: 11px; 
-            color: var(--gold-accent); 
-            text-transform: uppercase; 
-            font-weight: 800; 
-            border-bottom: 1px solid var(--tv-border); 
-            padding-bottom: 8px; 
-            display: flex; 
-            justify-content: space-between; 
-        }
-
-        .settings-row { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-
-        .settings-label { 
-            font-size: 12px; 
-            color: var(--text-dim); 
-            font-weight: 600; 
-        }
-
-        .settings-input-color { 
-            background: transparent; 
-            border: 1px solid var(--tv-border); 
-            border-radius: 4px; 
-            width: 30px; 
-            height: 30px; 
-            cursor: pointer; 
-            padding: 2px; 
-        }
-
-        .settings-input-range { 
-            width: 80px; 
-            accent-color: var(--gold-accent); 
         }
 
         /* Bottom Editor Panel */
@@ -629,22 +589,15 @@
                 <div class="settings-control-row">
                     <span class="settings-control-label">Body Color (Up / Down)</span>
                     <div>
-                        <input type="color" value="#00ff88" class="settings-input-color">
-                        <input type="color" value="#ff4444" class="settings-input-color">
+                        <input type="color" value="#00ff88" style="background: transparent; border: 1px solid var(--tv-border); border-radius: 4px; padding: 1px;">
+                        <input type="color" value="#ff4444" style="background: transparent; border: 1px solid var(--tv-border); border-radius: 4px; padding: 1px;">
                     </div>
                 </div>
                 <div class="settings-control-row">
                     <span class="settings-control-label">Borders</span>
                     <div>
-                        <input type="color" value="#00ff88" class="settings-input-color">
-                        <input type="color" value="#ff4444" class="settings-input-color">
-                    </div>
-                </div>
-                <div class="settings-control-row">
-                    <span class="settings-control-label">Wick</span>
-                    <div>
-                        <input type="color" value="#00ff88" class="settings-input-color">
-                        <input type="color" value="#ff4444" class="settings-input-color">
+                        <input type="color" value="#00ff88" style="background: transparent; border: 1px solid var(--tv-border); border-radius: 4px; padding: 1px;">
+                        <input type="color" value="#ff4444" style="background: transparent; border: 1px solid var(--tv-border); border-radius: 4px; padding: 1px;">
                     </div>
                 </div>
                 <div class="settings-control-row" style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
@@ -666,7 +619,7 @@
         <div class="nav-group">
             <button class="nav-btn active" onclick="switchTab(this, 'chart-page')">Pro Terminal</button>
         </div>
-        <div class="sidebar-footer">ALGO ENGINE V4.0.18</div>
+        <div class="sidebar-footer">ALGO ENGINE V4.0.19</div>
     </div>
 
     <div class="workspace" id="main-workspace">
@@ -701,17 +654,18 @@
                         <button class="tv-tf-btn" onclick="switchTimeframe(this)">D</button>
                         <div class="tv-tf-divider"></div>
                         
-                        <button class="tv-tf-btn" title="Candles"><i class="fa-solid fa-chart-simple"></i></button>
-                        <button class="tv-tf-btn" onclick="showCustomToast('Indicators Module requires backend connection.')" title="Indicators"><i class="fa-solid fa-chart-line"></i> Indicators</button>
-                        <button class="tv-tf-btn" onclick="showCustomToast('Alerts System Syncing...')" title="Alerts"><i class="fa-regular fa-bell"></i> Alerts</button>
-                        <button class="tv-tf-btn" onclick="showCustomToast('Replay Engine will start on Tick Data connect.')" title="Replay"><i class="fa-solid fa-backward-step"></i> Replay</button>
+                        <div style="display: flex; align-items: center; gap: 5px; margin-left: 5px;">
+                            <span style="font-size: 11px; color: var(--text-dim); font-weight: 700; margin-right: 5px;">TOOL STYLE:</span>
+                            <input type="color" id="topbar-color" class="settings-input-color" value="#d4af37" title="Line Color">
+                            <input type="range" id="topbar-thickness" class="settings-input-range" min="1" max="5" value="2" title="Line Thickness">
+                        </div>
                     </div>
 
                     <div class="tv-top-group">
+                        <button class="tv-tf-btn" title="Candles"><i class="fa-solid fa-chart-simple"></i></button>
+                        <button class="tv-tf-btn" onclick="showCustomToast('Indicators Module requires backend connection.')" title="Indicators"><i class="fa-solid fa-chart-line"></i> Indicators</button>
                         <button class="tv-tf-btn" onclick="openChartSettings()" title="Chart Properties"><i class="fa-solid fa-gear"></i></button>
-                        
                         <button class="tv-tf-btn" onclick="toggleFullScreen()" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
-                        
                         <button class="tv-tf-btn" style="color: var(--profit-green);" onclick="toggleEditor()">
                             <i class="fa-solid fa-code"></i> Pine / Jarvis
                         </button>
@@ -721,7 +675,6 @@
                 <div class="tv-main-row">
                     
                     <div class="tv-left-toolbar">
-                        
                         <button class="tv-left-tool-btn active" id="tool-cursor" onclick="selectTool('cursor')" title="Crosshair"><i class="fa-solid fa-crosshairs"></i></button>
                         <div class="tv-tool-divider"></div>
                         
@@ -756,21 +709,6 @@
 
                     <div class="tv-canvas-area">
                         
-                        <div id="floating-settings" class="floating-settings-panel">
-                            <div class="settings-header">
-                                <span id="active-tool-name">Tool Settings</span>
-                                <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--tv-icon-color);" onclick="closeSettingsPanel()"></i>
-                            </div>
-                            <div class="settings-row">
-                                <label class="settings-label">Color</label>
-                                <input type="color" id="setting-color" class="settings-input-color" value="#d4af37">
-                            </div>
-                            <div class="settings-row">
-                                <label class="settings-label">Thickness</label>
-                                <input type="range" id="setting-thickness" class="settings-input-range" min="1" max="5" value="2">
-                            </div>
-                        </div>
-
                         <div class="tv-canvas-wrapper" id="canvas-wrapper">
                             <canvas id="customChartCanvas"></canvas>
                         </div>
@@ -873,15 +811,6 @@ if (close > inducementLevel)
             setTimeout(resizeCanvas, 50); 
         }
 
-        function openSettingsPanel(toolName) {
-            const panel = document.getElementById('floating-settings');
-            const title = document.getElementById('active-tool-name');
-            panel.style.display = 'flex';
-            title.innerText = toolName.toUpperCase() + " SETTINGS";
-        }
-
-        function closeSettingsPanel() { document.getElementById('floating-settings').style.display = 'none'; }
-
         // --- CANVAS ENGINE ---
         const canvas = document.getElementById('customChartCanvas');
         const ctx = canvas.getContext('2d');
@@ -914,23 +843,19 @@ if (close > inducementLevel)
             const activeBtn = document.getElementById('tool-' + toolName);
             if(activeBtn) activeBtn.classList.add('active');
             
-            // Handle Placeholders via Custom Toast (No ugly alerts!)
+            // Handle Placeholders via Custom Toast
             if (['fib', 'pitchfork', 'brush', 'callout', 'elliott', 'path'].includes(toolName)) {
                 showCustomToast(`${toolName.toUpperCase()} logic awaiting Jarvis Backend processing.`);
                 wrapper.style.cursor = 'default';
-                closeSettingsPanel();
                 return;
             }
 
             if (toolName === 'cursor') {
                 wrapper.style.cursor = 'crosshair';
-                closeSettingsPanel();
             } else if (toolName === 'text') {
                 wrapper.style.cursor = 'text';
-                openSettingsPanel(toolName);
             } else {
                 wrapper.style.cursor = 'crosshair';
-                openSettingsPanel(toolName);
             }
         }
 
@@ -939,8 +864,12 @@ if (close > inducementLevel)
             renderEngine();
         }
 
+        // Modified: Now reads from the top toolbar inputs
         function getCurrentToolSettings() {
-            return { color: document.getElementById('setting-color').value, thickness: document.getElementById('setting-thickness').value };
+            return { 
+                color: document.getElementById('topbar-color').value, 
+                thickness: document.getElementById('topbar-thickness').value 
+            };
         }
 
         canvas.addEventListener('mousedown', (e) => {
@@ -962,12 +891,9 @@ if (close > inducementLevel)
                 renderEngine(); 
                 return; 
             } else if (currentTool === 'text') {
-                // FIXED TEXT TOOL: No prompt, just prints directly!
                 shapes.push({ type: 'text', x: startX, y: startY, text: "FX_ARJUN TEXT", ...settings });
                 renderEngine();
-                
-                // Auto switch back to cursor after placing text
-                selectTool('cursor'); 
+                selectTool('cursor'); // Auto switch back
                 return; 
             }
 
