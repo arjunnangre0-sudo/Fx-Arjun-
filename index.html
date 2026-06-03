@@ -3,107 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V5.1 INSTITUTIONAL TERMINAL</title>
-    <script src="https://s3.tradingview.com/tv.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>FX_ARJUN | V6.0 NATIVE MASTER TERMINAL</title>
+    <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         :root { --bg: #030303; --sidebar: #050505; --border: #1a1a1a; --gold: #d4af37; --green: #089981; --red: #f23645; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: #fff; height: 100vh; display: flex; overflow: hidden; }
-
+        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden; }
+        
         /* Sidebar */
-        .sidebar { width: 70px; background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
-        .nav-item { width: 40px; height: 40px; margin-bottom: 15px; color: #555; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; border-radius: 6px; }
-        .nav-item.active { color: var(--gold); background: rgba(212, 175, 55, 0.1); }
+        .sidebar { width: 60px; background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
+        .nav-btn { width: 40px; height: 40px; margin-bottom: 15px; color: #555; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; border-radius: 6px; }
+        .nav-btn.active { color: var(--gold); background: #111; }
 
-        /* Main Workspace */
-        .main-content { flex: 1; display: flex; flex-direction: column; }
-        .header { height: 50px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 20px; }
+        /* Workspace */
+        .workspace { flex: 1; display: flex; flex-direction: column; }
+        .top-bar { height: 50px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 20px; }
         
-        /* Chart Section */
-        .chart-area { flex: 1; position: relative; background: #000; }
-        #tradingview_chart { width: 100%; height: 100%; }
+        /* Chart Area */
+        .chart-container { flex: 1; position: relative; }
+        #chart { width: 100%; height: 100%; }
 
-        /* Bottom P&L Panel */
-        .bottom-panel { height: 180px; border-top: 2px solid var(--border); background: #050505; padding: 15px; overflow-y: auto; }
-        .pnl-table { width: 100%; color: #aaa; font-size: 12px; border-collapse: collapse; }
-        .pnl-table th { text-align: left; color: #555; padding-bottom: 10px; }
-        .pnl-table td { padding: 8px 0; border-bottom: 1px solid #111; }
-
-        /* Execution Panel */
-        .exec-panel { position: absolute; top: 20px; right: 20px; width: 220px; background: rgba(10,10,10,0.9); border: 1px solid var(--border); padding: 15px; border-radius: 8px; z-index: 100; }
-        .btn-trade { width: 100%; padding: 10px; border: none; font-weight: 800; cursor: pointer; margin-top: 5px; }
-        
-        /* MTJ Modal */
-        .modal { display: none; position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: #12141c; padding: 30px; border-radius: 12px; width: 800px; }
+        /* Custom Left Tool Bar */
+        .tools { position: absolute; left: 0; top: 0; width: 40px; height: 100%; background: #0a0a0a; border-right: 1px solid var(--border); z-index: 10; display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
+        .tool { color: #888; margin-bottom: 15px; cursor: pointer; }
+        .tool:hover { color: var(--gold); }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <div class="nav-item active"><i class="fa-solid fa-chart-line"></i></div>
-        <div class="nav-item"><i class="fa-solid fa-microchip"></i></div>
-        <div class="nav-item"><i class="fa-solid fa-gear"></i></div>
+        <div class="nav-btn active"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="nav-btn"><i class="fa-solid fa-microchip"></i></div>
     </div>
-
-    <div class="main-content">
-        <div class="header">
-            <span style="font-weight:900; color:var(--gold);">XAUUSD</span>
-            <div class="replay-controls" id="replay-bar">
-                <button onclick="startReplay()">PLAY REPLAY</button>
-                <button onclick="stopReplay()">STOP REPLAY</button>
-            </div>
+    
+    <div class="workspace">
+        <div class="top-bar">
+            <h2 style="color:var(--gold);">XAUUSD</h2>
+            <button onclick="document.getElementById('mtj-modal').style.display='flex'">VIEW MTJ DASHBOARD</button>
         </div>
-
-        <div class="chart-area">
-            <div id="tradingview_chart"></div>
-            
-            <div class="exec-panel">
-                <input type="number" id="lot" value="1.00" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:5px; margin-bottom:10px;">
-                <button class="btn-trade" style="background:var(--green); color:#fff;" onclick="alert('Long Executed')">BUY</button>
-                <button class="btn-trade" style="background:var(--red); color:#fff;" onclick="alert('Short Executed')">SELL</button>
+        <div class="chart-container">
+            <div class="tools">
+                <div class="tool" onclick="alert('Drawing Trendline...')"><i class="fa-solid fa-minus" style="transform: rotate(-45deg);"></i></div>
+                <div class="tool" onclick="alert('Drawing Rectangle...')"><i class="fa-regular fa-square"></i></div>
             </div>
-        </div>
-
-        <div class="bottom-panel">
-            <table class="pnl-table">
-                <thead><tr><th>Ticket</th><th>Type</th><th>Price</th><th>P&L</th></tr></thead>
-                <tbody>
-                    <tr><td>#99821</td><td class="type-long">BUY</td><td>2324.50</td><td class="positive">+$450.00</td></tr>
-                </tbody>
-            </table>
+            <div id="chart"></div>
         </div>
     </div>
 
-    <div id="mtj-modal" class="modal">
-        <div class="modal-content">
-            <h2 style="color:var(--gold);">MTJ SESSION SUMMARY</h2>
-            <canvas id="mtjRadar" height="300"></canvas>
+    <div id="mtj-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:999; justify-content:center; align-items:center;">
+        <div style="background:#111; padding:40px; border-radius:10px; width:600px;">
+            <h1 style="color:var(--gold);">MY TRADING JOURNEY</h1>
+            <p>Stats and Radar Charts go here.</p>
             <button onclick="document.getElementById('mtj-modal').style.display='none'">CLOSE</button>
         </div>
     </div>
 
     <script>
-        new TradingView.widget({
-            "container_id": "tradingview_chart",
-            "symbol": "OANDA:XAUUSD",
-            "theme": "dark",
-            "interval": "15",
-            "autosize": true,
-            "hide_side_toolbar": false
+        const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+            layout: { backgroundColor: '#030303', textColor: '#ccc' },
+            grid: { vertLines: { color: '#111' }, horzLines: { color: '#111' } }
         });
-
-        function startReplay() { alert("Replay Active"); }
-        function stopReplay() { 
-            document.getElementById('mtj-modal').style.display = 'flex';
-            new Chart(document.getElementById('mtjRadar'), {
-                type: 'radar',
-                data: { labels: ['London', 'NY', 'Asia', 'Overlap'], datasets: [{ data: [20, 10, 5, 15], backgroundColor: 'rgba(212,175,55,0.2)' }] }
-            });
-        }
+        const series = chart.addCandlestickSeries({ upColor: '#089981', downColor: '#f23645' });
+        
+        // Initial Data
+        series.setData([
+            {time: '2026-06-01', open: 2320, high: 2325, low: 2315, close: 2322},
+            {time: '2026-06-02', open: 2322, high: 2330, low: 2320, close: 2328}
+        ]);
     </script>
 </body>
 </html>
