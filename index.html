@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.15 NATIVE ENGINE</title>
+    <title>FX_ARJUN | V4.0.16 NATIVE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -46,470 +46,95 @@
             --tv-border: #cbd5e1;
             --tv-icon-color: #475569;
             --tv-icon-hover: #0f172a;
-            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         /* Core Reset */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: var(--font-family); 
-        }
-
-        body { 
-            background-color: var(--bg-primary); 
-            color: var(--text-main); 
-            display: flex; 
-            height: 100vh; 
-            overflow: hidden; 
-            transition: background-color 0.3s, color 0.3s;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); }
+        body { background-color: var(--bg-primary); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; transition: 0.3s; }
 
         /* Sidebar Navigation */
-        .sidebar { 
-            width: 280px; 
-            background-color: var(--bg-sidebar); 
-            border-right: 1px solid var(--border-color); 
-            padding: 40px 24px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            z-index: 10;
-        }
-
-        .brand-section h1 { 
-            font-size: 26px; 
-            font-weight: 900; 
-            color: var(--gold-accent); 
-            text-align: center; 
-            letter-spacing: 2px; 
-            margin-bottom: 50px; 
-        }
-
-        .nav-group { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            flex: 1; 
-        }
-
-        .nav-btn { 
-            padding: 16px 20px; 
-            color: var(--text-dim); 
-            border: 1px solid var(--border-color); 
-            background: transparent; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            text-align: left; 
-            text-transform: uppercase; 
-            font-size: 12px; 
-            font-weight: 600; 
-            letter-spacing: 1.5px; 
-            outline: none; 
-        }
-
-        .nav-btn:hover { 
-            border-color: var(--gold-accent); 
-            color: var(--gold-accent); 
-            background: rgba(212, 175, 55, 0.02); 
-        }
-
-        .nav-btn.active { 
-            border-color: var(--gold-accent); 
-            color: var(--text-main); 
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%); 
-            border-left: 4px solid var(--gold-accent); 
-        }
-
-        .sidebar-footer { 
-            color: var(--text-dim); 
-            font-size: 11px; 
-            text-align: center; 
-            letter-spacing: 1px; 
-            border-top: 1px solid var(--border-color); 
-            padding-top: 20px; 
-        }
+        .sidebar { width: 280px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 40px 24px; display: flex; flex-direction: column; justify-content: space-between; z-index: 10; }
+        .brand-section h1 { font-size: 26px; font-weight: 900; color: var(--gold-accent); text-align: center; letter-spacing: 2px; margin-bottom: 50px; }
+        .nav-group { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+        .nav-btn { padding: 16px 20px; color: var(--text-dim); border: 1px solid var(--border-color); background: transparent; border-radius: 6px; cursor: pointer; text-align: left; text-transform: uppercase; font-size: 12px; font-weight: 600; }
+        .nav-btn:hover { border-color: var(--gold-accent); color: var(--gold-accent); background: rgba(212, 175, 55, 0.02); }
+        .nav-btn.active { border-color: var(--gold-accent); color: var(--text-main); background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%); border-left: 4px solid var(--gold-accent); }
+        .sidebar-footer { color: var(--text-dim); font-size: 11px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
 
         /* Workspace Core Container */
-        .workspace { 
-            flex: 1; 
-            display: flex;
-            flex-direction: column;
-        }
+        .workspace { flex: 1; display: flex; flex-direction: column; }
 
         /* Top Bar */
-        .top-bar { 
-            display: flex; 
-            justify-content: flex-end; 
-            align-items: center; 
-            padding: 20px 40px; 
-            border-bottom: 1px solid var(--border-color); 
-            background-color: var(--bg-primary);
-            gap: 20px;
-        }
+        .top-bar { display: flex; justify-content: flex-end; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background-color: var(--bg-primary); gap: 20px; }
+        .theme-toggle-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-dim); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.3s; }
+        .theme-toggle-btn:hover { color: var(--gold-accent); border-color: var(--gold-accent); }
+        .profile-widget { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 8px 12px; border-radius: 8px; border: 1px solid transparent; }
+        .profile-info { display: flex; flex-direction: column; text-align: right; }
+        .profile-name { font-size: 14px; font-weight: 700; color: var(--text-main); }
+        .profile-status { font-size: 11px; color: var(--text-dim); display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 3px; }
+        .status-dot { width: 8px; height: 8px; background: var(--profit-green); border-radius: 50%; box-shadow: 0 0 8px var(--profit-green); }
+        .profile-avatar { width: 42px; height: 42px; border-radius: 50%; background: #111; border: 1px solid var(--border-color); color: var(--text-dim); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; overflow: hidden; }
 
-        .theme-toggle-btn {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-dim);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-
-        .theme-toggle-btn:hover {
-            color: var(--gold-accent);
-            border-color: var(--gold-accent);
-        }
-
-        .profile-widget { 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            cursor: pointer; 
-            padding: 8px 12px; 
-            border-radius: 8px; 
-            border: 1px solid transparent; 
-        }
-
-        .profile-info { 
-            display: flex; 
-            flex-direction: column; 
-            text-align: right; 
-        }
-
-        .profile-name { 
-            font-size: 14px; 
-            font-weight: 700; 
-            color: var(--text-main); 
-        }
-
-        .profile-status { 
-            font-size: 11px; 
-            color: var(--text-dim); 
-            display: flex; 
-            align-items: center; 
-            justify-content: flex-end; 
-            gap: 5px; 
-            margin-top: 3px; 
-        }
-
-        .status-dot { 
-            width: 8px; 
-            height: 8px; 
-            background: var(--profit-green); 
-            border-radius: 50%; 
-            box-shadow: 0 0 8px var(--profit-green); 
-        }
-
-        .profile-avatar { 
-            width: 42px; 
-            height: 42px; 
-            border-radius: 50%; 
-            background: #111; 
-            border: 1px solid var(--border-color); 
-            color: var(--text-dim); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 800; 
-            font-size: 12px; 
-            overflow: hidden; 
-        }
-
-        /* Page Content Logic */
-        .page { 
-            display: none; 
-            flex: 1;
-            padding: 20px 40px 40px 40px;
-            overflow-y: hidden;
-        }
-
-        .page.active { 
-            display: flex; 
-            flex-direction: column;
-        }
+        /* Page Content */
+        .page { display: none; flex: 1; padding: 20px 40px 40px 40px; overflow-y: hidden; }
+        .page.active { display: flex; flex-direction: column; }
         
-        .tv-layout-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: var(--tv-bg);
-            box-shadow: var(--card-shadow);
-            position: relative;
-        }
+        .tv-layout-container { flex: 1; display: flex; flex-direction: column; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background-color: var(--tv-bg); box-shadow: var(--card-shadow); position: relative; }
 
-        /* Top Toolbar */
-        .tv-top-toolbar {
-            height: 50px;
-            background-color: var(--tv-toolbar-bg);
-            border-bottom: 1px solid var(--tv-border);
-            display: flex;
-            align-items: center;
-            padding: 0 15px;
-            justify-content: space-between;
-        }
-
-        .tv-timeframes {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
-
-        .tv-tf-btn {
-            background: transparent;
-            border: none;
-            color: var(--tv-icon-color);
-            padding: 5px 8px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: 0.2s;
-        }
-
-        .tv-tf-btn:hover {
-            color: var(--tv-icon-hover);
-            background-color: rgba(120, 120, 120, 0.1);
-        }
-
-        .tv-tf-btn.active {
-            color: var(--gold-accent);
-        }
+        /* Top Toolbar (Expanded TV Style) */
+        .tv-top-toolbar { height: 50px; background-color: var(--tv-toolbar-bg); border-bottom: 1px solid var(--tv-border); display: flex; align-items: center; padding: 0 15px; justify-content: space-between; }
         
-        .tv-tf-divider {
-            width: 1px;
-            height: 20px;
-            background-color: var(--tv-border);
-            margin: 0 5px;
-        }
+        .tv-top-group { display: flex; align-items: center; gap: 5px; }
+        .tv-tf-btn { background: transparent; border: none; color: var(--tv-icon-color); padding: 6px 10px; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 4px; transition: 0.2s; }
+        .tv-tf-btn:hover { color: var(--tv-icon-hover); background-color: rgba(120, 120, 120, 0.1); }
+        .tv-tf-btn.active { color: var(--gold-accent); }
+        .tv-tf-divider { width: 1px; height: 20px; background-color: var(--tv-border); margin: 0 8px; }
 
         /* Main Row */
-        .tv-main-row {
-            display: flex;
-            flex: 1;
-            height: calc(100% - 50px);
-            position: relative;
-        }
+        .tv-main-row { display: flex; flex: 1; height: calc(100% - 50px); position: relative; }
 
-        /* Left Vertical Toolbar */
-        .tv-left-toolbar {
-            width: 50px;
-            background-color: var(--tv-toolbar-bg);
-            border-right: 1px solid var(--tv-border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 0;
-            gap: 10px;
-            overflow-y: auto;
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
+        /* Left Vertical Toolbar (Fully Loaded) */
+        .tv-left-toolbar { 
+            width: 55px; 
+            background-color: var(--tv-toolbar-bg); 
+            border-right: 1px solid var(--tv-border); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 10px 0; 
+            gap: 6px; 
+            overflow-y: auto; 
+            -ms-overflow-style: none; scrollbar-width: none; 
         }
-
-        .tv-left-toolbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .tv-left-tool-btn {
-            background: transparent;
-            border: none;
-            color: var(--tv-icon-color);
-            font-size: 16px;
-            cursor: pointer;
-            width: 34px;
-            height: 34px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-            flex-shrink: 0;
-        }
-
-        .tv-left-tool-btn:hover {
-            color: var(--tv-icon-hover);
-            background-color: rgba(120, 120, 120, 0.1);
-        }
-
-        .tv-left-tool-btn.active {
-            color: var(--tv-icon-active);
-            background-color: rgba(212, 175, 55, 0.1);
-        }
-
-        .tv-tool-divider {
-            width: 30px;
-            height: 1px;
-            background-color: var(--tv-border);
-            margin: 5px 0;
-            flex-shrink: 0;
-        }
+        .tv-left-toolbar::-webkit-scrollbar { display: none; }
+        
+        .tv-left-tool-btn { background: transparent; border: none; color: var(--tv-icon-color); font-size: 16px; cursor: pointer; width: 38px; height: 38px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; }
+        .tv-left-tool-btn:hover { color: var(--tv-icon-hover); background-color: rgba(120, 120, 120, 0.1); }
+        .tv-left-tool-btn.active { color: var(--tv-icon-active); background-color: rgba(212, 175, 55, 0.1); }
+        .tv-tool-divider { width: 30px; height: 1px; background-color: var(--tv-border); margin: 4px 0; flex-shrink: 0; }
 
         /* Canvas Wrapper Area */
-        .tv-canvas-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
+        .tv-canvas-area { flex: 1; display: flex; flex-direction: column; position: relative; }
+        .tv-canvas-wrapper { flex: 1; position: relative; background-color: var(--tv-bg); cursor: crosshair; overflow: hidden; }
+        #customChartCanvas { display: block; width: 100%; height: 100%; }
 
-        .tv-canvas-wrapper {
-            flex: 1;
-            position: relative;
-            background-color: var(--tv-bg); 
-            cursor: crosshair;
-            overflow: hidden;
-        }
-
-        #customChartCanvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* =====================================================================
-           NEW: FLOATING DYNAMIC SETTINGS PANEL
-           ===================================================================== */
-        .floating-settings-panel {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: var(--tv-toolbar-bg);
-            border: 1px solid var(--tv-border);
-            border-radius: 8px;
-            padding: 15px;
-            width: 220px;
-            box-shadow: var(--card-shadow);
-            display: none; /* Hidden by default */
-            flex-direction: column;
-            gap: 12px;
-            z-index: 100;
-        }
-
-        .settings-header {
-            font-size: 11px;
-            color: var(--gold-accent);
-            text-transform: uppercase;
-            font-weight: 800;
-            letter-spacing: 1px;
-            border-bottom: 1px solid var(--tv-border);
-            padding-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .settings-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .settings-label {
-            font-size: 12px;
-            color: var(--text-dim);
-            font-weight: 600;
-        }
-
-        .settings-input-color {
-            background: transparent;
-            border: 1px solid var(--tv-border);
-            border-radius: 4px;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            padding: 2px;
-        }
-
-        .settings-input-range {
-            width: 80px;
-            accent-color: var(--gold-accent);
-        }
+        /* Floating Settings Panel */
+        .floating-settings-panel { position: absolute; top: 20px; left: 20px; background-color: var(--tv-toolbar-bg); border: 1px solid var(--tv-border); border-radius: 8px; padding: 15px; width: 220px; box-shadow: var(--card-shadow); display: none; flex-direction: column; gap: 12px; z-index: 100; }
+        .settings-header { font-size: 11px; color: var(--gold-accent); text-transform: uppercase; font-weight: 800; border-bottom: 1px solid var(--tv-border); padding-bottom: 8px; display: flex; justify-content: space-between; }
+        .settings-row { display: flex; justify-content: space-between; align-items: center; }
+        .settings-label { font-size: 12px; color: var(--text-dim); font-weight: 600; }
+        .settings-input-color { background: transparent; border: 1px solid var(--tv-border); border-radius: 4px; width: 30px; height: 30px; cursor: pointer; padding: 2px; }
+        .settings-input-range { width: 80px; accent-color: var(--gold-accent); }
 
         /* Bottom Editor Panel */
-        .tv-bottom-editor {
-            height: 200px;
-            background-color: var(--tv-toolbar-bg);
-            border-top: 1px solid var(--tv-border);
-            display: flex;
-            flex-direction: column;
-            display: none; 
-        }
-
-        .editor-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 5px 15px;
-            background-color: #050505;
-            border-bottom: 1px solid var(--tv-border);
-        }
-
-        .editor-title {
-            font-size: 12px;
-            color: var(--gold-accent);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .editor-actions button {
-            background: transparent;
-            border: none;
-            color: var(--tv-icon-color);
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        
-        .editor-actions button:hover { color: var(--gold-accent); }
-
-        .editor-textarea {
-            flex: 1;
-            background-color: var(--bg-card);
-            color: #a3be8c; 
-            font-family: monospace;
-            border: none;
-            padding: 15px;
-            resize: none;
-            outline: none;
-            font-size: 14px;
-        }
+        .tv-bottom-editor { height: 200px; background-color: var(--tv-toolbar-bg); border-top: 1px solid var(--tv-border); display: none; flex-direction: column; }
+        .editor-header { display: flex; justify-content: space-between; align-items: center; padding: 5px 15px; background-color: #050505; border-bottom: 1px solid var(--tv-border); }
+        .editor-title { font-size: 12px; color: var(--gold-accent); font-weight: 700; text-transform: uppercase; }
+        .editor-textarea { flex: 1; background-color: var(--bg-card); color: #a3be8c; font-family: monospace; border: none; padding: 15px; resize: none; outline: none; font-size: 14px; }
 
         /* Right Price Scale */
-        .tv-price-scale {
-            width: 70px;
-            background-color: var(--tv-toolbar-bg);
-            border-left: 1px solid var(--tv-border);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: flex-end;
-            padding: 20px 10px;
-            font-size: 11px;
-            color: var(--text-dim);
-            font-family: monospace;
-        }
-
-        .current-price-badge {
-            background-color: var(--profit-green);
-            color: #000;
-            padding: 4px 6px;
-            border-radius: 2px;
-            font-weight: 800;
-            width: 100%;
-            text-align: right;
-        }
+        .tv-price-scale { width: 70px; background-color: var(--tv-toolbar-bg); border-left: 1px solid var(--tv-border); display: flex; flex-direction: column; justify-content: space-around; align-items: flex-end; padding: 20px 10px; font-size: 11px; color: var(--text-dim); font-family: monospace; }
+        .current-price-badge { background-color: var(--profit-green); color: #000; padding: 4px 6px; border-radius: 2px; font-weight: 800; width: 100%; text-align: right; }
 
     </style>
 </head>
@@ -519,62 +144,54 @@
         <div class="brand-section">
             <h1>FX_ARJUN</h1>
         </div>
-        
         <div class="nav-group">
             <button class="nav-btn active" onclick="switchTab(this, 'chart-page')">Pro Terminal</button>
         </div>
-        
-        <div class="sidebar-footer">
-            ALGO ENGINE V4.0.15
-        </div>
+        <div class="sidebar-footer">ALGO ENGINE V4.0.16</div>
     </div>
 
     <div class="workspace">
-        
         <div class="top-bar">
-            
             <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
                 <i class="fa-solid fa-moon" id="theme-icon"></i>
             </button>
-
             <div class="profile-widget">
                 <div class="profile-info">
                     <span class="profile-name">ARJUN NANGRE</span>
-                    <span class="profile-status">
-                        <span class="status-dot"></span> 
-                        <span>LIVE SECURED</span>
-                    </span>
+                    <span class="profile-status"><span class="status-dot"></span><span>LIVE SECURED</span></span>
                 </div>
                 <div class="profile-avatar">A</div>
             </div>
         </div>
         
         <div id="chart-page" class="page active">
-            
             <div class="tv-layout-container">
                 
                 <div class="tv-top-toolbar">
-                    <div class="tv-timeframes">
+                    <div class="tv-top-group">
+                        <button class="tv-tf-btn" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+                        <button class="tv-tf-btn" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+                        <div class="tv-tf-divider"></div>
+                        
                         <button class="tv-tf-btn" onclick="switchTimeframe(this)">1m</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">3m</button>
                         <button class="tv-tf-btn" onclick="switchTimeframe(this)">5m</button>
                         <button class="tv-tf-btn active" onclick="switchTimeframe(this)">15m</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">30m</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">45m</button>
-                        <div class="tv-tf-divider"></div>
                         <button class="tv-tf-btn" onclick="switchTimeframe(this)">1H</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">2H</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">3H</button>
                         <button class="tv-tf-btn" onclick="switchTimeframe(this)">4H</button>
-                        <div class="tv-tf-divider"></div>
                         <button class="tv-tf-btn" onclick="switchTimeframe(this)">D</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">W</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">M</button>
+                        <div class="tv-tf-divider"></div>
+                        
+                        <button class="tv-tf-btn" title="Candles"><i class="fa-solid fa-chart-simple"></i></button>
+                        <button class="tv-tf-btn" title="Indicators"><i class="fa-solid fa-chart-line"></i> Indicators</button>
+                        <button class="tv-tf-btn" title="Alerts"><i class="fa-regular fa-bell"></i> Alerts</button>
+                        <button class="tv-tf-btn" title="Replay"><i class="fa-solid fa-backward-step"></i> Replay</button>
                     </div>
 
-                    <div style="display: flex; gap: 10px;">
+                    <div class="tv-top-group">
+                        <button class="tv-tf-btn" title="Chart Properties"><i class="fa-solid fa-gear"></i></button>
+                        <button class="tv-tf-btn" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
                         <button class="tv-tf-btn" style="color: var(--profit-green);" onclick="toggleEditor()">
-                            <i class="fa-solid fa-code"></i> Jarvis Editor
+                            <i class="fa-solid fa-code"></i> Pine / Jarvis
                         </button>
                     </div>
                 </div>
@@ -582,28 +199,41 @@
                 <div class="tv-main-row">
                     
                     <div class="tv-left-toolbar">
-                        <button class="tv-left-tool-btn active" id="tool-cursor" onclick="selectTool('cursor')" title="Cursor"><i class="fa-solid fa-arrow-pointer"></i></button>
+                        
+                        <button class="tv-left-tool-btn active" id="tool-cursor" onclick="selectTool('cursor')" title="Crosshair"><i class="fa-solid fa-crosshairs"></i></button>
                         <div class="tv-tool-divider"></div>
                         
                         <button class="tv-left-tool-btn" id="tool-trendline" onclick="selectTool('trendline')" title="Trend Line"><i class="fa-solid fa-minus" style="transform: rotate(-45deg);"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-ray" onclick="alert('Ray tool logic pending backend calculation.')" title="Ray"><i class="fa-solid fa-arrow-right-long" style="transform: rotate(-45deg);"></i></button>
                         <button class="tv-left-tool-btn" id="tool-horzline" onclick="selectTool('horzline')" title="Horizontal Line"><i class="fa-solid fa-minus"></i></button>
                         <button class="tv-left-tool-btn" id="tool-vertline" onclick="selectTool('vertline')" title="Vertical Line"><i class="fa-solid fa-grip-lines-vertical"></i></button>
                         <div class="tv-tool-divider"></div>
-                        
+
+                        <button class="tv-left-tool-btn" id="tool-fib" onclick="alert('Fibonacci Retracement matrix active. Awaiting Jarvis sync.')" title="Fib Retracement"><i class="fa-solid fa-bars-staggered"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-pitchfork" onclick="alert('Pitchfork geometry requires 3 anchor points.')" title="Pitchfork"><i class="fa-solid fa-code-branch"></i></button>
+                        <div class="tv-tool-divider"></div>
+
                         <button class="tv-left-tool-btn" id="tool-rectangle" onclick="selectTool('rectangle')" title="Rectangle"><i class="fa-regular fa-square"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-brush" onclick="alert('Brush engine active.')" title="Brush"><i class="fa-solid fa-paintbrush"></i></button>
                         <button class="tv-left-tool-btn" id="tool-path" onclick="selectTool('path')" title="Path"><i class="fa-solid fa-pen-nib"></i></button>
                         <div class="tv-tool-divider"></div>
-                        
-                        <button class="tv-left-tool-btn" id="tool-fib" onclick="selectTool('fib')" title="Fibonacci Retracement"><i class="fa-solid fa-bars-staggered"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-text" onclick="selectTool('text')" title="Text Annotation"><i class="fa-solid fa-t"></i></button>
+
+                        <button class="tv-left-tool-btn" id="tool-text" onclick="alert('Text Input overlay engaged.')" title="Text"><i class="fa-solid fa-t"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-callout" onclick="alert('Price Label module loading.')" title="Price Label"><i class="fa-solid fa-tag"></i></button>
                         <div class="tv-tool-divider"></div>
-                        
+
+                        <button class="tv-left-tool-btn" id="tool-elliott" onclick="alert('Elliott Wave mapping requires complex anchor states.')" title="Elliott Wave"><i class="fa-solid fa-wave-square"></i></button>
+                        <div class="tv-tool-divider"></div>
+
                         <button class="tv-left-tool-btn" id="tool-long" onclick="selectTool('long')" title="Long Position"><i class="fa-solid fa-arrow-trend-up"></i></button>
                         <button class="tv-left-tool-btn" id="tool-short" onclick="selectTool('short')" title="Short Position"><i class="fa-solid fa-arrow-trend-down"></i></button>
-
+                        <button class="tv-left-tool-btn" id="tool-measure" onclick="alert('Measure tool active. Click and drag to measure pips/bars.')" title="Measure"><i class="fa-solid fa-ruler"></i></button>
                         <div class="tv-tool-divider"></div>
-                        
-                        <button class="tv-left-tool-btn" onclick="clearCanvasDrawings()" title="Remove All Drawings"><i class="fa-solid fa-trash"></i></button>
+
+                        <button class="tv-left-tool-btn" title="Stay in Drawing Mode"><i class="fa-solid fa-pencil"></i></button>
+                        <button class="tv-left-tool-btn" title="Lock All Drawing Tools"><i class="fa-solid fa-lock"></i></button>
+                        <button class="tv-left-tool-btn" title="Hide All Drawings"><i class="fa-regular fa-eye-slash"></i></button>
+                        <button class="tv-left-tool-btn" onclick="clearCanvasDrawings()" title="Remove Drawings"><i class="fa-solid fa-trash"></i></button>
                     </div>
 
                     <div class="tv-canvas-area">
@@ -614,11 +244,11 @@
                                 <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--tv-icon-color);" onclick="closeSettingsPanel()"></i>
                             </div>
                             <div class="settings-row">
-                                <label class="settings-label">Primary Color</label>
+                                <label class="settings-label">Color</label>
                                 <input type="color" id="setting-color" class="settings-input-color" value="#d4af37">
                             </div>
                             <div class="settings-row">
-                                <label class="settings-label">Line Thickness</label>
+                                <label class="settings-label">Thickness</label>
                                 <input type="range" id="setting-thickness" class="settings-input-range" min="1" max="5" value="2">
                             </div>
                         </div>
@@ -630,10 +260,7 @@
                         <div class="tv-bottom-editor" id="jarvis-editor-panel">
                             <div class="editor-header">
                                 <span class="editor-title">Jarvis Algo Editor</span>
-                                <div class="editor-actions">
-                                    <button onclick="alert('Sent to Jarvis Backend for processing.')"><i class="fa-solid fa-play"></i> Compile</button>
-                                    <button onclick="toggleEditor()"><i class="fa-solid fa-xmark"></i></button>
-                                </div>
+                                <div><button onclick="toggleEditor()"><i class="fa-solid fa-xmark" style="color:var(--text-dim)"></i></button></div>
                             </div>
                             <textarea class="editor-textarea" spellcheck="false">// Welcome to Jarvis Algo Editor
 // Connects natively to FX_ARJUN Backend
@@ -664,22 +291,19 @@ if (close > inducementLevel)
                     </div>
 
                 </div>
-
             </div>
-            
         </div>
-
     </div>
 
     <script>
-        // --- TIMEFRAME SWITCHING LOGIC ---
         function switchTimeframe(btn) {
-            document.querySelectorAll('.tv-tf-btn').forEach(b => b.classList.remove('active'));
+            const allTfBtns = document.querySelectorAll('.tv-top-group .tv-tf-btn');
+            allTfBtns.forEach(b => {
+                if(b.innerText.length <= 3) b.classList.remove('active'); // only remove from timeframe buttons
+            });
             btn.classList.add('active');
-            console.log("Switched Timeframe to:", btn.innerText);
         }
 
-        // --- THEME TOGGLE LOGIC ---
         function toggleTheme() {
             document.body.classList.toggle('light-theme');
             const icon = document.getElementById('theme-icon');
@@ -693,18 +317,12 @@ if (close > inducementLevel)
             renderEngine(); 
         }
 
-        // --- EDITOR TOGGLE LOGIC ---
         function toggleEditor() {
             const panel = document.getElementById('jarvis-editor-panel');
-            if (panel.style.display === 'flex') {
-                panel.style.display = 'none';
-            } else {
-                panel.style.display = 'flex';
-            }
+            panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
             setTimeout(resizeCanvas, 50); 
         }
 
-        // --- FLOATING SETTINGS LOGIC ---
         function openSettingsPanel(toolName) {
             const panel = document.getElementById('floating-settings');
             const title = document.getElementById('active-tool-name');
@@ -712,9 +330,7 @@ if (close > inducementLevel)
             title.innerText = toolName.toUpperCase() + " SETTINGS";
         }
 
-        function closeSettingsPanel() {
-            document.getElementById('floating-settings').style.display = 'none';
-        }
+        function closeSettingsPanel() { document.getElementById('floating-settings').style.display = 'none'; }
 
         // --- CANVAS ENGINE ---
         const canvas = document.getElementById('customChartCanvas');
@@ -734,26 +350,22 @@ if (close > inducementLevel)
         
         window.addEventListener('resize', resizeCanvas);
 
-        // Simulated Market Data
         const dummyCandles = [
             { x: 150, open: 250, high: 180, low: 320, close: 290, color: '#ff4444' }, 
             { x: 200, open: 290, high: 220, low: 350, close: 260, color: '#00ff88' }, 
             { x: 250, open: 260, high: 150, low: 280, close: 180, color: '#00ff88' }, 
-            { x: 300, open: 180, high: 100, low: 220, close: 120, color: '#00ff88' }  
+            { x: 300, open: 180, high: 100, low: 220, close: 120, color: '#00ff88' },
+            { x: 350, open: 120, high: 90,  low: 180, close: 160, color: '#ff4444' }
         ];
 
-        // --- TOOL SELECTION LOGIC ---
         function selectTool(toolName) {
             currentTool = toolName;
-            
-            // UI Button Update
             document.querySelectorAll('.tv-left-tool-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById('tool-' + toolName);
             if(activeBtn) activeBtn.classList.add('active');
             
-            // Manage Settings Panel & Cursor
             if (toolName === 'cursor') {
-                wrapper.style.cursor = 'default';
+                wrapper.style.cursor = 'crosshair';
                 closeSettingsPanel();
             } else {
                 wrapper.style.cursor = 'crosshair';
@@ -766,64 +378,36 @@ if (close > inducementLevel)
             renderEngine();
         }
 
-        // Helper to grab current settings from UI
         function getCurrentToolSettings() {
-            return {
-                color: document.getElementById('setting-color').value,
-                thickness: document.getElementById('setting-thickness').value
-            };
+            return { color: document.getElementById('setting-color').value, thickness: document.getElementById('setting-thickness').value };
         }
 
-        // --- MOUSE EVENTS FOR DRAWING ---
         canvas.addEventListener('mousedown', (e) => {
             if (currentTool === 'cursor') return;
-            
             const rect = canvas.getBoundingClientRect();
             const startX = e.clientX - rect.left;
             const startY = e.clientY - rect.top;
             const settings = getCurrentToolSettings();
             
-            // Single Click Tools
-            if (currentTool === 'horzline') {
-                shapes.push({ type: 'horzline', y: startY, ...settings });
-                renderEngine();
-                return;
-            } else if (currentTool === 'vertline') {
-                shapes.push({ type: 'vertline', x: startX, ...settings });
-                renderEngine();
-                return;
-            }
+            if (currentTool === 'horzline') { shapes.push({ type: 'horzline', y: startY, ...settings }); renderEngine(); return; } 
+            else if (currentTool === 'vertline') { shapes.push({ type: 'vertline', x: startX, ...settings }); renderEngine(); return; }
 
-            // Drag Tools
             isDrawing = true;
-            
-            if (currentTool === 'trendline') {
-                currentShape = { type: 'line', startX, startY, endX: startX, endY: startY, ...settings };
-            } else if (currentTool === 'rectangle') {
-                currentShape = { type: 'rect', startX, startY, width: 0, height: 0, ...settings };
-            } else if (currentTool === 'long') {
-                currentShape = { type: 'long', startX, startY, endY: startY, ...settings };
-            } else if (currentTool === 'short') {
-                currentShape = { type: 'short', startX, startY, endY: startY, ...settings };
-            }
+            if (currentTool === 'trendline') currentShape = { type: 'line', startX, startY, endX: startX, endY: startY, ...settings };
+            else if (currentTool === 'rectangle') currentShape = { type: 'rect', startX, startY, width: 0, height: 0, ...settings };
+            else if (currentTool === 'long') currentShape = { type: 'long', startX, startY, endY: startY, ...settings };
+            else if (currentTool === 'short') currentShape = { type: 'short', startX, startY, endY: startY, ...settings };
         });
 
         canvas.addEventListener('mousemove', (e) => {
             if (!isDrawing || currentTool === 'cursor') return;
-            
             const rect = canvas.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
             
-            if (currentTool === 'trendline') {
-                currentShape.endX = mouseX;
-                currentShape.endY = mouseY;
-            } else if (currentTool === 'rectangle') {
-                currentShape.width = mouseX - currentShape.startX;
-                currentShape.height = mouseY - currentShape.startY;
-            } else if (currentTool === 'long' || currentTool === 'short') {
-                currentShape.endY = mouseY; 
-            }
+            if (currentTool === 'trendline') { currentShape.endX = mouseX; currentShape.endY = mouseY; } 
+            else if (currentTool === 'rectangle') { currentShape.width = mouseX - currentShape.startX; currentShape.height = mouseY - currentShape.startY; } 
+            else if (currentTool === 'long' || currentTool === 'short') { currentShape.endY = mouseY; }
             
             renderEngine();
         });
@@ -835,10 +419,8 @@ if (close > inducementLevel)
             currentShape = null;
         });
 
-        // --- MASTER RENDER LOOP ---
         function renderEngine() {
             const isLightMode = document.body.classList.contains('light-theme');
-            
             ctx.fillStyle = isLightMode ? '#ffffff' : '#000000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -864,7 +446,6 @@ if (close > inducementLevel)
             });
 
             shapes.forEach(shape => drawShape(shape));
-
             if (currentShape) drawShape(currentShape);
         }
 
@@ -873,64 +454,26 @@ if (close > inducementLevel)
             ctx.strokeStyle = shape.color || '#d4af37'; 
             
             if (shape.type === 'line') {
-                ctx.beginPath();
-                ctx.moveTo(shape.startX, shape.startY);
-                ctx.lineTo(shape.endX, shape.endY);
-                ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(shape.startX, shape.startY); ctx.lineTo(shape.endX, shape.endY); ctx.stroke();
             } else if (shape.type === 'horzline') {
-                ctx.beginPath();
-                ctx.moveTo(0, shape.y);
-                ctx.lineTo(canvas.width, shape.y);
-                ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, shape.y); ctx.lineTo(canvas.width, shape.y); ctx.stroke();
             } else if (shape.type === 'vertline') {
-                ctx.beginPath();
-                ctx.moveTo(shape.x, 0);
-                ctx.lineTo(shape.x, canvas.height);
-                ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(shape.x, 0); ctx.lineTo(shape.x, canvas.height); ctx.stroke();
             } else if (shape.type === 'rect') {
-                // Generate a transparent fill based on the selected hex color
-                let r = parseInt(shape.color.slice(1, 3), 16),
-                    g = parseInt(shape.color.slice(3, 5), 16),
-                    b = parseInt(shape.color.slice(5, 7), 16);
+                let r = parseInt(shape.color.slice(1, 3), 16), g = parseInt(shape.color.slice(3, 5), 16), b = parseInt(shape.color.slice(5, 7), 16);
                 ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.1)`; 
-                
                 ctx.fillRect(shape.startX, shape.startY, shape.width, shape.height);
                 ctx.strokeRect(shape.startX, shape.startY, shape.width, shape.height);
             } else if (shape.type === 'long') {
-                const width = 120;
-                const entryY = shape.startY;
-                const currentY = shape.endY;
-                const diff = entryY - currentY; 
-                
-                ctx.fillStyle = 'rgba(0, 255, 136, 0.2)';
-                ctx.fillRect(shape.startX, entryY - diff, width, diff);
-                ctx.strokeStyle = '#00ff88';
-                ctx.strokeRect(shape.startX, entryY - diff, width, diff);
-
-                ctx.fillStyle = 'rgba(255, 68, 68, 0.2)';
-                ctx.fillRect(shape.startX, entryY, width, diff / 2);
-                ctx.strokeStyle = '#ff4444';
-                ctx.strokeRect(shape.startX, entryY, width, diff / 2);
-                
-                ctx.beginPath(); ctx.moveTo(shape.startX, entryY); ctx.lineTo(shape.startX + width, entryY); ctx.stroke();
-                
+                const width = 120; const diff = shape.startY - shape.endY; 
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.2)'; ctx.fillRect(shape.startX, shape.startY - diff, width, diff); ctx.strokeStyle = '#00ff88'; ctx.strokeRect(shape.startX, shape.startY - diff, width, diff);
+                ctx.fillStyle = 'rgba(255, 68, 68, 0.2)'; ctx.fillRect(shape.startX, shape.startY, width, diff / 2); ctx.strokeStyle = '#ff4444'; ctx.strokeRect(shape.startX, shape.startY, width, diff / 2);
+                ctx.beginPath(); ctx.moveTo(shape.startX, shape.startY); ctx.lineTo(shape.startX + width, shape.startY); ctx.stroke();
             } else if (shape.type === 'short') {
-                const width = 120;
-                const entryY = shape.startY;
-                const currentY = shape.endY;
-                const diff = currentY - entryY; 
-                
-                ctx.fillStyle = 'rgba(0, 255, 136, 0.2)';
-                ctx.fillRect(shape.startX, entryY, width, diff);
-                ctx.strokeStyle = '#00ff88';
-                ctx.strokeRect(shape.startX, entryY, width, diff);
-
-                ctx.fillStyle = 'rgba(255, 68, 68, 0.2)';
-                ctx.fillRect(shape.startX, entryY - (diff / 2), width, diff / 2);
-                ctx.strokeStyle = '#ff4444';
-                ctx.strokeRect(shape.startX, entryY - (diff / 2), width, diff / 2);
-                
-                ctx.beginPath(); ctx.moveTo(shape.startX, entryY); ctx.lineTo(shape.startX + width, entryY); ctx.stroke();
+                const width = 120; const diff = shape.endY - shape.startY; 
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.2)'; ctx.fillRect(shape.startX, shape.startY, width, diff); ctx.strokeStyle = '#00ff88'; ctx.strokeRect(shape.startX, shape.startY, width, diff);
+                ctx.fillStyle = 'rgba(255, 68, 68, 0.2)'; ctx.fillRect(shape.startX, shape.startY - (diff / 2), width, diff / 2); ctx.strokeStyle = '#ff4444'; ctx.strokeRect(shape.startX, shape.startY - (diff / 2), width, diff / 2);
+                ctx.beginPath(); ctx.moveTo(shape.startX, shape.startY); ctx.lineTo(shape.startX + width, shape.startY); ctx.stroke();
             }
         }
 
