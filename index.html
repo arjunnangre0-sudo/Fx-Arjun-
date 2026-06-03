@@ -3,72 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V6.0 NATIVE MASTER TERMINAL</title>
-    <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>FX_ARJUN | V4.0.31 REVOLUTIONARY LIVE TERMINAL</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        :root { --bg: #030303; --sidebar: #050505; --border: #1a1a1a; --gold: #d4af37; --green: #089981; --red: #f23645; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden; }
-        
-        /* Sidebar */
-        .sidebar { width: 60px; background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
-        .nav-btn { width: 40px; height: 40px; margin-bottom: 15px; color: #555; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; border-radius: 6px; }
-        .nav-btn.active { color: var(--gold); background: #111; }
+        :root {
+            --bg-primary: #050505;
+            --bg-card: #0a0a0a;
+            --bg-sidebar: #050505;
+            --border-color: #1a1a1a;
+            --gold-accent: #d4af37;
+            --text-main: #ffffff;
+            --text-dim: #777777;
+            --profit-green: #00ff88;
+            --loss-red: #ff4444;
+            --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            --font-family: 'Inter', sans-serif;
+            --tv-bg: #020202;
+            --tv-toolbar-bg: #0a0a0a;
+            
+            /* MTJ Dashboard Colors */
+            --mtj-bg: #12141c;
+            --mtj-panel: #1a1c24;
+            --stat-text: #8890a5;
+        }
 
-        /* Workspace */
-        .workspace { flex: 1; display: flex; flex-direction: column; }
-        .top-bar { height: 50px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 20px; }
-        
-        /* Chart Area */
-        .chart-container { flex: 1; position: relative; }
-        #chart { width: 100%; height: 100%; }
+        /* Light Mode Variables */
+        body.light-theme {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-sidebar: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-dim: #64748b;
+            --tv-bg: #ffffff;
+            --tv-toolbar-bg: #f1f5f9;
+        }
 
-        /* Custom Left Tool Bar */
-        .tools { position: absolute; left: 0; top: 0; width: 40px; height: 100%; background: #0a0a0a; border-right: 1px solid var(--border); z-index: 10; display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
-        .tool { color: #888; margin-bottom: 15px; cursor: pointer; }
-        .tool:hover { color: var(--gold); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); }
+        body { background-color: var(--bg-primary); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; transition: background-color 0.3s, color 0.3s; }
+
+        /* Sidebar Navigation (Restored All Tabs) */
+        .sidebar { 
+            width: 280px; 
+            background-color: var(--bg-sidebar); 
+            border-right: 1px solid var(--border-color); 
+            padding: 40px 24px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            z-index: 10; 
+        }
+
+        .brand-section h1 { 
+            font-size: 26px; 
+            font-weight: 900; 
+            color: var(--gold-accent); 
+            text-align: center; 
+            letter-spacing: 2px; 
+            margin-bottom: 50px; 
+        }
+
+        .nav-group { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            flex: 1; 
+        }
+
+        .nav-btn { 
+            padding: 16px 20px; 
+            color: var(--text-dim); 
+            border: 1px solid var(--border-color); 
+            background: transparent; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            text-align: left; 
+            text-transform: uppercase; 
+            font-size: 12px; 
+            font-weight: 600; 
+            letter-spacing: 1.5px; 
+            outline: none; 
+        }
+
+        .nav-btn:hover { border-color: var(--gold-accent); color: var(--gold-accent); background: rgba(212, 175, 55, 0.02); }
+        .nav-btn.active { 
+            border-color: var(--gold-accent); 
+            color: var(--text-main); 
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%); 
+            border-left: 4px solid var(--gold-accent); 
+        }
+
+        .sidebar-footer { color: var(--text-dim); font-size: 11px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
+
+        /* Workspace Core Container */
+        .workspace { flex: 1; display: flex; flex-direction: column; background: var(--bg-primary);}
+
+        /* Top Bar */
+        .top-bar { 
+            display: flex; 
+            justify-content: flex-end; 
+            align-items: center; 
+            padding: 15px 40px; 
+            border-bottom: 1px solid var(--border-color); 
+            background-color: var(--bg-sidebar); 
+            gap: 20px; 
+            height: 60px;
+        }
+
+        .tf-btn-header { color: var(--text-dim); padding: 6px 12px; font-size: 13px; font-weight: 600; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+        .tf-btn-header:hover { color: #fff; background: var(--border-color); }
+        .tf-btn-header.active { color: var(--gold-accent); background: rgba(212, 175, 55, 0.1); }
+
+        .theme-toggle-btn { 
+            background: transparent; 
+            border: 1px solid var(--border-color); 
+            color: var(--text-dim); 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 16px; 
+            transition: 0.3s; 
+        }
+        .theme-toggle-btn:hover { color: var(--gold-accent); border-color: var(--gold-accent); }
+
+        .profile-widget { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 8px 12px; border-radius: 8px; border: 1px solid transparent; }
+        .profile-info { display: flex; flex-direction: column; text-align: right; }
+        .profile-name { font-size: 14px; font-weight: 700; color: var(--text-main); }
+        .profile-status { font-size: 11px; color: var(--text-dim); display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 3px; }
+        .status-dot { width: 8px; height: 8px; background: var(--profit-green); border-radius: 50%; box-shadow: 0 0 8px var(--profit-green); }
+        .profile-avatar { width: 42px; height: 42px; border-radius: 50%; background: #111; border: 1px solid var(--border-color); color: var(--text-dim); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; overflow: hidden; }
+
+        /* Replay Bar (Floating at Top) */
+        .replay-controls {
+            display: flex; align-items: center; gap: 10px; background: #111; padding: 6px 12px; border-radius: 6px; border: 1px solid #333; margin-left: auto; margin-right: 20px;
+        }
+        .replay-btn { background: transparent; border: none; color: #777; cursor: pointer; font-size: 14px; transition: 0.2s; padding: 4px 8px; }
+        .replay-btn:hover { color: var(--gold-accent); }
+        .replay-btn.play { color: var(--profit-green); }
+        .replay-btn.stop { color: var(--loss-red); }
+
+        /* Page Content Logic */
+        .page { display: none; flex: 1; padding: 20px 40px 40px 40px; overflow-y: auto; }
+        .page.active { display: flex; flex-direction: column; }
+        
+        .tv-layout-container { 
+            flex: 1; display: flex; flex-direction: column; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background-color: var(--tv-bg); box-shadow: var(--card-shadow); position: relative;
+        }
+
+        /* Chart Area with tools */
+        .main-chart-area { flex: 1; display: flex; position: relative; border-bottom: 1px solid var(--border-color); }
+        #tradingview_container { flex: 1; height: 100%; width: 100%; z-index: 1;}
+
+        /* The "Ironclad" Watermark Hider */
+        .watermark-killer {
+            position: absolute;
+            bottom: 0px;
+            left: 55px; /* Covered the tools panel */
+            width: 140px;
+            height: 35px;
+            background-color: var(--tv-bg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-top: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* Floating Trade Panel (Right Side) */
+        .trade-panel { position: absolute; top: 20px; right: 80px; background: rgba(10, 10, 10, 0.95); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; width: 240px; box-shadow: var(--card-shadow); z-index: 100; display: flex; flex-direction: column; gap: 10px; backdrop-filter: blur(10px); }
+        .trade-row { display: flex; justify-content: space-between; align-items: center; }
+        .trade-label { font-size: 11px; color: var(--text-dim); font-weight: 600; text-transform: uppercase; }
+        .spread-badge { font-size: 10px; background: #111; padding: 2px 4px; border-radius: 3px; color: #fff; }
+        .lot-input { background: #000; border: 1px solid var(--border-color); color: #fff; padding: 6px; border-radius: 4px; width: 80px; text-align: center; font-family: monospace; font-size: 14px; outline: none; }
+        .exec-btns { display: flex; gap: 10px; margin-top: 5px; }
+        .btn-sell, .btn-buy { flex: 1; background: transparent; border: 1px solid transparent; padding: 10px; border-radius: 4px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-sell { background: rgba(255, 68, 68, 0.1); border-color: #ff4444; color: #ff4444; }
+        .btn-buy { background: rgba(0, 255, 136, 0.1); border-color: #00ff88; color: #00ff88; }
+        .btn-sell:hover { background: #ff4444; color: #fff; }
+        .btn-buy:hover { background: #00ff88; color: #fff; }
+
+        /* Bottom Positions & P&L Panel (Exness Style) */
+        .pnl-panel-bottom {
+            height: 220px; background-color: var(--tv-toolbar-bg); border-top: 1px solid var(--border-color); padding: 15px 25px; display: flex; flex-direction: column; overflow-y: hidden; z-index: 5;
+        }
+        .pnl-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .pnl-title { font-size: 12px; color: var(--gold-accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .pnl-total { font-family: monospace; font-size: 16px; font-weight: 800; color: #fff; display: flex; gap: 10px; }
+        .positive { color: var(--profit-green); }
+        .negative { color: var(--loss-red); }
+
+        .positions-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; font-family: monospace; color: #ccc; }
+        .positions-table th { color: var(--text-dim); padding-bottom: 8px; border-bottom: 1px solid var(--border-color); text-transform: uppercase; font-weight: 600; font-size: 11px; }
+        .positions-table td { padding: 12px 0; border-bottom: 1px solid #111; }
+        .positions-table tr:last-child td { border-bottom: none; }
+        .type-long { color: var(--profit-green); font-weight: bold; }
+        .type-short { color: var(--loss-red); font-weight: bold; }
+
+        /* Other Tabs Generic Styling */
+        .boundary-box { border: 1px solid var(--border-color); background-color: var(--bg-card); padding: 30px; border-radius: 8px; margin-bottom: 24px; box-shadow: var(--card-shadow); }
+        .header-label { color: var(--gold-accent); font-size: 11px; text-transform: uppercase; margin-bottom: 22px; letter-spacing: 2px; font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+
+        /* Toast Notification */
+        #algo-toast {
+            visibility: hidden; min-width: 250px; background-color: #111; color: var(--gold-accent); text-align: center; border-radius: 8px; border: 1px solid var(--gold-accent); padding: 16px; position: absolute; z-index: 1000; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 13px; font-weight: 700; opacity: 0; transition: opacity 0.3s, bottom 0.3s;
+        }
+        #algo-toast.show { visibility: visible; opacity: 1; bottom: 50px; }
+
+        /* =========================================
+           MTJ DASHBOARD MODAL (Radar Chart)
+           ========================================= */
+        .mtj-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999999; justify-content: center; align-items: center; backdrop-filter: blur(10px);
+        }
+        .mtj-dashboard {
+            background: var(--mtj-bg); border: 1px solid #2a2c38; border-radius: 12px; width: 900px; max-height: 90vh; overflow-y: auto; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,1); display: flex; flex-direction: column; gap: 20px;
+        }
+        .mtj-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2c38; padding-bottom: 15px; }
+        .mtj-title { color: #fff; font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 10px;}
+        .mtj-close { color: #666; cursor: pointer; font-size: 24px; transition: 0.2s;}
+        .mtj-close:hover { color: #fff; }
+
+        /* MTJ Grid Layout (Screenshot clone) */
+        .mtj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .mtj-panel { background: var(--mtj-panel); border-radius: 10px; padding: 20px; border: 1px solid #2a2c38; }
+        .mtj-panel-title { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;}
+        .stat-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #2a2c38; font-size: 14px;}
+        .stat-row:last-child { border-bottom: none; padding-bottom: 0;}
+        .stat-name { color: var(--stat-text); font-weight: 600; display: flex; align-items: center; gap: 6px;}
+        .stat-val { color: #fff; font-weight: 800; font-family: monospace; font-size: 15px;}
+        .val-green { color: var(--profit-green); }
+        .val-red { color: var(--loss-red); }
+
+        /* Performance Per Day Box */
+        .perf-day-box { display: flex; background: #12141c; border-radius: 8px; overflow: hidden; margin-top: 10px; border: 1px solid #2a2c38;}
+        .perf-half { flex: 1; padding: 15px; text-align: center; }
+        .perf-half:first-child { border-right: 1px solid #2a2c38; }
+        .perf-label { color: var(--stat-text); font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px;}
+        .perf-data { color: #fff; font-size: 16px; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 2px;}
+        .perf-trades { font-size: 11px; color: #666; font-weight: 500;}
+
+        /* Radar Chart Container */
+        .radar-container { width: 100%; height: 220px; display: flex; justify-content: center; align-items: center; position: relative;}
+
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="nav-btn active"><i class="fa-solid fa-chart-line"></i></div>
-        <div class="nav-btn"><i class="fa-solid fa-microchip"></i></div>
-    </div>
-    
-    <div class="workspace">
-        <div class="top-bar">
-            <h2 style="color:var(--gold);">XAUUSD</h2>
-            <button onclick="document.getElementById('mtj-modal').style.display='flex'">VIEW MTJ DASHBOARD</button>
-        </div>
-        <div class="chart-container">
-            <div class="tools">
-                <div class="tool" onclick="alert('Drawing Trendline...')"><i class="fa-solid fa-minus" style="transform: rotate(-45deg);"></i></div>
-                <div class="tool" onclick="alert('Drawing Rectangle...')"><i class="fa-regular fa-square"></i></div>
+
+    <div class="mtj-overlay" id="mtj-overlay">
+        <div class="mtj-dashboard">
+            <div class="mtj-header">
+                <div class="mtj-title"><i class="fa-solid fa-chart-pie" style="color: var(--gold-accent);"></i> My Trading Journey (Backtest Session Log)</div>
+                <i class="fa-solid fa-xmark mtj-close" onclick="closeMTJ()"></i>
             </div>
-            <div id="chart"></div>
+
+            <div class="mtj-grid">
+                <div class="mtj-panel">
+                    <div class="mtj-panel-title">Winning Trades</div>
+                    <div class="stat-row">
+                        <div class="stat-name">Total Winners <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val">12</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-name">Best Win <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val val-green">$1,628.97</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-name">Average Win <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val val-green">$788.71</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-name">Avg Duration <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val">17h 58m 4s</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-name">Avg Win Streak <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val">1.50</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-name">Max Win Streak <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val">3.00</div>
+                    </div>
+                </div>
+
+                <div class="mtj-panel">
+                    <div class="mtj-panel-title" style="justify-content: space-between;">
+                        Session Profit
+                        <span style="font-size: 12px; color: #8890a5;"><i class="fa-solid fa-table-cells-large"></i> Stats</span>
+                    </div>
+                    <div class="radar-container">
+                        <canvas id="sessionRadar"></canvas>
+                    </div>
+                    <div class="perf-day-box">
+                        <div class="perf-half">
+                            <div class="perf-label">BEST</div>
+                            <div class="perf-data">London <span class="val-green">+19.46%</span></div>
+                            <div class="perf-trades">21 trades</div>
+                        </div>
+                        <div class="perf-half">
+                            <div class="perf-label">WORST</div>
+                            <div class="perf-data">Asia <span class="val-red">-2.64%</span></div>
+                            <div class="perf-trades">5 trades</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mtj-panel" style="margin-top: -10px;">
+                <div class="mtj-panel-title">Performance per day <i class="fa-regular fa-circle-question" style="font-size: 12px; color: #666;"></i></div>
+                <div class="perf-day-box">
+                    <div class="perf-half">
+                        <div class="perf-label">BEST</div>
+                        <div class="perf-data">Wednesday <span class="val-green">+71.40%</span></div>
+                        <div class="perf-trades">14 trades</div>
+                    </div>
+                    <div class="perf-half">
+                        <div class="perf-label">WORST</div>
+                        <div class="perf-data">Tuesday <span class="val-red">-70.14%</span></div>
+                        <div class="perf-trades">6 trades</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <div id="mtj-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:999; justify-content:center; align-items:center;">
-        <div style="background:#111; padding:40px; border-radius:10px; width:600px;">
-            <h1 style="color:var(--gold);">MY TRADING JOURNEY</h1>
-            <p>Stats and Radar Charts go here.</p>
-            <button onclick="document.getElementById('mtj-modal').style.display='none'">CLOSE</button>
+    <div class="sidebar">
+        <div class="brand-section">
+            <h1>FX_ARJUN</h1>
         </div>
+        <div class="nav-group">
+            <button class="nav-btn active" onclick="switchTab(this, 'chart-page')">Pro Terminal</button>
+            <button class="nav-btn" onclick="switchTab(this, 'risk-page')">Risk Manager</button>
+            <button class="nav-btn" onclick="switchTab(this, 'history-page')">Trade History</button>
+            <button class="nav-btn" onclick="switchTab(this, 'jarvis-page')">Jarvis AI Analysis</button>
+            <button class="nav-btn" onclick="switchTab(this, 'calendar-page')">Macro Calendar</button>
+            <button class="nav-btn" onclick="switchTab(this, 'connect-page')">Account Connect</button>
+        </div>
+        <div class="sidebar-footer">ALGO ENGINE V4.0.31</div>
     </div>
 
-    <script>
-        const chart = LightweightCharts.createChart(document.getElementById('chart'), {
-            layout: { backgroundColor: '#030303', textColor: '#ccc' },
-            grid: { vertLines: { color: '#111' }, horzLines: { color: '#111' } }
-        });
-        const series = chart.addCandlestickSeries({ upColor: '#089981', downColor: '#f23645' });
+    <div class="workspace">
         
-        // Initial Data
-        series.setData([
-            {time: '2026-06-01', open: 2320, high: 2325, low: 2315, close: 2322},
-            {time: '2026-06-02', open: 2322, high: 2330, low: 2320, close: 2328}
-        ]);
-    </script>
-</body>
-</html>
+        <div class="top-bar">
+            <div class="replay-controls" id="replay-toolbar">
+                <span style="font-size: 11px; font-weight: 700; color: #666; margin-right: 5px;">BAR REPLAY</span>
+                <button class="replay-btn play" title="Start Replay"><i class="fa-so
