@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.12 NATIVE ENGINE</title>
+    <title>FX_ARJUN | V4.0.13 NATIVE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -76,7 +76,6 @@
             flex-direction: column; 
             justify-content: space-between; 
             z-index: 10;
-            transition: 0.3s;
         }
 
         .brand-section h1 { 
@@ -149,7 +148,6 @@
             border-bottom: 1px solid var(--border-color); 
             background-color: var(--bg-primary);
             gap: 20px;
-            transition: 0.3s;
         }
 
         .theme-toggle-btn {
@@ -232,7 +230,7 @@
             display: none; 
             flex: 1;
             padding: 20px 40px 40px 40px;
-            overflow-y: auto;
+            overflow-y: hidden; /* Keep hidden to manage layout internally */
         }
 
         .page.active { 
@@ -249,7 +247,6 @@
             overflow: hidden;
             background-color: var(--tv-bg);
             box-shadow: var(--card-shadow);
-            transition: 0.3s;
         }
 
         /* Top Toolbar */
@@ -261,20 +258,20 @@
             align-items: center;
             padding: 0 15px;
             justify-content: space-between;
-            transition: 0.3s;
         }
 
         .tv-timeframes {
             display: flex;
             gap: 5px;
+            align-items: center;
         }
 
         .tv-tf-btn {
             background: transparent;
             border: none;
             color: var(--tv-icon-color);
-            padding: 5px 10px;
-            font-size: 13px;
+            padding: 5px 8px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             border-radius: 4px;
@@ -289,12 +286,20 @@
         .tv-tf-btn.active {
             color: var(--gold-accent);
         }
+        
+        .tv-tf-divider {
+            width: 1px;
+            height: 20px;
+            background-color: var(--tv-border);
+            margin: 0 5px;
+        }
 
         /* Main Row */
         .tv-main-row {
             display: flex;
             flex: 1;
             height: calc(100% - 50px);
+            position: relative; /* For absolutely positioning the editor */
         }
 
         /* Left Vertical Toolbar (Drawing Tools) */
@@ -306,8 +311,8 @@
             flex-direction: column;
             align-items: center;
             padding: 10px 0;
-            gap: 15px;
-            transition: 0.3s;
+            gap: 10px;
+            overflow-y: auto;
         }
 
         .tv-left-tool-btn {
@@ -323,6 +328,7 @@
             align-items: center;
             justify-content: center;
             transition: 0.2s;
+            flex-shrink: 0;
         }
 
         .tv-left-tool-btn:hover {
@@ -335,20 +341,81 @@
             background-color: rgba(212, 175, 55, 0.1);
         }
 
+        .tv-tool-divider {
+            width: 30px;
+            height: 1px;
+            background-color: var(--tv-border);
+            margin: 5px 0;
+        }
+
         /* Canvas Wrapper Area */
+        .tv-canvas-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
         .tv-canvas-wrapper {
             flex: 1;
             position: relative;
             background-color: var(--tv-bg); 
             cursor: crosshair;
             overflow: hidden;
-            transition: 0.3s;
         }
 
         #customChartCanvas {
             display: block;
             width: 100%;
             height: 100%;
+        }
+
+        /* Bottom Editor Panel (Jarvis Algo Editor) */
+        .tv-bottom-editor {
+            height: 200px;
+            background-color: var(--tv-toolbar-bg);
+            border-top: 1px solid var(--tv-border);
+            display: flex;
+            flex-direction: column;
+            display: none; /* Hidden by default, toggled via button */
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 15px;
+            background-color: #050505;
+            border-bottom: 1px solid var(--tv-border);
+        }
+
+        .editor-title {
+            font-size: 12px;
+            color: var(--gold-accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .editor-actions button {
+            background: transparent;
+            border: none;
+            color: var(--tv-icon-color);
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .editor-actions button:hover { color: var(--gold-accent); }
+
+        .editor-textarea {
+            flex: 1;
+            background-color: var(--bg-card);
+            color: #a3be8c; /* Hacker green text */
+            font-family: monospace;
+            border: none;
+            padding: 15px;
+            resize: none;
+            outline: none;
+            font-size: 14px;
         }
 
         /* Right Price Scale */
@@ -364,7 +431,6 @@
             font-size: 11px;
             color: var(--text-dim);
             font-family: monospace;
-            transition: 0.3s;
         }
 
         .current-price-badge {
@@ -391,7 +457,7 @@
         </div>
         
         <div class="sidebar-footer">
-            ALGO ENGINE V4.0.12
+            ALGO ENGINE V4.0.13
         </div>
     </div>
 
@@ -422,43 +488,85 @@
                 <div class="tv-top-toolbar">
                     <div class="tv-timeframes">
                         <button class="tv-tf-btn">1m</button>
+                        <button class="tv-tf-btn">3m</button>
                         <button class="tv-tf-btn">5m</button>
                         <button class="tv-tf-btn active">15m</button>
+                        <button class="tv-tf-btn">30m</button>
+                        <button class="tv-tf-btn">45m</button>
+                        <div class="tv-tf-divider"></div>
                         <button class="tv-tf-btn">1H</button>
+                        <button class="tv-tf-btn">2H</button>
+                        <button class="tv-tf-btn">3H</button>
                         <button class="tv-tf-btn">4H</button>
+                        <div class="tv-tf-divider"></div>
                         <button class="tv-tf-btn">D</button>
+                        <button class="tv-tf-btn">W</button>
+                        <button class="tv-tf-btn">M</button>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button class="tv-tf-btn" style="color: var(--profit-green);" onclick="toggleEditor()">
+                            <i class="fa-solid fa-code"></i> Jarvis Editor
+                        </button>
                     </div>
                 </div>
 
                 <div class="tv-main-row">
                     
                     <div class="tv-left-toolbar">
-                        <button class="tv-left-tool-btn active" id="tool-cursor" onclick="selectTool('cursor')" title="Cursor">
-                            <i class="fa-solid fa-arrow-pointer"></i>
-                        </button>
-                        <button class="tv-left-tool-btn" id="tool-trendline" onclick="selectTool('trendline')" title="Trend Line">
-                            <i class="fa-solid fa-minus" style="transform: rotate(-45deg);"></i>
-                        </button>
-                        <button class="tv-left-tool-btn" id="tool-rectangle" onclick="selectTool('rectangle')" title="Rectangle">
-                            <i class="fa-regular fa-square"></i>
-                        </button>
+                        <button class="tv-left-tool-btn active" id="tool-cursor" onclick="selectTool('cursor')" title="Cursor"><i class="fa-solid fa-arrow-pointer"></i></button>
+                        <div class="tv-tool-divider"></div>
                         
-                        <button class="tv-left-tool-btn" id="tool-long" onclick="selectTool('long')" title="Long Position">
-                            <i class="fa-solid fa-arrow-trend-up"></i>
-                        </button>
-                        <button class="tv-left-tool-btn" id="tool-short" onclick="selectTool('short')" title="Short Position">
-                            <i class="fa-solid fa-arrow-trend-down"></i>
-                        </button>
+                        <button class="tv-left-tool-btn" id="tool-trendline" onclick="selectTool('trendline')" title="Trend Line"><i class="fa-solid fa-minus" style="transform: rotate(-45deg);"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-horzline" onclick="selectTool('horzline')" title="Horizontal Line"><i class="fa-solid fa-minus"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-vertline" onclick="selectTool('vertline')" title="Vertical Line"><i class="fa-solid fa-grip-lines-vertical"></i></button>
+                        <div class="tv-tool-divider"></div>
+                        
+                        <button class="tv-left-tool-btn" id="tool-rectangle" onclick="selectTool('rectangle')" title="Rectangle"><i class="fa-regular fa-square"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-path" onclick="selectTool('path')" title="Path"><i class="fa-solid fa-pen-nib"></i></button>
+                        <div class="tv-tool-divider"></div>
+                        
+                        <button class="tv-left-tool-btn" id="tool-fib" onclick="selectTool('fib')" title="Fibonacci Retracement"><i class="fa-solid fa-bars-staggered"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-text" onclick="selectTool('text')" title="Text Annotation"><i class="fa-solid fa-t"></i></button>
+                        <div class="tv-tool-divider"></div>
+                        
+                        <button class="tv-left-tool-btn" id="tool-long" onclick="selectTool('long')" title="Long Position"><i class="fa-solid fa-arrow-trend-up"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-short" onclick="selectTool('short')" title="Short Position"><i class="fa-solid fa-arrow-trend-down"></i></button>
 
                         <div style="flex-grow: 1;"></div>
                         
-                        <button class="tv-left-tool-btn" onclick="clearCanvasDrawings()" title="Remove All Drawings">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
+                        <button class="tv-left-tool-btn" onclick="clearCanvasDrawings()" title="Remove All Drawings"><i class="fa-solid fa-trash"></i></button>
                     </div>
 
-                    <div class="tv-canvas-wrapper" id="canvas-wrapper">
-                        <canvas id="customChartCanvas"></canvas>
+                    <div class="tv-canvas-area">
+                        <div class="tv-canvas-wrapper" id="canvas-wrapper">
+                            <canvas id="customChartCanvas"></canvas>
+                        </div>
+                        
+                        <div class="tv-bottom-editor" id="jarvis-editor-panel">
+                            <div class="editor-header">
+                                <span class="editor-title">Jarvis Algo Editor</span>
+                                <div class="editor-actions">
+                                    <button onclick="alert('Sent to Jarvis Backend for processing.')"><i class="fa-solid fa-play"></i> Compile</button>
+                                    <button onclick="toggleEditor()"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                            </div>
+                            <textarea class="editor-textarea" spellcheck="false">// Welcome to Jarvis Algo Editor
+// Connects natively to FX_ARJUN Backend
+// Author: Fx_arjun
+
+study("SMC Liquidity Sweep Algorithm", overlay=true)
+
+// Define parameters
+length = input(14, title="Lookback Period")
+inducementLevel = ta.highest(high, length)
+
+// Execution Logic
+if (close > inducementLevel)
+    strategy.entry("Long", strategy.long)
+    alert("Sweep Confirmed - Executing Trade")
+                            </textarea>
+                        </div>
                     </div>
 
                     <div class="tv-price-scale">
@@ -491,9 +599,21 @@
                 icon.classList.remove('fa-sun');
                 icon.classList.add('fa-moon');
             }
-            renderEngine(); // Re-render canvas with new theme colors
+            renderEngine(); 
         }
 
+        // --- EDITOR TOGGLE LOGIC ---
+        function toggleEditor() {
+            const panel = document.getElementById('jarvis-editor-panel');
+            if (panel.style.display === 'flex') {
+                panel.style.display = 'none';
+            } else {
+                panel.style.display = 'flex';
+            }
+            setTimeout(resizeCanvas, 50); // Resize canvas when panel takes up space
+        }
+
+        // --- CANVAS ENGINE ---
         const canvas = document.getElementById('customChartCanvas');
         const ctx = canvas.getContext('2d');
         const wrapper = document.getElementById('canvas-wrapper');
@@ -523,7 +643,9 @@
         function selectTool(toolName) {
             currentTool = toolName;
             document.querySelectorAll('.tv-left-tool-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('tool-' + toolName).classList.add('active');
+            const activeBtn = document.getElementById('tool-' + toolName);
+            if(activeBtn) activeBtn.classList.add('active');
+            
             wrapper.style.cursor = toolName === 'cursor' ? 'default' : 'crosshair';
         }
 
@@ -567,7 +689,7 @@
                 currentShape.width = mouseX - currentShape.startX;
                 currentShape.height = mouseY - currentShape.startY;
             } else if (currentTool === 'long' || currentTool === 'short') {
-                currentShape.endY = mouseY; // Track mouse height for TP/SL
+                currentShape.endY = mouseY; 
             }
             
             renderEngine();
@@ -584,11 +706,9 @@
         function renderEngine() {
             const isLightMode = document.body.classList.contains('light-theme');
             
-            // 1. Clear Screen with Theme Color
             ctx.fillStyle = isLightMode ? '#ffffff' : '#000000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 2. Draw Background Grid
             ctx.strokeStyle = isLightMode ? '#e2e8f0' : '#131313';
             ctx.lineWidth = 1;
             ctx.beginPath();
@@ -596,7 +716,6 @@
             for(let i = 0; i < canvas.height; i += 60) { ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); }
             ctx.stroke();
 
-            // 3. Draw Candles
             dummyCandles.forEach(c => {
                 ctx.strokeStyle = c.color;
                 ctx.lineWidth = 2;
@@ -611,14 +730,11 @@
                 ctx.fillRect(c.x - 6, bodyY, 12, Math.max(bodyHeight, 2));
             });
 
-            // 4. Draw Saved User Shapes
             shapes.forEach(shape => drawShape(shape));
 
-            // 5. Draw Active Shape
             if (currentShape) drawShape(currentShape);
         }
 
-        // Helper function to draw specific shape types
         function drawShape(shape) {
             ctx.lineWidth = 2;
             
@@ -634,47 +750,39 @@
                 ctx.fillRect(shape.startX, shape.startY, shape.width, shape.height);
                 ctx.strokeRect(shape.startX, shape.startY, shape.width, shape.height);
             } else if (shape.type === 'long') {
-                // Long Position Logic
                 const width = 120;
                 const entryY = shape.startY;
                 const currentY = shape.endY;
-                const diff = entryY - currentY; // Positive if mouse is above entry
+                const diff = entryY - currentY; 
                 
-                // Take Profit Box (Green)
                 ctx.fillStyle = 'rgba(0, 255, 136, 0.2)';
                 ctx.fillRect(shape.startX, entryY - diff, width, diff);
                 ctx.strokeStyle = '#00ff88';
                 ctx.strokeRect(shape.startX, entryY - diff, width, diff);
 
-                // Stop Loss Box (Red) - 1:2 Default Ratio visually
                 ctx.fillStyle = 'rgba(255, 68, 68, 0.2)';
                 ctx.fillRect(shape.startX, entryY, width, diff / 2);
                 ctx.strokeStyle = '#ff4444';
                 ctx.strokeRect(shape.startX, entryY, width, diff / 2);
                 
-                // Entry Line
                 ctx.beginPath(); ctx.moveTo(shape.startX, entryY); ctx.lineTo(shape.startX + width, entryY); ctx.stroke();
                 
             } else if (shape.type === 'short') {
-                // Short Position Logic
                 const width = 120;
                 const entryY = shape.startY;
                 const currentY = shape.endY;
-                const diff = currentY - entryY; // Positive if mouse is below entry
+                const diff = currentY - entryY; 
                 
-                // Take Profit Box (Green) - Below Entry
                 ctx.fillStyle = 'rgba(0, 255, 136, 0.2)';
                 ctx.fillRect(shape.startX, entryY, width, diff);
                 ctx.strokeStyle = '#00ff88';
                 ctx.strokeRect(shape.startX, entryY, width, diff);
 
-                // Stop Loss Box (Red) - Above Entry
                 ctx.fillStyle = 'rgba(255, 68, 68, 0.2)';
                 ctx.fillRect(shape.startX, entryY - (diff / 2), width, diff / 2);
                 ctx.strokeStyle = '#ff4444';
                 ctx.strokeRect(shape.startX, entryY - (diff / 2), width, diff / 2);
                 
-                // Entry Line
                 ctx.beginPath(); ctx.moveTo(shape.startX, entryY); ctx.lineTo(shape.startX + width, entryY); ctx.stroke();
             }
         }
