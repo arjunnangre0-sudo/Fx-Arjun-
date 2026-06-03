@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.17 NATIVE ENGINE</title>
+    <title>FX_ARJUN | V4.0.18 NATIVE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -49,49 +49,257 @@
         }
 
         /* Core Reset */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); }
-        body { background-color: var(--bg-primary); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; transition: 0.3s; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: var(--font-family); 
+        }
+
+        body { 
+            background-color: var(--bg-primary); 
+            color: var(--text-main); 
+            display: flex; 
+            height: 100vh; 
+            overflow: hidden; 
+            transition: background-color 0.3s, color 0.3s; 
+        }
 
         /* Sidebar Navigation */
-        .sidebar { width: 280px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 40px 24px; display: flex; flex-direction: column; justify-content: space-between; z-index: 10; }
-        .brand-section h1 { font-size: 26px; font-weight: 900; color: var(--gold-accent); text-align: center; letter-spacing: 2px; margin-bottom: 50px; }
-        .nav-group { display: flex; flex-direction: column; gap: 12px; flex: 1; }
-        .nav-btn { padding: 16px 20px; color: var(--text-dim); border: 1px solid var(--border-color); background: transparent; border-radius: 6px; cursor: pointer; text-align: left; text-transform: uppercase; font-size: 12px; font-weight: 600; }
-        .nav-btn:hover { border-color: var(--gold-accent); color: var(--gold-accent); background: rgba(212, 175, 55, 0.02); }
-        .nav-btn.active { border-color: var(--gold-accent); color: var(--text-main); background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%); border-left: 4px solid var(--gold-accent); }
-        .sidebar-footer { color: var(--text-dim); font-size: 11px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
+        .sidebar { 
+            width: 280px; 
+            background-color: var(--bg-sidebar); 
+            border-right: 1px solid var(--border-color); 
+            padding: 40px 24px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            z-index: 10; 
+        }
+
+        .brand-section h1 { 
+            font-size: 26px; 
+            font-weight: 900; 
+            color: var(--gold-accent); 
+            text-align: center; 
+            letter-spacing: 2px; 
+            margin-bottom: 50px; 
+        }
+
+        .nav-group { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            flex: 1; 
+        }
+
+        .nav-btn { 
+            padding: 16px 20px; 
+            color: var(--text-dim); 
+            border: 1px solid var(--border-color); 
+            background: transparent; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            text-align: left; 
+            text-transform: uppercase; 
+            font-size: 12px; 
+            font-weight: 600; 
+            letter-spacing: 1.5px; 
+            outline: none; 
+        }
+
+        .nav-btn:hover { 
+            border-color: var(--gold-accent); 
+            color: var(--gold-accent); 
+            background: rgba(212, 175, 55, 0.02); 
+        }
+
+        .nav-btn.active { 
+            border-color: var(--gold-accent); 
+            color: var(--text-main); 
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%); 
+            border-left: 4px solid var(--gold-accent); 
+        }
+
+        .sidebar-footer { 
+            color: var(--text-dim); 
+            font-size: 11px; 
+            text-align: center; 
+            border-top: 1px solid var(--border-color); 
+            padding-top: 20px; 
+        }
 
         /* Workspace Core Container */
-        .workspace { flex: 1; display: flex; flex-direction: column; }
+        .workspace { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+        }
 
         /* Top Bar */
-        .top-bar { display: flex; justify-content: flex-end; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background-color: var(--bg-primary); gap: 20px; }
-        .theme-toggle-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-dim); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.3s; }
-        .theme-toggle-btn:hover { color: var(--gold-accent); border-color: var(--gold-accent); }
-        .profile-widget { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 8px 12px; border-radius: 8px; border: 1px solid transparent; }
-        .profile-info { display: flex; flex-direction: column; text-align: right; }
-        .profile-name { font-size: 14px; font-weight: 700; color: var(--text-main); }
-        .profile-status { font-size: 11px; color: var(--text-dim); display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 3px; }
-        .status-dot { width: 8px; height: 8px; background: var(--profit-green); border-radius: 50%; box-shadow: 0 0 8px var(--profit-green); }
-        .profile-avatar { width: 42px; height: 42px; border-radius: 50%; background: #111; border: 1px solid var(--border-color); color: var(--text-dim); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; overflow: hidden; }
+        .top-bar { 
+            display: flex; 
+            justify-content: flex-end; 
+            align-items: center; 
+            padding: 20px 40px; 
+            border-bottom: 1px solid var(--border-color); 
+            background-color: var(--bg-primary); 
+            gap: 20px; 
+        }
+
+        .theme-toggle-btn { 
+            background: transparent; 
+            border: 1px solid var(--border-color); 
+            color: var(--text-dim); 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 16px; 
+            transition: 0.3s; 
+        }
+
+        .theme-toggle-btn:hover { 
+            color: var(--gold-accent); 
+            border-color: var(--gold-accent); 
+        }
+
+        .profile-widget { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            cursor: pointer; 
+            padding: 8px 12px; 
+            border-radius: 8px; 
+            border: 1px solid transparent; 
+        }
+
+        .profile-info { 
+            display: flex; 
+            flex-direction: column; 
+            text-align: right; 
+        }
+
+        .profile-name { 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: var(--text-main); 
+        }
+
+        .profile-status { 
+            font-size: 11px; 
+            color: var(--text-dim); 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-end; 
+            gap: 5px; 
+            margin-top: 3px; 
+        }
+
+        .status-dot { 
+            width: 8px; 
+            height: 8px; 
+            background: var(--profit-green); 
+            border-radius: 50%; 
+            box-shadow: 0 0 8px var(--profit-green); 
+        }
+
+        .profile-avatar { 
+            width: 42px; 
+            height: 42px; 
+            border-radius: 50%; 
+            background: #111; 
+            border: 1px solid var(--border-color); 
+            color: var(--text-dim); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 800; 
+            font-size: 12px; 
+            overflow: hidden; 
+        }
 
         /* Page Content */
-        .page { display: none; flex: 1; padding: 20px 40px 40px 40px; overflow-y: hidden; }
-        .page.active { display: flex; flex-direction: column; }
+        .page { 
+            display: none; 
+            flex: 1; 
+            padding: 20px 40px 40px 40px; 
+            overflow-y: hidden; 
+        }
+
+        .page.active { 
+            display: flex; 
+            flex-direction: column; 
+        }
         
-        .tv-layout-container { flex: 1; display: flex; flex-direction: column; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background-color: var(--tv-bg); box-shadow: var(--card-shadow); position: relative; }
+        .tv-layout-container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            background-color: var(--tv-bg); 
+            box-shadow: var(--card-shadow); 
+            position: relative; 
+        }
 
         /* Top Toolbar */
-        .tv-top-toolbar { height: 50px; background-color: var(--tv-toolbar-bg); border-bottom: 1px solid var(--tv-border); display: flex; align-items: center; padding: 0 15px; justify-content: space-between; }
+        .tv-top-toolbar { 
+            height: 50px; 
+            background-color: var(--tv-toolbar-bg); 
+            border-bottom: 1px solid var(--tv-border); 
+            display: flex; 
+            align-items: center; 
+            padding: 0 15px; 
+            justify-content: space-between; 
+        }
         
-        .tv-top-group { display: flex; align-items: center; gap: 5px; }
-        .tv-tf-btn { background: transparent; border: none; color: var(--tv-icon-color); padding: 6px 10px; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 4px; transition: 0.2s; }
-        .tv-tf-btn:hover { color: var(--tv-icon-hover); background-color: rgba(120, 120, 120, 0.1); }
-        .tv-tf-btn.active { color: var(--gold-accent); }
-        .tv-tf-divider { width: 1px; height: 20px; background-color: var(--tv-border); margin: 0 8px; }
+        .tv-top-group { 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+        }
+
+        .tv-tf-btn { 
+            background: transparent; 
+            border: none; 
+            color: var(--tv-icon-color); 
+            padding: 6px 10px; 
+            font-size: 13px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            border-radius: 4px; 
+            transition: 0.2s; 
+        }
+
+        .tv-tf-btn:hover { 
+            color: var(--tv-icon-hover); 
+            background-color: rgba(120, 120, 120, 0.1); 
+        }
+
+        .tv-tf-btn.active { 
+            color: var(--gold-accent); 
+        }
+
+        .tv-tf-divider { 
+            width: 1px; 
+            height: 20px; 
+            background-color: var(--tv-border); 
+            margin: 0 8px; 
+        }
 
         /* Main Row */
-        .tv-main-row { display: flex; flex: 1; height: calc(100% - 50px); position: relative; }
+        .tv-main-row { 
+            display: flex; 
+            flex: 1; 
+            height: calc(100% - 50px); 
+            position: relative; 
+        }
 
         /* Left Vertical Toolbar */
         .tv-left-toolbar { 
@@ -104,41 +312,352 @@
             padding: 10px 0; 
             gap: 6px; 
             overflow-y: auto; 
-            -ms-overflow-style: none; scrollbar-width: none; 
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
         }
-        .tv-left-toolbar::-webkit-scrollbar { display: none; }
+
+        .tv-left-toolbar::-webkit-scrollbar { 
+            display: none; 
+        }
         
-        .tv-left-tool-btn { background: transparent; border: none; color: var(--tv-icon-color); font-size: 16px; cursor: pointer; width: 38px; height: 38px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; }
-        .tv-left-tool-btn:hover { color: var(--tv-icon-hover); background-color: rgba(120, 120, 120, 0.1); }
-        .tv-left-tool-btn.active { color: var(--tv-icon-active); background-color: rgba(212, 175, 55, 0.1); }
-        .tv-tool-divider { width: 30px; height: 1px; background-color: var(--tv-border); margin: 4px 0; flex-shrink: 0; }
+        .tv-left-tool-btn { 
+            background: transparent; 
+            border: none; 
+            color: var(--tv-icon-color); 
+            font-size: 16px; 
+            cursor: pointer; 
+            width: 38px; 
+            height: 38px; 
+            border-radius: 6px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: 0.2s; 
+            flex-shrink: 0; 
+        }
+
+        .tv-left-tool-btn:hover { 
+            color: var(--tv-icon-hover); 
+            background-color: rgba(120, 120, 120, 0.1); 
+        }
+
+        .tv-left-tool-btn.active { 
+            color: var(--tv-icon-active); 
+            background-color: rgba(212, 175, 55, 0.1); 
+        }
+
+        .tv-tool-divider { 
+            width: 30px; 
+            height: 1px; 
+            background-color: var(--tv-border); 
+            margin: 4px 0; 
+            flex-shrink: 0; 
+        }
 
         /* Canvas Wrapper Area */
-        .tv-canvas-area { flex: 1; display: flex; flex-direction: column; position: relative; }
-        .tv-canvas-wrapper { flex: 1; position: relative; background-color: var(--tv-bg); cursor: crosshair; overflow: hidden; }
-        #customChartCanvas { display: block; width: 100%; height: 100%; }
+        .tv-canvas-area { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+        }
 
-        /* Floating Settings Panel */
-        .floating-settings-panel { position: absolute; top: 20px; left: 20px; background-color: var(--tv-toolbar-bg); border: 1px solid var(--tv-border); border-radius: 8px; padding: 15px; width: 220px; box-shadow: var(--card-shadow); display: none; flex-direction: column; gap: 12px; z-index: 100; }
-        .settings-header { font-size: 11px; color: var(--gold-accent); text-transform: uppercase; font-weight: 800; border-bottom: 1px solid var(--tv-border); padding-bottom: 8px; display: flex; justify-content: space-between; }
-        .settings-row { display: flex; justify-content: space-between; align-items: center; }
-        .settings-label { font-size: 12px; color: var(--text-dim); font-weight: 600; }
-        .settings-input-color { background: transparent; border: 1px solid var(--tv-border); border-radius: 4px; width: 30px; height: 30px; cursor: pointer; padding: 2px; }
-        .settings-input-range { width: 80px; accent-color: var(--gold-accent); }
+        .tv-canvas-wrapper { 
+            flex: 1; 
+            position: relative; 
+            background-color: var(--tv-bg); 
+            cursor: crosshair; 
+            overflow: hidden; 
+        }
+
+        #customChartCanvas { 
+            display: block; 
+            width: 100%; 
+            height: 100%; 
+        }
+
+        /* =========================================================
+           NEW: CUSTOM TOAST NOTIFICATION (Replaces alert())
+           ========================================================= */
+        #custom-toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #111;
+            color: var(--gold-accent);
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid var(--gold-accent);
+            padding: 16px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+
+        #custom-toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+
+        /* =========================================================
+           NEW: CHART SETTINGS MODAL (TradingView Style)
+           ========================================================= */
+        .settings-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .settings-modal {
+            background-color: var(--bg-card);
+            width: 500px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .settings-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 16px;
+        }
+
+        .settings-modal-close {
+            cursor: pointer;
+            color: var(--text-dim);
+            font-size: 18px;
+            transition: 0.2s;
+        }
+
+        .settings-modal-close:hover {
+            color: var(--loss-red);
+        }
+
+        .settings-modal-tabs {
+            display: flex;
+            background-color: #111;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .settings-tab {
+            padding: 12px 20px;
+            color: var(--text-dim);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .settings-tab.active {
+            color: var(--gold-accent);
+            border-bottom: 2px solid var(--gold-accent);
+            background-color: var(--bg-card);
+        }
+
+        .settings-modal-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .settings-control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-control-label {
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        /* Floating Tool Settings Panel */
+        .floating-settings-panel { 
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+            background-color: var(--tv-toolbar-bg); 
+            border: 1px solid var(--tv-border); 
+            border-radius: 8px; 
+            padding: 15px; 
+            width: 220px; 
+            box-shadow: var(--card-shadow); 
+            display: none; 
+            flex-direction: column; 
+            gap: 12px; 
+            z-index: 100; 
+        }
+
+        .settings-header { 
+            font-size: 11px; 
+            color: var(--gold-accent); 
+            text-transform: uppercase; 
+            font-weight: 800; 
+            border-bottom: 1px solid var(--tv-border); 
+            padding-bottom: 8px; 
+            display: flex; 
+            justify-content: space-between; 
+        }
+
+        .settings-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .settings-label { 
+            font-size: 12px; 
+            color: var(--text-dim); 
+            font-weight: 600; 
+        }
+
+        .settings-input-color { 
+            background: transparent; 
+            border: 1px solid var(--tv-border); 
+            border-radius: 4px; 
+            width: 30px; 
+            height: 30px; 
+            cursor: pointer; 
+            padding: 2px; 
+        }
+
+        .settings-input-range { 
+            width: 80px; 
+            accent-color: var(--gold-accent); 
+        }
 
         /* Bottom Editor Panel */
-        .tv-bottom-editor { height: 200px; background-color: var(--tv-toolbar-bg); border-top: 1px solid var(--tv-border); display: none; flex-direction: column; }
-        .editor-header { display: flex; justify-content: space-between; align-items: center; padding: 5px 15px; background-color: #050505; border-bottom: 1px solid var(--tv-border); }
-        .editor-title { font-size: 12px; color: var(--gold-accent); font-weight: 700; text-transform: uppercase; }
-        .editor-textarea { flex: 1; background-color: var(--bg-card); color: #a3be8c; font-family: monospace; border: none; padding: 15px; resize: none; outline: none; font-size: 14px; }
+        .tv-bottom-editor { 
+            height: 200px; 
+            background-color: var(--tv-toolbar-bg); 
+            border-top: 1px solid var(--tv-border); 
+            display: none; 
+            flex-direction: column; 
+        }
+
+        .editor-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 5px 15px; 
+            background-color: #050505; 
+            border-bottom: 1px solid var(--tv-border); 
+        }
+
+        .editor-title { 
+            font-size: 12px; 
+            color: var(--gold-accent); 
+            font-weight: 700; 
+            text-transform: uppercase; 
+        }
+
+        .editor-textarea { 
+            flex: 1; 
+            background-color: var(--bg-card); 
+            color: #a3be8c; 
+            font-family: monospace; 
+            border: none; 
+            padding: 15px; 
+            resize: none; 
+            outline: none; 
+            font-size: 14px; 
+        }
 
         /* Right Price Scale */
-        .tv-price-scale { width: 70px; background-color: var(--tv-toolbar-bg); border-left: 1px solid var(--tv-border); display: flex; flex-direction: column; justify-content: space-around; align-items: flex-end; padding: 20px 10px; font-size: 11px; color: var(--text-dim); font-family: monospace; }
-        .current-price-badge { background-color: var(--profit-green); color: #000; padding: 4px 6px; border-radius: 2px; font-weight: 800; width: 100%; text-align: right; }
+        .tv-price-scale { 
+            width: 70px; 
+            background-color: var(--tv-toolbar-bg); 
+            border-left: 1px solid var(--tv-border); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-around; 
+            align-items: flex-end; 
+            padding: 20px 10px; 
+            font-size: 11px; 
+            color: var(--text-dim); 
+            font-family: monospace; 
+        }
+
+        .current-price-badge { 
+            background-color: var(--profit-green); 
+            color: #000; 
+            padding: 4px 6px; 
+            border-radius: 2px; 
+            font-weight: 800; 
+            width: 100%; 
+            text-align: right; 
+        }
 
     </style>
 </head>
 <body>
+
+    <div id="chart-settings-overlay" class="settings-modal-overlay">
+        <div class="settings-modal">
+            <div class="settings-modal-header">
+                Chart Properties
+                <i class="fa-solid fa-xmark settings-modal-close" onclick="closeChartSettings()"></i>
+            </div>
+            <div class="settings-modal-tabs">
+                <div class="settings-tab active">Symbol</div>
+                <div class="settings-tab">Status line</div>
+                <div class="settings-tab">Scales</div>
+                <div class="settings-tab">Appearance</div>
+            </div>
+            <div class="settings-modal-body">
+                <div class="settings-control-row">
+                    <span class="settings-control-label">Body Color (Up / Down)</span>
+                    <div>
+                        <input type="color" value="#00ff88" class="settings-input-color">
+                        <input type="color" value="#ff4444" class="settings-input-color">
+                    </div>
+                </div>
+                <div class="settings-control-row">
+                    <span class="settings-control-label">Borders</span>
+                    <div>
+                        <input type="color" value="#00ff88" class="settings-input-color">
+                        <input type="color" value="#ff4444" class="settings-input-color">
+                    </div>
+                </div>
+                <div class="settings-control-row">
+                    <span class="settings-control-label">Wick</span>
+                    <div>
+                        <input type="color" value="#00ff88" class="settings-input-color">
+                        <input type="color" value="#ff4444" class="settings-input-color">
+                    </div>
+                </div>
+                <div class="settings-control-row" style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <span class="settings-control-label">Timezone</span>
+                    <select style="background: #111; color: white; border: 1px solid var(--border-color); padding: 5px; border-radius: 4px; outline: none;">
+                        <option>(UTC+05:30) Kolkata</option>
+                        <option>(UTC-04:00) New York</option>
+                        <option>(UTC+00:00) London</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="sidebar">
         <div class="brand-section">
@@ -147,10 +666,11 @@
         <div class="nav-group">
             <button class="nav-btn active" onclick="switchTab(this, 'chart-page')">Pro Terminal</button>
         </div>
-        <div class="sidebar-footer">ALGO ENGINE V4.0.17</div>
+        <div class="sidebar-footer">ALGO ENGINE V4.0.18</div>
     </div>
 
-    <div class="workspace">
+    <div class="workspace" id="main-workspace">
+        
         <div class="top-bar">
             <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
                 <i class="fa-solid fa-moon" id="theme-icon"></i>
@@ -165,7 +685,7 @@
         </div>
         
         <div id="chart-page" class="page active">
-            <div class="tv-layout-container">
+            <div class="tv-layout-container" id="tv-layout-container">
                 
                 <div class="tv-top-toolbar">
                     <div class="tv-top-group">
@@ -182,14 +702,16 @@
                         <div class="tv-tf-divider"></div>
                         
                         <button class="tv-tf-btn" title="Candles"><i class="fa-solid fa-chart-simple"></i></button>
-                        <button class="tv-tf-btn" title="Indicators"><i class="fa-solid fa-chart-line"></i> Indicators</button>
-                        <button class="tv-tf-btn" title="Alerts"><i class="fa-regular fa-bell"></i> Alerts</button>
-                        <button class="tv-tf-btn" title="Replay"><i class="fa-solid fa-backward-step"></i> Replay</button>
+                        <button class="tv-tf-btn" onclick="showCustomToast('Indicators Module requires backend connection.')" title="Indicators"><i class="fa-solid fa-chart-line"></i> Indicators</button>
+                        <button class="tv-tf-btn" onclick="showCustomToast('Alerts System Syncing...')" title="Alerts"><i class="fa-regular fa-bell"></i> Alerts</button>
+                        <button class="tv-tf-btn" onclick="showCustomToast('Replay Engine will start on Tick Data connect.')" title="Replay"><i class="fa-solid fa-backward-step"></i> Replay</button>
                     </div>
 
                     <div class="tv-top-group">
-                        <button class="tv-tf-btn" title="Chart Properties"><i class="fa-solid fa-gear"></i></button>
-                        <button class="tv-tf-btn" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+                        <button class="tv-tf-btn" onclick="openChartSettings()" title="Chart Properties"><i class="fa-solid fa-gear"></i></button>
+                        
+                        <button class="tv-tf-btn" onclick="toggleFullScreen()" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+                        
                         <button class="tv-tf-btn" style="color: var(--profit-green);" onclick="toggleEditor()">
                             <i class="fa-solid fa-code"></i> Pine / Jarvis
                         </button>
@@ -209,29 +731,26 @@
                         <button class="tv-left-tool-btn" id="tool-vertline" onclick="selectTool('vertline')" title="Vertical Line"><i class="fa-solid fa-grip-lines-vertical"></i></button>
                         <div class="tv-tool-divider"></div>
 
-                        <button class="tv-left-tool-btn" id="tool-fib" onclick="selectTool('fib')" title="Fib Retracement (Awaiting Backend Sync)"><i class="fa-solid fa-bars-staggered"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-pitchfork" onclick="selectTool('pitchfork')" title="Pitchfork (Awaiting Backend Sync)"><i class="fa-solid fa-code-branch"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-fib" onclick="selectTool('fib')" title="Fib Retracement"><i class="fa-solid fa-bars-staggered"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-pitchfork" onclick="selectTool('pitchfork')" title="Pitchfork"><i class="fa-solid fa-code-branch"></i></button>
                         <div class="tv-tool-divider"></div>
 
                         <button class="tv-left-tool-btn" id="tool-rectangle" onclick="selectTool('rectangle')" title="Rectangle"><i class="fa-regular fa-square"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-brush" onclick="selectTool('brush')" title="Brush (Awaiting Backend Sync)"><i class="fa-solid fa-paintbrush"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-brush" onclick="selectTool('brush')" title="Brush"><i class="fa-solid fa-paintbrush"></i></button>
                         <button class="tv-left-tool-btn" id="tool-path" onclick="selectTool('path')" title="Path"><i class="fa-solid fa-pen-nib"></i></button>
                         <div class="tv-tool-divider"></div>
 
                         <button class="tv-left-tool-btn" id="tool-text" onclick="selectTool('text')" title="Text Annotation"><i class="fa-solid fa-t"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-callout" onclick="selectTool('callout')" title="Price Label (Awaiting Backend Sync)"><i class="fa-solid fa-tag"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-callout" onclick="selectTool('callout')" title="Price Label"><i class="fa-solid fa-tag"></i></button>
                         <div class="tv-tool-divider"></div>
 
-                        <button class="tv-left-tool-btn" id="tool-elliott" onclick="selectTool('elliott')" title="Elliott Wave (Awaiting Backend Sync)"><i class="fa-solid fa-wave-square"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-elliott" onclick="selectTool('elliott')" title="Elliott Wave"><i class="fa-solid fa-wave-square"></i></button>
                         <div class="tv-tool-divider"></div>
 
                         <button class="tv-left-tool-btn" id="tool-long" onclick="selectTool('long')" title="Long Position"><i class="fa-solid fa-arrow-trend-up"></i></button>
                         <button class="tv-left-tool-btn" id="tool-short" onclick="selectTool('short')" title="Short Position"><i class="fa-solid fa-arrow-trend-down"></i></button>
                         <div class="tv-tool-divider"></div>
 
-                        <button class="tv-left-tool-btn" title="Stay in Drawing Mode"><i class="fa-solid fa-pencil"></i></button>
-                        <button class="tv-left-tool-btn" title="Lock All Drawing Tools"><i class="fa-solid fa-lock"></i></button>
-                        <button class="tv-left-tool-btn" title="Hide All Drawings"><i class="fa-regular fa-eye-slash"></i></button>
                         <button class="tv-left-tool-btn" onclick="clearCanvasDrawings()" title="Remove Drawings"><i class="fa-solid fa-trash"></i></button>
                     </div>
 
@@ -256,10 +775,12 @@
                             <canvas id="customChartCanvas"></canvas>
                         </div>
                         
+                        <div id="custom-toast">Notification Message</div>
+
                         <div class="tv-bottom-editor" id="jarvis-editor-panel">
                             <div class="editor-header">
                                 <span class="editor-title">Jarvis Algo Editor</span>
-                                <div><button onclick="toggleEditor()"><i class="fa-solid fa-xmark" style="color:var(--text-dim)"></i></button></div>
+                                <div><button onclick="toggleEditor()" style="background: transparent; border: none; cursor: pointer;"><i class="fa-solid fa-xmark" style="color:var(--text-dim)"></i></button></div>
                             </div>
                             <textarea class="editor-textarea" spellcheck="false">// Welcome to Jarvis Algo Editor
 // Connects natively to FX_ARJUN Backend
@@ -274,7 +795,6 @@ inducementLevel = ta.highest(high, length)
 // Execution Logic
 if (close > inducementLevel)
     strategy.entry("Long", strategy.long)
-    alert("Sweep Confirmed - Executing Trade")
                             </textarea>
                         </div>
                     </div>
@@ -295,6 +815,37 @@ if (close > inducementLevel)
     </div>
 
     <script>
+        // --- CUSTOM TOAST NOTIFICATION LOGIC ---
+        function showCustomToast(message) {
+            const toast = document.getElementById("custom-toast");
+            toast.innerText = message;
+            toast.classList.add("show");
+            setTimeout(function(){ toast.classList.remove("show"); }, 3000);
+        }
+
+        // --- FULLSCREEN LOGIC ---
+        function toggleFullScreen() {
+            const elem = document.getElementById("tv-layout-container");
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen().catch(err => {
+                    showCustomToast(`Error attempting to enable full-screen mode: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // --- CHART SETTINGS MODAL LOGIC ---
+        function openChartSettings() {
+            document.getElementById('chart-settings-overlay').style.display = 'flex';
+        }
+
+        function closeChartSettings() {
+            document.getElementById('chart-settings-overlay').style.display = 'none';
+        }
+
         function switchTimeframe(btn) {
             const allTfBtns = document.querySelectorAll('.tv-top-group .tv-tf-btn');
             allTfBtns.forEach(b => {
@@ -363,6 +914,14 @@ if (close > inducementLevel)
             const activeBtn = document.getElementById('tool-' + toolName);
             if(activeBtn) activeBtn.classList.add('active');
             
+            // Handle Placeholders via Custom Toast (No ugly alerts!)
+            if (['fib', 'pitchfork', 'brush', 'callout', 'elliott', 'path'].includes(toolName)) {
+                showCustomToast(`${toolName.toUpperCase()} logic awaiting Jarvis Backend processing.`);
+                wrapper.style.cursor = 'default';
+                closeSettingsPanel();
+                return;
+            }
+
             if (toolName === 'cursor') {
                 wrapper.style.cursor = 'crosshair';
                 closeSettingsPanel();
@@ -385,25 +944,34 @@ if (close > inducementLevel)
         }
 
         canvas.addEventListener('mousedown', (e) => {
-            // Ignore if tool is cursor or un-coded placeholders
-            if (currentTool === 'cursor' || currentTool === 'fib' || currentTool === 'pitchfork' || currentTool === 'brush' || currentTool === 'callout' || currentTool === 'elliott') return;
+            // Ignore placeholders
+            if (['cursor', 'fib', 'pitchfork', 'brush', 'callout', 'elliott', 'path'].includes(currentTool)) return;
             
             const rect = canvas.getBoundingClientRect();
             const startX = e.clientX - rect.left;
             const startY = e.clientY - rect.top;
             const settings = getCurrentToolSettings();
             
-            if (currentTool === 'horzline') { shapes.push({ type: 'horzline', y: startY, ...settings }); renderEngine(); return; } 
-            else if (currentTool === 'vertline') { shapes.push({ type: 'vertline', x: startX, ...settings }); renderEngine(); return; }
-            else if (currentTool === 'text') {
-                const userText = prompt("Enter your text annotation:");
-                if (userText) {
-                    shapes.push({ type: 'text', x: startX, y: startY, text: userText, ...settings });
-                    renderEngine();
-                }
-                return; // No dragging needed for text
+            // Single Click Tools
+            if (currentTool === 'horzline') { 
+                shapes.push({ type: 'horzline', y: startY, ...settings }); 
+                renderEngine(); 
+                return; 
+            } else if (currentTool === 'vertline') { 
+                shapes.push({ type: 'vertline', x: startX, ...settings }); 
+                renderEngine(); 
+                return; 
+            } else if (currentTool === 'text') {
+                // FIXED TEXT TOOL: No prompt, just prints directly!
+                shapes.push({ type: 'text', x: startX, y: startY, text: "FX_ARJUN TEXT", ...settings });
+                renderEngine();
+                
+                // Auto switch back to cursor after placing text
+                selectTool('cursor'); 
+                return; 
             }
 
+            // Drag Tools
             isDrawing = true;
             if (currentTool === 'trendline') currentShape = { type: 'line', startX, startY, endX: startX, endY: startY, ...settings };
             else if (currentTool === 'ray') currentShape = { type: 'ray', startX, startY, endX: startX, endY: startY, ...settings };
@@ -476,7 +1044,6 @@ if (close > inducementLevel)
                 if (dx === 0 && dy === 0) {
                     ctx.lineTo(shape.endX, shape.endY);
                 } else {
-                    // Extend the ray by a huge multiplier to simulate infinity
                     const extendX = shape.startX + dx * 2000;
                     const extendY = shape.startY + dy * 2000;
                     ctx.lineTo(extendX, extendY);
