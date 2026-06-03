@@ -3,56 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V7.0 INSTITUTIONAL TERMINAL</title>
-    
+    <title>FX_ARJUN | V8.0 LIVE TERMINAL</title>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; background: #030303; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
-        .terminal { display: flex; flex-direction: column; height: 100vh; }
-        #chart-container { flex: 1; position: relative; }
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: sans-serif; }
+        .terminal { display: flex; height: 100vh; }
+        #chart-container { flex: 1; height: 100%; position: relative; }
         
-        /* Execution Panel Overlay (Left Side) */
-        .exec-panel {
-            position: absolute; top: 100px; left: 60px; width: 220px;
-            background: rgba(10, 10, 10, 0.95); border: 1px solid #333;
-            padding: 15px; border-radius: 8px; z-index: 10;
-        }
-        .btn { width: 100%; padding: 10px; border: none; font-weight: 800; cursor: pointer; margin-top: 10px; }
+        /* Execution Sidebar */
+        .sidebar-exec { width: 250px; background: #0a0a0a; border-left: 1px solid #333; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .status-box { background: #1a1a1a; padding: 10px; border-radius: 5px; text-align: center; color: #d4af37; font-size: 12px; }
+        .btn-trade { padding: 15px; border: none; cursor: pointer; font-weight: bold; border-radius: 5px; }
     </style>
 </head>
 <body>
 
 <div class="terminal">
     <div id="chart-container"></div>
-    
-    <div class="exec-panel">
-        <h4 style="color:#d4af37; margin-bottom:10px;">ONE-CLICK EXECUTION</h4>
-        <input type="number" id="lot" value="1.00" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:8px;">
-        <button class="btn" style="background:#089981; color:#fff;" onclick="alert('Long Executed')">BUY MARKET</button>
-        <button class="btn" style="background:#f23645; color:#fff;" onclick="alert('Short Executed')">SELL MARKET</button>
+
+    <div class="sidebar-exec">
+        <h3 style="color:#fff;">Order Panel</h3>
+        <div id="account-status" class="status-box">Checking Account...</div>
+        
+        <button class="btn-trade" style="background:#089981; color:#fff;" onclick="placeTrade('BUY')">BUY (MARKET)</button>
+        <button class="btn-trade" style="background:#f23645; color:#fff;" onclick="placeTrade('SELL')">SELL (MARKET)</button>
+        
+        <p style="color:#666; font-size:11px;">*Live XAUUSD Feed Active</p>
     </div>
 </div>
 
 <script type="text/javascript">
+    // Load Chart
     new TradingView.widget({
         "container_id": "chart-container",
         "symbol": "OANDA:XAUUSD",
         "interval": "15",
-        "timezone": "Asia/Kolkata",
         "theme": "dark",
-        "style": "1",
-        "locale": "en",
-        "toolbar_bg": "#030303",
-        "enable_publishing": false,
-        "allow_symbol_change": true,
-        "hide_side_toolbar": false, // This gives you the tools
+        "autosize": true,
         "show_popup_button": true,
-        "popup_width": "1000",
-        "popup_height": "650",
-        "studies": ["MACD@tv-basicstudies"]
+        "hide_side_toolbar": false
     });
+
+    // Account Logic
+    const userBalance = 0; // Yahan tumhara balance fetch hoga
+    const statusBox = document.getElementById('account-status');
+
+    if(userBalance <= 0) {
+        statusBox.innerHTML = "⚠️ Please Connect Your Trading Account";
+        statusBox.style.background = "#440000";
+        statusBox.style.color = "#ff4444";
+    } else {
+        statusBox.innerHTML = "Account Connected | Balance: $" + userBalance;
+    }
+
+    function placeTrade(type) {
+        if(userBalance <= 0) {
+            alert("Trade failed: Please connect your trading account with valid capital.");
+        } else {
+            alert(type + " order placed!");
+        }
+    }
 </script>
+
 </body>
 </html>
+
