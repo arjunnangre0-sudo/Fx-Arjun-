@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.7 CUSTOM TERMINAL</title>
+    <title>FX_ARJUN | V4.0.8 PRO TERMINAL</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
 
     <style>
         /* Pro-Trader Color Palette & CSS Variables */
@@ -57,14 +57,8 @@
         }
 
         @keyframes fadeInPage { 
-            from { 
-                opacity: 0; 
-                transform: translateY(20px); 
-            } 
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            } 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
 
         .profile-page-wrapper { 
@@ -412,17 +406,7 @@
             margin-top: 6px; 
         }
 
-        /* CUSTOM CHART CONTAINER STYLING */
-        #tv-custom-chart-anchor {
-            width: 100%;
-            height: 600px;
-            background-color: #050505; 
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            position: relative;
-        }
-
+        /* Dashboard Split Layout (Equity Curve area) */
         .dashboard-split { 
             display: grid; 
             grid-template-columns: 2fr 1fr; 
@@ -433,6 +417,17 @@
             display: flex; 
             flex-direction: column; 
             gap: 24px; 
+        }
+
+        /* CUSTOM CHART CONTAINER STYLING */
+        #tv-custom-chart-anchor {
+            width: 100%;
+            height: 600px;
+            background-color: #050505; 
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
         }
 
         /* General Inputs */
@@ -533,20 +528,17 @@
         
         <div class="nav-group">
             <button class="nav-btn active" onclick="window.switchTab(this, 'dash')">Dashboard</button>
-            
             <button class="nav-btn" onclick="window.switchTab(this, 'chart-page')">Live Chart Engine</button>
-            
             <button class="nav-btn" onclick="window.switchTab(this, 'risk')">Risk Manager</button>
             <button class="nav-btn" onclick="window.switchTab(this, 'hist')">Trade History</button>
             <button class="nav-btn" onclick="window.switchTab(this, 'ai')">Jarvis AI Analysis</button>
             <button class="nav-btn" onclick="window.switchTab(this, 'calendar')">Macro Calendar</button>
             <button class="nav-btn" onclick="window.switchTab(this, 'acc')">Account Connect</button>
-            
             <button class="nav-btn" id="mgmt-nav-btn" onclick="window.switchTab(this, 'peoples')">Traders (Mgmt)</button>
         </div>
         
         <div class="sidebar-footer">
-            ALGO ENGINE V4.0.7
+            ALGO ENGINE V4.0.8
         </div>
     </div>
 
@@ -588,9 +580,40 @@
                     <div class="stat-sub">Risk Profile Optimized</div>
                 </div>
             </div>
-            <div class="boundary-box">
-                <div class="header-label">Terminal Status</div>
-                <p style="color: var(--text-dim);">Dashboard is running smooth. Open "Live Chart Engine" from the sidebar to view your custom SMC chart.</p>
+            
+            <div class="dashboard-split">
+                <div class="flex-col">
+                    <div class="boundary-box" style="margin-bottom: 0;">
+                        <div class="header-label">Equity Curve Growth</div>
+                        <div style="height: 300px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: 20px 0;">
+                            <div style="display: flex; justify-content: space-between; height: 100%; align-items: flex-end; border-left: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding-left: 15px;">
+                                <div style="width: 12%; height: 35%; background: linear-gradient(to top, #111, rgba(0,255,136,0.2)); border-top: 2px solid var(--profit-green);"></div>
+                                <div style="width: 12%; height: 48%; background: linear-gradient(to top, #111, rgba(0,255,136,0.2)); border-top: 2px solid var(--profit-green);"></div>
+                                <div style="width: 12%; height: 42%; background: linear-gradient(to top, #111, rgba(255,68,68,0.1)); border-top: 2px solid var(--loss-red);"></div>
+                                <div style="width: 12%; height: 60%; background: linear-gradient(to top, #111, rgba(0,255,136,0.2)); border-top: 2px solid var(--profit-green);"></div>
+                                <div style="width: 12%; height: 78%; background: linear-gradient(to top, #111, rgba(0,255,136,0.2)); border-top: 2px solid var(--profit-green);"></div>
+                                <div style="width: 12%; height: 72%; background: linear-gradient(to top, #111, rgba(255,68,68,0.1)); border-top: 2px solid var(--loss-red);"></div>
+                                <div style="width: 12%; height: 95%; background: linear-gradient(to top, #111, rgba(0,255,136,0.3)); border-top: 2px solid var(--profit-green);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex-col">
+                    <div class="boundary-box" style="height: 100%; margin-bottom: 0;">
+                        <div class="header-label">Jarvis Core Bias</div>
+                        <div style="padding: 10px 0;">
+                            <div style="font-size: 24px; color: var(--profit-green); font-weight: 800; letter-spacing: 1px; margin-bottom: 15px;">BULLISH SENTIMENT</div>
+                            <p style="color: var(--text-dim); font-size: 13px; line-height: 1.6; margin-bottom: 20px;">
+                                Higher timeframe order blocks hold firm. Lower timeframe liquidity sweeps tracking perfectly under structural ranges.
+                            </p>
+                            <div style="border-top: 1px solid var(--border-color); padding-top: 15px;">
+                                <div style="font-size: 11px; color: var(--gold-accent); font-weight: bold; text-transform: uppercase; margin-bottom: 8px;">Target Zone</div>
+                                <div style="font-size: 16px; font-weight: bold; font-family: monospace;">XAUUSD @ 2345.50</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -620,45 +643,16 @@
             </div>
         </div>
         
-        <div id="hist" class="page">
-            <div class="boundary-box">
-                <div class="header-label">Trade History Log</div>
-                <p>Synchronizing logs...</p>
-            </div>
-        </div>
-        
-        <div id="ai" class="page">
-            <div class="boundary-box">
-                <div class="header-label">Jarvis Core Logic</div>
-                <p>Scanning Smart Money Characters...</p>
-            </div>
-        </div>
-        
-        <div id="calendar" class="page">
-            <div class="boundary-box">
-                <div class="header-label">Economic Calendar</div>
-                <p>Fetching High Impact Events...</p>
-            </div>
-        </div>
-        
-        <div id="acc" class="page">
-            <div class="boundary-box">
-                <div class="header-label">Account Node Link</div>
-                <p>Waiting for MT5 synchronization node...</p>
-            </div>
-        </div>
-        
-        <div id="peoples" class="page">
-            <div class="boundary-box">
-                <div class="header-label">Trader Network (Mgmt)</div>
-                <p>Authorized access only.</p>
-            </div>
-        </div>
+        <div id="hist" class="page"><div class="boundary-box"><div class="header-label">Trade History Log</div><p>Synchronizing logs...</p></div></div>
+        <div id="ai" class="page"><div class="boundary-box"><div class="header-label">Jarvis Core Logic</div><p>Scanning Smart Money Characters...</p></div></div>
+        <div id="calendar" class="page"><div class="boundary-box"><div class="header-label">Economic Calendar</div><p>Fetching High Impact Events...</p></div></div>
+        <div id="acc" class="page"><div class="boundary-box"><div class="header-label">Account Node Link</div><p>Waiting for MT5 synchronization node...</p></div></div>
+        <div id="peoples" class="page"><div class="boundary-box"><div class="header-label">Trader Network (Mgmt)</div><p>Authorized access only.</p></div></div>
 
     </div>
 
     <script>
-        // Custom TradingView Chart Initialization
+        // Custom TradingView Chart Initialization (Locked to V3.8.0 for Dark Theme)
         function initOurCustomTradingViewChart() {
             const chartElement = document.getElementById('tv-custom-chart-anchor');
             
@@ -669,7 +663,7 @@
                 width: chartElement.offsetWidth,
                 height: 600,
                 layout: {
-                    backgroundColor: '#050505', 
+                    backgroundColor: '#050505', // Deep black background
                     textColor: '#d1d4dc',
                     fontFamily: "'Inter', sans-serif",
                 },
@@ -748,17 +742,17 @@
         // Profile Full Screen Logic
         var isTradedLoggedIn = false;
         
-        function handleProfileWidgetClick() {
+        window.handleProfileWidgetClick = function() {
             if (!isTradedLoggedIn) {
                 window.triggerGoogleLogin();
             } else {
                 document.getElementById('dedicated-profile-page').style.display = 'block';
             }
-        }
+        };
         
-        function closeTraderProfilePage() { 
+        window.closeTraderProfilePage = function() { 
             document.getElementById('dedicated-profile-page').style.display = 'none'; 
-        }
+        };
     </script>
 
     <script type="module">
