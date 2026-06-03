@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.11 NATIVE ENGINE</title>
+    <title>FX_ARJUN | V4.0.12 NATIVE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* Pro-Trader Color Palette & CSS Variables */
+        /* Pro-Trader Color Palette & CSS Variables (Dark Mode Default) */
         :root {
             --bg-primary: #050505;
             --bg-card: #0a0a0a;
@@ -33,6 +33,22 @@
             --tv-icon-active: #d4af37;
         }
 
+        /* Light Mode Variables */
+        body.light-theme {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-sidebar: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-dim: #64748b;
+            --tv-bg: #ffffff;
+            --tv-toolbar-bg: #f1f5f9;
+            --tv-border: #cbd5e1;
+            --tv-icon-color: #475569;
+            --tv-icon-hover: #0f172a;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
         /* Core Reset */
         * { 
             margin: 0; 
@@ -47,6 +63,7 @@
             display: flex; 
             height: 100vh; 
             overflow: hidden; 
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* Sidebar Navigation */
@@ -59,6 +76,7 @@
             flex-direction: column; 
             justify-content: space-between; 
             z-index: 10;
+            transition: 0.3s;
         }
 
         .brand-section h1 { 
@@ -120,7 +138,6 @@
             flex: 1; 
             display: flex;
             flex-direction: column;
-            background: radial-gradient(circle at top right, #0f1218 0%, var(--bg-primary) 60%); 
         }
 
         /* Top Bar */
@@ -131,6 +148,28 @@
             padding: 20px 40px; 
             border-bottom: 1px solid var(--border-color); 
             background-color: var(--bg-primary);
+            gap: 20px;
+            transition: 0.3s;
+        }
+
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-dim);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .theme-toggle-btn:hover {
+            color: var(--gold-accent);
+            border-color: var(--gold-accent);
         }
 
         .profile-widget { 
@@ -200,10 +239,6 @@
             display: flex; 
             flex-direction: column;
         }
-
-        /* =====================================================================
-           TRADINGVIEW STYLE CUSTOM UI LAYOUT
-           ===================================================================== */
         
         .tv-layout-container {
             flex: 1;
@@ -214,9 +249,10 @@
             overflow: hidden;
             background-color: var(--tv-bg);
             box-shadow: var(--card-shadow);
+            transition: 0.3s;
         }
 
-        /* Top Toolbar (Timeframes & Indicators) */
+        /* Top Toolbar */
         .tv-top-toolbar {
             height: 50px;
             background-color: var(--tv-toolbar-bg);
@@ -225,6 +261,7 @@
             align-items: center;
             padding: 0 15px;
             justify-content: space-between;
+            transition: 0.3s;
         }
 
         .tv-timeframes {
@@ -246,36 +283,14 @@
 
         .tv-tf-btn:hover {
             color: var(--tv-icon-hover);
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(120, 120, 120, 0.1);
         }
 
         .tv-tf-btn.active {
             color: var(--gold-accent);
         }
 
-        .tv-top-tools {
-            display: flex;
-            gap: 15px;
-        }
-
-        .tv-top-action {
-            background: transparent;
-            border: none;
-            color: var(--tv-icon-color);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
-        }
-
-        .tv-top-action:hover {
-            color: var(--tv-icon-hover);
-        }
-
-        /* Main Workspace Row */
+        /* Main Row */
         .tv-main-row {
             display: flex;
             flex: 1;
@@ -292,6 +307,7 @@
             align-items: center;
             padding: 10px 0;
             gap: 15px;
+            transition: 0.3s;
         }
 
         .tv-left-tool-btn {
@@ -311,7 +327,7 @@
 
         .tv-left-tool-btn:hover {
             color: var(--tv-icon-hover);
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(120, 120, 120, 0.1);
         }
 
         .tv-left-tool-btn.active {
@@ -323,9 +339,10 @@
         .tv-canvas-wrapper {
             flex: 1;
             position: relative;
-            background-color: #000; /* Deep black for chart */
+            background-color: var(--tv-bg); 
             cursor: crosshair;
             overflow: hidden;
+            transition: 0.3s;
         }
 
         #customChartCanvas {
@@ -347,6 +364,7 @@
             font-size: 11px;
             color: var(--text-dim);
             font-family: monospace;
+            transition: 0.3s;
         }
 
         .current-price-badge {
@@ -373,13 +391,18 @@
         </div>
         
         <div class="sidebar-footer">
-            ALGO ENGINE V4.0.11
+            ALGO ENGINE V4.0.12
         </div>
     </div>
 
     <div class="workspace">
         
         <div class="top-bar">
+            
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
+                <i class="fa-solid fa-moon" id="theme-icon"></i>
+            </button>
+
             <div class="profile-widget">
                 <div class="profile-info">
                     <span class="profile-name">ARJUN NANGRE</span>
@@ -405,12 +428,6 @@
                         <button class="tv-tf-btn">4H</button>
                         <button class="tv-tf-btn">D</button>
                     </div>
-                    
-                    <div class="tv-top-tools">
-                        <button class="tv-top-action"><i class="fa-solid fa-chart-line"></i> Jarvis Indicators</button>
-                        <button class="tv-top-action"><i class="fa-solid fa-play"></i> Replay Engine</button>
-                        <button class="tv-top-action"><i class="fa-solid fa-gear"></i> Settings</button>
-                    </div>
                 </div>
 
                 <div class="tv-main-row">
@@ -425,11 +442,17 @@
                         <button class="tv-left-tool-btn" id="tool-rectangle" onclick="selectTool('rectangle')" title="Rectangle">
                             <i class="fa-regular fa-square"></i>
                         </button>
-                        <button class="tv-left-tool-btn" id="tool-path" onclick="selectTool('path')" title="Path">
-                            <i class="fa-solid fa-pen-nib"></i>
-                        </button>
                         
-                        <div style="flex-grow: 1;"></div> <button class="tv-left-tool-btn" onclick="clearCanvasDrawings()" title="Remove All Drawings">
+                        <button class="tv-left-tool-btn" id="tool-long" onclick="selectTool('long')" title="Long Position">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </button>
+                        <button class="tv-left-tool-btn" id="tool-short" onclick="selectTool('short')" title="Short Position">
+                            <i class="fa-solid fa-arrow-trend-down"></i>
+                        </button>
+
+                        <div style="flex-grow: 1;"></div>
+                        
+                        <button class="tv-left-tool-btn" onclick="clearCanvasDrawings()" title="Remove All Drawings">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -457,6 +480,20 @@
     </div>
 
     <script>
+        // --- THEME TOGGLE LOGIC ---
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const icon = document.getElementById('theme-icon');
+            if (document.body.classList.contains('light-theme')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            renderEngine(); // Re-render canvas with new theme colors
+        }
+
         const canvas = document.getElementById('customChartCanvas');
         const ctx = canvas.getContext('2d');
         const wrapper = document.getElementById('canvas-wrapper');
@@ -466,7 +503,6 @@
         let shapes = [];
         let currentShape = null;
 
-        // Resize Canvas to fit wrapper precisely
         function resizeCanvas() {
             canvas.width = wrapper.clientWidth;
             canvas.height = wrapper.clientHeight;
@@ -475,23 +511,19 @@
         
         window.addEventListener('resize', resizeCanvas);
 
-        // Simulated Market Data (Price coordinates)
+        // Simulated Market Data
         const dummyCandles = [
-            { x: 150, open: 250, high: 180, low: 320, close: 290, color: '#ff4444' }, // Red
-            { x: 200, open: 290, high: 220, low: 350, close: 260, color: '#00ff88' }, // Green
-            { x: 250, open: 260, high: 150, low: 280, close: 180, color: '#00ff88' }, // Green
-            { x: 300, open: 180, high: 100, low: 220, close: 120, color: '#00ff88' }  // Green (Current)
+            { x: 150, open: 250, high: 180, low: 320, close: 290, color: '#ff4444' }, 
+            { x: 200, open: 290, high: 220, low: 350, close: 260, color: '#00ff88' }, 
+            { x: 250, open: 260, high: 150, low: 280, close: 180, color: '#00ff88' }, 
+            { x: 300, open: 180, high: 100, low: 220, close: 120, color: '#00ff88' }  
         ];
 
         // --- TOOL SELECTION LOGIC ---
         function selectTool(toolName) {
             currentTool = toolName;
-            
-            // UI Button Update
             document.querySelectorAll('.tv-left-tool-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('tool-' + toolName).classList.add('active');
-            
-            // Change Cursor based on tool
             wrapper.style.cursor = toolName === 'cursor' ? 'default' : 'crosshair';
         }
 
@@ -514,6 +546,10 @@
                 currentShape = { type: 'line', startX, startY, endX: startX, endY: startY };
             } else if (currentTool === 'rectangle') {
                 currentShape = { type: 'rect', startX, startY, width: 0, height: 0 };
+            } else if (currentTool === 'long') {
+                currentShape = { type: 'long', startX, startY, endY: startY };
+            } else if (currentTool === 'short') {
+                currentShape = { type: 'short', startX, startY, endY: startY };
             }
         });
 
@@ -530,28 +566,30 @@
             } else if (currentTool === 'rectangle') {
                 currentShape.width = mouseX - currentShape.startX;
                 currentShape.height = mouseY - currentShape.startY;
+            } else if (currentTool === 'long' || currentTool === 'short') {
+                currentShape.endY = mouseY; // Track mouse height for TP/SL
             }
             
-            renderEngine(); // Re-render to show live drawing
+            renderEngine();
         });
 
         canvas.addEventListener('mouseup', () => {
             if (!isDrawing) return;
             isDrawing = false;
-            
-            if (currentShape) {
-                shapes.push(currentShape); // Save to memory
-            }
+            if (currentShape) shapes.push(currentShape);
             currentShape = null;
         });
 
         // --- MASTER RENDER LOOP ---
         function renderEngine() {
-            // 1. Clear Screen
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const isLightMode = document.body.classList.contains('light-theme');
+            
+            // 1. Clear Screen with Theme Color
+            ctx.fillStyle = isLightMode ? '#ffffff' : '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // 2. Draw Background Grid
-            ctx.strokeStyle = '#131313';
+            ctx.strokeStyle = isLightMode ? '#e2e8f0' : '#131313';
             ctx.lineWidth = 1;
             ctx.beginPath();
             for(let i = 0; i < canvas.width; i += 60) { ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); }
@@ -562,14 +600,11 @@
             dummyCandles.forEach(c => {
                 ctx.strokeStyle = c.color;
                 ctx.lineWidth = 2;
-                
-                // Wick
                 ctx.beginPath();
                 ctx.moveTo(c.x, c.high);
                 ctx.lineTo(c.x, c.low);
                 ctx.stroke();
                 
-                // Body
                 ctx.fillStyle = c.color;
                 const bodyY = Math.min(c.open, c.close);
                 const bodyHeight = Math.max(c.open, c.close) - bodyY;
@@ -579,41 +614,80 @@
             // 4. Draw Saved User Shapes
             shapes.forEach(shape => drawShape(shape));
 
-            // 5. Draw Active Shape (while dragging mouse)
-            if (currentShape) {
-                drawShape(currentShape);
-            }
+            // 5. Draw Active Shape
+            if (currentShape) drawShape(currentShape);
         }
 
         // Helper function to draw specific shape types
         function drawShape(shape) {
-            ctx.strokeStyle = '#d4af37'; // FX_ARJUN Gold
             ctx.lineWidth = 2;
             
             if (shape.type === 'line') {
+                ctx.strokeStyle = '#d4af37'; 
                 ctx.beginPath();
                 ctx.moveTo(shape.startX, shape.startY);
                 ctx.lineTo(shape.endX, shape.endY);
                 ctx.stroke();
             } else if (shape.type === 'rect') {
-                ctx.fillStyle = 'rgba(212, 175, 55, 0.1)'; // Transparent Gold Fill
+                ctx.strokeStyle = '#d4af37'; 
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.1)'; 
                 ctx.fillRect(shape.startX, shape.startY, shape.width, shape.height);
                 ctx.strokeRect(shape.startX, shape.startY, shape.width, shape.height);
+            } else if (shape.type === 'long') {
+                // Long Position Logic
+                const width = 120;
+                const entryY = shape.startY;
+                const currentY = shape.endY;
+                const diff = entryY - currentY; // Positive if mouse is above entry
+                
+                // Take Profit Box (Green)
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.2)';
+                ctx.fillRect(shape.startX, entryY - diff, width, diff);
+                ctx.strokeStyle = '#00ff88';
+                ctx.strokeRect(shape.startX, entryY - diff, width, diff);
+
+                // Stop Loss Box (Red) - 1:2 Default Ratio visually
+                ctx.fillStyle = 'rgba(255, 68, 68, 0.2)';
+                ctx.fillRect(shape.startX, entryY, width, diff / 2);
+                ctx.strokeStyle = '#ff4444';
+                ctx.strokeRect(shape.startX, entryY, width, diff / 2);
+                
+                // Entry Line
+                ctx.beginPath(); ctx.moveTo(shape.startX, entryY); ctx.lineTo(shape.startX + width, entryY); ctx.stroke();
+                
+            } else if (shape.type === 'short') {
+                // Short Position Logic
+                const width = 120;
+                const entryY = shape.startY;
+                const currentY = shape.endY;
+                const diff = currentY - entryY; // Positive if mouse is below entry
+                
+                // Take Profit Box (Green) - Below Entry
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.2)';
+                ctx.fillRect(shape.startX, entryY, width, diff);
+                ctx.strokeStyle = '#00ff88';
+                ctx.strokeRect(shape.startX, entryY, width, diff);
+
+                // Stop Loss Box (Red) - Above Entry
+                ctx.fillStyle = 'rgba(255, 68, 68, 0.2)';
+                ctx.fillRect(shape.startX, entryY - (diff / 2), width, diff / 2);
+                ctx.strokeStyle = '#ff4444';
+                ctx.strokeRect(shape.startX, entryY - (diff / 2), width, diff / 2);
+                
+                // Entry Line
+                ctx.beginPath(); ctx.moveTo(shape.startX, entryY); ctx.lineTo(shape.startX + width, entryY); ctx.stroke();
             }
         }
 
         function switchTab(btn, tabId) {
-            // Simple tab switcher logic
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            resizeCanvas(); // Ensure canvas matches new layout display
+            resizeCanvas(); 
         }
 
-        // Boot up the engine
         setTimeout(resizeCanvas, 100);
-
     </script>
 </body>
 </html>
