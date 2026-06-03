@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.31 REVOLUTIONARY LIVE TERMINAL</title>
+    <title>FX_ARJUN | V4.0.32 NATIVE PROPRIETARY ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
-            --bg-primary: #050505;
-            --bg-card: #0a0a0a;
+            --bg-primary: #030303;
+            --bg-card: #080808;
             --bg-sidebar: #050505;
             --border-color: #1a1a1a;
             --gold-accent: #d4af37;
@@ -25,7 +25,7 @@
             --loss-red: #ff4444;
             --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
             --font-family: 'Inter', sans-serif;
-            --tv-bg: #020202;
+            --tv-bg: #030303;
             --tv-toolbar-bg: #0a0a0a;
             
             /* MTJ Dashboard Colors */
@@ -49,7 +49,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); }
         body { background-color: var(--bg-primary); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; transition: background-color 0.3s, color 0.3s; }
 
-        /* Sidebar Navigation (Restored All Tabs) */
+        /* Sidebar Navigation */
         .sidebar { 
             width: 280px; 
             background-color: var(--bg-sidebar); 
@@ -61,46 +61,13 @@
             z-index: 10; 
         }
 
-        .brand-section h1 { 
-            font-size: 26px; 
-            font-weight: 900; 
-            color: var(--gold-accent); 
-            text-align: center; 
-            letter-spacing: 2px; 
-            margin-bottom: 50px; 
-        }
-
-        .nav-group { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            flex: 1; 
-        }
-
+        .brand-section h1 { font-size: 26px; font-weight: 900; color: var(--gold-accent); text-align: center; letter-spacing: 2px; margin-bottom: 50px; }
+        .nav-group { display: flex; flex-direction: column; gap: 12px; flex: 1; }
         .nav-btn { 
-            padding: 16px 20px; 
-            color: var(--text-dim); 
-            border: 1px solid var(--border-color); 
-            background: transparent; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            text-align: left; 
-            text-transform: uppercase; 
-            font-size: 12px; 
-            font-weight: 600; 
-            letter-spacing: 1.5px; 
-            outline: none; 
+            padding: 16px 20px; color: var(--text-dim); border: 1px solid var(--border-color); background: transparent; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; text-align: left; text-transform: uppercase; font-size: 12px; font-weight: 600; letter-spacing: 1.5px; outline: none; 
         }
-
         .nav-btn:hover { border-color: var(--gold-accent); color: var(--gold-accent); background: rgba(212, 175, 55, 0.02); }
-        .nav-btn.active { 
-            border-color: var(--gold-accent); 
-            color: var(--text-main); 
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%); 
-            border-left: 4px solid var(--gold-accent); 
-        }
-
+        .nav-btn.active { border-color: var(--gold-accent); color: var(--text-main); background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%); border-left: 4px solid var(--gold-accent); }
         .sidebar-footer { color: var(--text-dim); font-size: 11px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
 
         /* Workspace Core Container */
@@ -108,34 +75,14 @@
 
         /* Top Bar */
         .top-bar { 
-            display: flex; 
-            justify-content: flex-end; 
-            align-items: center; 
-            padding: 15px 40px; 
-            border-bottom: 1px solid var(--border-color); 
-            background-color: var(--bg-sidebar); 
-            gap: 20px; 
-            height: 60px;
+            display: flex; justify-content: flex-end; align-items: center; padding: 15px 40px; border-bottom: 1px solid var(--border-color); background-color: var(--bg-sidebar); gap: 20px; height: 60px;
         }
 
         .tf-btn-header { color: var(--text-dim); padding: 6px 12px; font-size: 13px; font-weight: 600; border-radius: 4px; cursor: pointer; transition: 0.2s; }
         .tf-btn-header:hover { color: #fff; background: var(--border-color); }
         .tf-btn-header.active { color: var(--gold-accent); background: rgba(212, 175, 55, 0.1); }
 
-        .theme-toggle-btn { 
-            background: transparent; 
-            border: 1px solid var(--border-color); 
-            color: var(--text-dim); 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 16px; 
-            transition: 0.3s; 
-        }
+        .theme-toggle-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-dim); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.3s; }
         .theme-toggle-btn:hover { color: var(--gold-accent); border-color: var(--gold-accent); }
 
         .profile-widget { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 8px 12px; border-radius: 8px; border: 1px solid transparent; }
@@ -145,10 +92,8 @@
         .status-dot { width: 8px; height: 8px; background: var(--profit-green); border-radius: 50%; box-shadow: 0 0 8px var(--profit-green); }
         .profile-avatar { width: 42px; height: 42px; border-radius: 50%; background: #111; border: 1px solid var(--border-color); color: var(--text-dim); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; overflow: hidden; }
 
-        /* Replay Bar (Floating at Top) */
-        .replay-controls {
-            display: flex; align-items: center; gap: 10px; background: #111; padding: 6px 12px; border-radius: 6px; border: 1px solid #333; margin-left: auto; margin-right: 20px;
-        }
+        /* Replay Bar */
+        .replay-controls { display: flex; align-items: center; gap: 10px; background: #111; padding: 6px 12px; border-radius: 6px; border: 1px solid #333; margin-left: auto; margin-right: 20px;}
         .replay-btn { background: transparent; border: none; color: #777; cursor: pointer; font-size: 14px; transition: 0.2s; padding: 4px 8px; }
         .replay-btn:hover { color: var(--gold-accent); }
         .replay-btn.play { color: var(--profit-green); }
@@ -158,33 +103,18 @@
         .page { display: none; flex: 1; padding: 20px 40px 40px 40px; overflow-y: auto; }
         .page.active { display: flex; flex-direction: column; }
         
-        .tv-layout-container { 
-            flex: 1; display: flex; flex-direction: column; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background-color: var(--tv-bg); box-shadow: var(--card-shadow); position: relative;
-        }
+        .tv-layout-container { flex: 1; display: flex; flex-direction: column; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background-color: var(--tv-bg); box-shadow: var(--card-shadow); position: relative;}
 
-        /* Chart Area with tools */
+        /* Custom Left Toolbar */
+        .custom-toolbar { width: 45px; background-color: var(--tv-toolbar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding: 15px 0; gap: 5px; z-index: 5; }
+        .tool-icon { width: 32px; height: 32px; color: #666; border-radius: 6px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; font-size: 13px; border: 1px solid transparent; }
+        .tool-icon:hover { color: #fff; background: #1f1f1f; }
+        .tool-icon.active { color: var(--gold-accent); background: rgba(212, 175, 55, 0.05); border-color: rgba(212, 175, 55, 0.2); }
+        .tool-divider { width: 20px; height: 1px; background: var(--border-color); margin: 8px 0; }
+
+        /* Chart Area */
         .main-chart-area { flex: 1; display: flex; position: relative; border-bottom: 1px solid var(--border-color); }
-        #tradingview_container { flex: 1; height: 100%; width: 100%; z-index: 1;}
-
-        /* The "Ironclad" Watermark Hider */
-        .watermark-killer {
-            position: absolute;
-            bottom: 0px;
-            left: 55px; /* Covered the tools panel */
-            width: 140px;
-            height: 35px;
-            background-color: var(--tv-bg);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-dim);
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            border-top: 1px solid var(--border-color);
-            border-radius: 4px;
-        }
+        #chart-anchor { flex: 1; height: 100%; width: 100%; z-index: 1;}
 
         /* Floating Trade Panel (Right Side) */
         .trade-panel { position: absolute; top: 20px; right: 80px; background: rgba(10, 10, 10, 0.95); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; width: 240px; box-shadow: var(--card-shadow); z-index: 100; display: flex; flex-direction: column; gap: 10px; backdrop-filter: blur(10px); }
@@ -200,9 +130,7 @@
         .btn-buy:hover { background: #00ff88; color: #fff; }
 
         /* Bottom Positions & P&L Panel (Exness Style) */
-        .pnl-panel-bottom {
-            height: 220px; background-color: var(--tv-toolbar-bg); border-top: 1px solid var(--border-color); padding: 15px 25px; display: flex; flex-direction: column; overflow-y: hidden; z-index: 5;
-        }
+        .pnl-panel-bottom { height: 220px; background-color: var(--tv-toolbar-bg); border-top: 1px solid var(--border-color); padding: 15px 25px; display: flex; flex-direction: column; overflow-y: hidden; z-index: 5;}
         .pnl-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .pnl-title { font-size: 12px; color: var(--gold-accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .pnl-total { font-family: monospace; font-size: 16px; font-weight: 800; color: #fff; display: flex; gap: 10px; }
@@ -221,26 +149,19 @@
         .header-label { color: var(--gold-accent); font-size: 11px; text-transform: uppercase; margin-bottom: 22px; letter-spacing: 2px; font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
 
         /* Toast Notification */
-        #algo-toast {
-            visibility: hidden; min-width: 250px; background-color: #111; color: var(--gold-accent); text-align: center; border-radius: 8px; border: 1px solid var(--gold-accent); padding: 16px; position: absolute; z-index: 1000; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 13px; font-weight: 700; opacity: 0; transition: opacity 0.3s, bottom 0.3s;
-        }
+        #algo-toast { visibility: hidden; min-width: 250px; background-color: #111; color: var(--gold-accent); text-align: center; border-radius: 8px; border: 1px solid var(--gold-accent); padding: 16px; position: absolute; z-index: 1000; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 13px; font-weight: 700; opacity: 0; transition: opacity 0.3s, bottom 0.3s; }
         #algo-toast.show { visibility: visible; opacity: 1; bottom: 50px; }
 
         /* =========================================
            MTJ DASHBOARD MODAL (Radar Chart)
            ========================================= */
-        .mtj-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999999; justify-content: center; align-items: center; backdrop-filter: blur(10px);
-        }
-        .mtj-dashboard {
-            background: var(--mtj-bg); border: 1px solid #2a2c38; border-radius: 12px; width: 900px; max-height: 90vh; overflow-y: auto; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,1); display: flex; flex-direction: column; gap: 20px;
-        }
+        .mtj-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999999; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
+        .mtj-dashboard { background: var(--mtj-bg); border: 1px solid #2a2c38; border-radius: 12px; width: 900px; max-height: 90vh; overflow-y: auto; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,1); display: flex; flex-direction: column; gap: 20px; }
         .mtj-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2c38; padding-bottom: 15px; }
         .mtj-title { color: #fff; font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 10px;}
         .mtj-close { color: #666; cursor: pointer; font-size: 24px; transition: 0.2s;}
         .mtj-close:hover { color: #fff; }
 
-        /* MTJ Grid Layout (Screenshot clone) */
         .mtj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .mtj-panel { background: var(--mtj-panel); border-radius: 10px; padding: 20px; border: 1px solid #2a2c38; }
         .mtj-panel-title { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;}
@@ -251,7 +172,6 @@
         .val-green { color: var(--profit-green); }
         .val-red { color: var(--loss-red); }
 
-        /* Performance Per Day Box */
         .perf-day-box { display: flex; background: #12141c; border-radius: 8px; overflow: hidden; margin-top: 10px; border: 1px solid #2a2c38;}
         .perf-half { flex: 1; padding: 15px; text-align: center; }
         .perf-half:first-child { border-right: 1px solid #2a2c38; }
@@ -259,7 +179,6 @@
         .perf-data { color: #fff; font-size: 16px; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 2px;}
         .perf-trades { font-size: 11px; color: #666; font-weight: 500;}
 
-        /* Radar Chart Container */
         .radar-container { width: 100%; height: 220px; display: flex; justify-content: center; align-items: center; position: relative;}
 
     </style>
@@ -269,7 +188,7 @@
     <div class="mtj-overlay" id="mtj-overlay">
         <div class="mtj-dashboard">
             <div class="mtj-header">
-                <div class="mtj-title"><i class="fa-solid fa-chart-pie" style="color: var(--gold-accent);"></i> My Trading Journey (Backtest Session Log)</div>
+                <div class="mtj-title"><i class="fa-solid fa-chart-pie" style="color: var(--gold-accent);"></i> My Trading Journey (Session Log)</div>
                 <i class="fa-solid fa-xmark mtj-close" onclick="closeMTJ()"></i>
             </div>
 
@@ -340,7 +259,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -356,7 +274,7 @@
             <button class="nav-btn" onclick="switchTab(this, 'calendar-page')">Macro Calendar</button>
             <button class="nav-btn" onclick="switchTab(this, 'connect-page')">Account Connect</button>
         </div>
-        <div class="sidebar-footer">ALGO ENGINE V4.0.31</div>
+        <div class="sidebar-footer">ALGO ENGINE V4.0.32</div>
     </div>
 
     <div class="workspace">
@@ -364,11 +282,11 @@
         <div class="top-bar">
             <div class="replay-controls" id="replay-toolbar">
                 <span style="font-size: 11px; font-weight: 700; color: #666; margin-right: 5px;">BAR REPLAY</span>
-                <button class="replay-btn play" title="Start Replay"><i class="fa-solid fa-play"></i></button>
-                <button class="replay-btn" title="Stop & Show MTJ" onclick="stopReplaySession()"><i class="fa-solid fa-square"></i></button>
+                <button class="replay-btn play" title="Start Replay" onclick="startReplaySession()"><i class="fa-solid fa-play"></i></button>
+                <button class="replay-btn stop" title="Stop & Show MTJ" onclick="stopReplaySession()"><i class="fa-solid fa-square"></i></button>
             </div>
 
-            <div class="tf-selector" style="display:flex; gap:5px; margin-right: 20px;">
+            <div style="display:flex; gap:5px; margin-right: 20px;">
                 <div class="tf-btn-header">15m</div>
                 <div class="tf-btn-header active">1H</div>
                 <div class="tf-btn-header">4H</div>
@@ -391,9 +309,23 @@
             <div class="tv-layout-container" id="tv-layout-container">
                 
                 <div class="main-chart-area">
-                    <div id="tradingview_container"></div>
+                    <div class="custom-toolbar">
+                        <div class="tool-icon active" onclick="triggerTool(this, 'Crosshair')" title="Cursor"><i class="fa-solid fa-crosshairs"></i></div>
+                        <div class="tool-divider"></div>
+                        <div class="tool-icon" onclick="triggerTool(this, 'Trendline')" title="Trendline"><i class="fa-solid fa-minus" style="transform: rotate(-45deg);"></i></div>
+                        <div class="tool-icon" onclick="triggerTool(this, 'Horizontal Line')" title="Support/Resistance"><i class="fa-solid fa-minus"></i></div>
+                        <div class="tool-divider"></div>
+                        <div class="tool-icon" onclick="triggerTool(this, 'Fibonacci Matrix')" title="Fibonacci Matrix"><i class="fa-solid fa-bars-staggered"></i></div>
+                        <div class="tool-icon" onclick="triggerTool(this, 'Liquidity Void')" title="Order Block / Rectangle"><i class="fa-regular fa-square"></i></div>
+                        <div class="tool-divider"></div>
+                        <div class="tool-icon" onclick="triggerTool(this, 'Position Sizer')" title="Position Calculator"><i class="fa-solid fa-arrow-right-arrow-left" style="transform: rotate(-45deg);"></i></div>
+                        <div class="tool-divider"></div>
+                        <div class="tool-icon" onclick="triggerTool(this, 'Text')" title="Text Tool"><i class="fa-solid fa-font"></i></div>
+                        <div class="tool-divider"></div>
+                        <div class="tool-icon" onclick="triggerTool(this, 'Clear')" title="Clear Chart"><i class="fa-solid fa-trash"></i></div>
+                    </div>
 
-                    <div class="watermark-killer">FX_ARJUN ALGO</div>
+                    <div id="chart-anchor"></div>
 
                     <div class="trade-panel">
                         <div class="trade-row">
@@ -422,10 +354,10 @@
                     <div style="flex:1; overflow-y:auto; -webkit-overflow-scrolling: touch;">
                         <table class="positions-table">
                             <thead><tr><th>Ticket</th><th>Type</th><th>Vol</th><th>Symbol</th><th>Open Price</th><th>Current</th><th>Profit ($)</th></tr></thead>
-                            <tbody>
-                                <tr><td>#200341</td><td><span class="type-long">BUY</span></td><td>1.00</td><td>XAUUSD</td><td>2324.50</td><td>2328.10</td><td class="positive">+$360.00</td></tr>
-                                <tr><td>#200342</td><td><span class="type-long">BUY</span></td><td>2.00</td><td>XAUUSD</td><td>2322.80</td><td>2328.10</td><td class="positive">+$1,060.00</td></tr>
-                                <tr><td>#200343</td><td><span class="type-short">SELL</span></td><td>0.50</td><td>XAUUSD</td><td>2329.10</td><td>2328.10</td><td class="positive">+$50.00</td></tr>
+                            <tbody id="positions-body">
+                                <tr><td>#200341</td><td><span class="type-long">BUY</span></td><td>1.00</td><td>XAUUSD</td><td>2324.50</td><td class="live-price-cell">2328.10</td><td class="positive">+$360.00</td></tr>
+                                <tr><td>#200342</td><td><span class="type-long">BUY</span></td><td>2.00</td><td>XAUUSD</td><td>2322.80</td><td class="live-price-cell">2328.10</td><td class="positive">+$1,060.00</td></tr>
+                                <tr><td>#200343</td><td><span class="type-short">SELL</span></td><td>0.50</td><td>XAUUSD</td><td>2329.10</td><td class="live-price-cell">2328.10</td><td class="positive">+$50.00</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -441,28 +373,24 @@
                 <p style="color: var(--text-dim);">Institutional risk matrix calculation standing by.</p>
             </div>
         </div>
-
         <div id="history-page" class="page">
             <div class="boundary-box">
                 <div class="header-label">Terminal Trade Log</div>
                 <p style="color: var(--text-dim);">Synchronizing encrypted trading logs...</p>
             </div>
         </div>
-
         <div id="jarvis-page" class="page">
             <div class="boundary-box">
                 <div class="header-label">Jarvis AI Analysis Core</div>
                 <p style="color: var(--text-dim);">Scanning order blocks and liquidity voids in raw data layers...</p>
             </div>
         </div>
-
         <div id="calendar-page" class="page">
             <div class="boundary-box">
                 <div class="header-label">Macro Economic Calendar</div>
                 <p style="color: var(--text-dim);">Fetching high impact news events from server nodes...</p>
             </div>
         </div>
-
         <div id="connect-page" class="page">
             <div class="boundary-box">
                 <div class="header-label">Account Node Sync</div>
@@ -477,7 +405,7 @@
             const toast = document.getElementById("algo-toast");
             toast.innerText = message;
             toast.classList.add("show");
-            setTimeout(() => toast.classList.remove("show"), 3000);
+            setTimeout(() => toast.classList.remove("show"), 2500);
         }
 
         function toggleTheme() {
@@ -490,41 +418,110 @@
             }
         }
 
-        // Tab Switching Logic (Fixes side panel issue)
         function switchTab(btn, tabId) {
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
         }
 
-        // --- TRADE SIMULATION ---
+        function triggerTool(element, toolName) {
+            document.querySelectorAll('.tool-icon').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            if(toolName !== 'Crosshair' && toolName !== 'Clear') {
+                showToast(`Jarvis Math Core syncing for ${toolName}...`);
+                setTimeout(() => { document.querySelectorAll('.tool-icon')[0].classList.add('active'); element.classList.remove('active'); }, 2000);
+            }
+        }
+
         function simulateTrade(type) {
             showToast(`${type} order Routed to MetaTrader Node via Jarvis Gateway.`);
         }
 
-        // --- TRADINGVIEW WIDGET (UNLOCKED TOOLS) ---
-        new TradingView.widget({
-            "autosize": true,
-            "symbol": "OANDA:XAUUSD",
-            "interval": "60",
-            "timezone": "Asia/Kolkata",
-            "theme": "dark",
-            "style": "1", // 1=Candles
-            "locale": "en",
-            "enable_publishing": false,
-            "hide_side_toolbar": false, // SARE TOOLS NATIVELY UNLOCKED
-            "allow_symbol_change": true,
-            "backgroundColor": "#020202",
-            "gridColor": "#111111",
-            "container_id": "tradingview_container",
-            "toolbar_bg": "#0a0a0a",
-            "studies": [ "Volume@tv-basicstudies" ]
+        // --- NATIVE LIGHTWEIGHT ENGINE INITIALIZATION ---
+        const container = document.getElementById('chart-anchor');
+        
+        const chart = LightweightCharts.createChart(container, {
+            layout: {
+                backgroundColor: 'transparent',
+                textColor: '#777777',
+                fontFamily: "'Inter', sans-serif"
+            },
+            grid: { vertLines: { color: '#111111' }, horzLines: { color: '#111111' } },
+            crosshair: {
+                mode: LightweightCharts.CrosshairMode.Normal,
+                vertLine: { color: '#444', style: 2, labelBackgroundColor: '#d4af37' },
+                horzLine: { color: '#444', style: 2, labelBackgroundColor: '#d4af37' }
+            },
+            rightPriceScale: { borderColor: '#1a1a1a', autoScale: true },
+            timeScale: { borderColor: '#1a1a1a', timeVisible: true }
         });
 
-        // --- MTJ DASHBOARD & RADAR CHART ---
+        const candleSeries = chart.addCandlestickSeries({
+            upColor: '#00ff88', downColor: '#ff4444', borderVisible: false, wickUpColor: '#00ff88', wickDownColor: '#ff4444'
+        });
+
+        const data = [];
+        let price = 2320.50;
+        let time = new Date('2026-06-01T00:00:00Z').getTime() / 1000;
+
+        for (let i = 0; i < 200; i++) {
+            let open = price;
+            let close = open + (Math.random() * 6 - 3);
+            let high = Math.max(open, close) + (Math.random() * 2);
+            let low = Math.min(open, close) - (Math.random() * 2);
+            data.push({ time: time, open, high, low, close });
+            price = close;
+            time += 15 * 60; // 15m intervals
+        }
+        candleSeries.setData(data);
+
+        // Responsive Chart sizing
+        new ResizeObserver(entries => {
+            if (entries.length === 0 || entries[0].target !== container) return;
+            const newRect = entries[0].contentRect;
+            chart.applyOptions({ height: newRect.height, width: newRect.width });
+        }).observe(container);
+
+        // Live Tick Simulator
+        let engineInterval;
+        function startLiveFeed() {
+            if(engineInterval) clearInterval(engineInterval);
+            engineInterval = setInterval(() => {
+                let last = data[data.length - 1];
+                let tick = (Math.random() * 0.4 - 0.2);
+                last.close += tick;
+                if(last.close > last.high) last.high = last.close;
+                if(last.close < last.low) last.low = last.close;
+                candleSeries.update(last);
+
+                // Update bottom panel live prices
+                document.querySelectorAll('.live-price-cell').forEach(el => {
+                    el.innerText = last.close.toFixed(2);
+                });
+            }, 300);
+        }
+        startLiveFeed();
+
+        // --- REPLAY & MTJ LOGIC ---
+        function startReplaySession() {
+            showToast("Bar Replay Engine Accelerated.");
+            if(engineInterval) clearInterval(engineInterval);
+            engineInterval = setInterval(() => {
+                let last = data[data.length - 1];
+                let tick = (Math.random() * 1.5 - 0.75);
+                last.close += tick;
+                if(last.close > last.high) last.high = last.close;
+                if(last.close < last.low) last.low = last.close;
+                if(Math.random() > 0.8) { 
+                    data.push({ time: last.time + 15*60, open: last.close, high: last.close, low: last.close, close: last.close });
+                }
+                candleSeries.update(last);
+            }, 100);
+        }
+
         function stopReplaySession() {
+            startLiveFeed(); // Return to normal speed
             showToast("Replay Terminated. Compiling MTJ Session Data...");
             setTimeout(() => {
                 document.getElementById('mtj-overlay').style.display = 'flex';
@@ -534,7 +531,9 @@
 
         function closeMTJ() { document.getElementById('mtj-overlay').style.display = 'none'; }
 
+        let radarChartInitialized = false;
         function initMTJRadar() {
+            if(radarChartInitialized) return;
             const ctx = document.getElementById('sessionRadar').getContext('2d');
             new Chart(ctx, {
                 type: 'radar',
@@ -542,10 +541,9 @@
                     labels: ['London', 'New York', 'Asia', 'Outside'],
                     datasets: [{
                         label: 'Session Profit%',
-                        data: [19.46, 5.2, -2.64, 2.1], // Matched screenshot data
-                        backgroundColor: 'rgba(212, 175, 55, 0.2)', // Gold fill
-                        borderColor: '#d4af37',
-                        borderWidth: 2,
+                        data: [19.46, 5.2, -2.64, 2.1], // Matched screenshot
+                        backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                        borderColor: '#d4af37', borderWidth: 2,
                         pointBackgroundColor: '#d4af37', pointBorderColor: '#fff',
                     }]
                 },
@@ -561,6 +559,7 @@
                     }
                 }
             });
+            radarChartInitialized = true;
         }
     </script>
 </body>
