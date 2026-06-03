@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.28 INSTITUTIONAL MASTERPIECE</title>
+    <title>FX_ARJUN | V4.0.29 INSTITUTIONAL MTJ ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
@@ -23,6 +25,8 @@
             --loss-red: #f23645;   
             --tool-bg: #0a0a0a;
             --tool-hover: #1f1f1f;
+            --mtj-bg: #12141c;
+            --mtj-panel: #1a1c24;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -38,29 +42,32 @@
         /* Workspace */
         .workspace { flex: 1; display: flex; flex-direction: column; background: var(--bg-primary); }
         
-        /* Institutional Top Header */
+        /* Top Header */
         .top-bar { height: 55px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: var(--bg-sidebar); z-index: 5;}
         .pair-info { display: flex; align-items: center; gap: 12px; }
         .pair-name { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
         .pair-status { font-size: 10px; background: rgba(8, 153, 129, 0.1); color: var(--profit-green); padding: 3px 6px; border-radius: 3px; font-weight: 800; border: 1px solid rgba(8, 153, 129, 0.2); letter-spacing: 0.5px;}
         
+        /* Mode Toggle */
+        .mode-toggle { display: flex; background: #000; border: 1px solid #222; border-radius: 6px; overflow: hidden; margin-left: 20px;}
+        .mode-btn { background: transparent; border: none; color: var(--text-dim); font-size: 11px; font-weight: 800; padding: 6px 12px; cursor: pointer; transition: 0.2s; letter-spacing: 0.5px;}
+        .mode-btn.active { background: #222; color: #fff; }
+        .mode-btn.active.live { color: var(--profit-green); }
+        .mode-btn.active.backtest { color: var(--gold-accent); }
+
         .tf-selector { display: flex; gap: 5px; margin-left: 15px; border-left: 1px solid var(--border-color); padding-left: 15px;}
         .tf-btn { color: var(--text-dim); font-size: 12px; font-weight: 700; cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: 0.2s; }
         .tf-btn:hover { color: #fff; background: var(--tool-hover); }
         .tf-btn.active { color: var(--gold-accent); background: rgba(212, 175, 55, 0.1); }
 
-        .system-stats { display: flex; gap: 15px; font-family: monospace; font-size: 11px; color: var(--text-dim); margin-left: auto; margin-right: 20px;}
-        .stat-item { display: flex; align-items: center; gap: 5px; }
-        .stat-item span { color: #aaa; font-weight: bold; }
-
-        /* Replay Toolbar */
-        .replay-toolbar { display: flex; align-items: center; gap: 10px; background: #0a0a0a; padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border-color); margin-right: 20px;}
+        /* Replay Toolbar (Hidden by default in LIVE mode) */
+        .replay-toolbar { display: none; align-items: center; gap: 10px; background: #0a0a0a; padding: 4px 10px; border-radius: 4px; border: 1px solid #333; margin-left: auto; margin-right: 20px;}
         .replay-btn { background: transparent; border: none; color: #777; cursor: pointer; font-size: 13px; transition: 0.2s; padding: 4px 6px; }
         .replay-btn:hover { color: var(--gold-accent); }
         .replay-btn.play { color: var(--profit-green); }
         .replay-btn.stop { color: var(--loss-red); }
 
-        .header-actions { display: flex; gap: 15px; align-items: center; border-left: 1px solid var(--border-color); padding-left: 20px;}
+        .header-actions { display: flex; gap: 15px; align-items: center; margin-left: auto;}
         .user-tag { background: transparent; color: var(--text-main); font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 8px;}
         .user-avatar { width: 24px; height: 24px; background: var(--gold-accent); color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; }
 
@@ -78,82 +85,141 @@
         .engine-container { flex: 1; position: relative; }
         #chart-anchor { width: 100%; height: 100%; outline: none; }
         
-        /* Ultimate Trade Panel */
+        /* Floating Trade Panel */
         .trade-panel { position: absolute; top: 15px; left: 15px; background: rgba(10, 10, 10, 0.95); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; width: 220px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 10; backdrop-filter: blur(10px); }
         .trade-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .trade-title { font-size: 10px; color: var(--gold-accent); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
         .spread-badge { font-size: 9px; background: #111; padding: 2px 4px; border-radius: 2px; color: #888; border: 1px solid #222; }
-        
         .qty-controls { display: flex; align-items: center; justify-content: space-between; background: #000; border: 1px solid #222; border-radius: 4px; padding: 2px; margin-bottom: 12px; }
         .qty-btn { background: transparent; border: none; color: #888; cursor: pointer; width: 24px; height: 24px; transition: 0.2s; }
         .qty-btn:hover { color: #fff; background: #222; }
         .lot-input { background: transparent; border: none; color: #fff; width: 50px; text-align: center; font-family: monospace; font-size: 13px; font-weight: bold; outline: none; }
-        
         .exec-btns { display: flex; gap: 8px; }
-        .btn-sell { flex: 1; background: var(--loss-red); border: none; color: #fff; padding: 8px 0; border-radius: 4px; font-weight: 800; font-size: 12px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(242, 54, 69, 0.2); display: flex; flex-direction: column; align-items: center; }
-        .btn-buy { flex: 1; background: var(--profit-green); border: none; color: #fff; padding: 8px 0; border-radius: 4px; font-weight: 800; font-size: 12px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(8, 153, 129, 0.2); display: flex; flex-direction: column; align-items: center; }
+        .btn-sell, .btn-buy { flex: 1; border: none; color: #fff; padding: 8px 0; border-radius: 4px; font-weight: 800; font-size: 12px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; }
+        .btn-sell { background: var(--loss-red); box-shadow: 0 4px 10px rgba(242, 54, 69, 0.2); }
+        .btn-buy { background: var(--profit-green); box-shadow: 0 4px 10px rgba(8, 153, 129, 0.2); }
         .btn-sell:hover, .btn-buy:hover { transform: translateY(-1px); filter: brightness(1.1); }
-        .btn-sell:active, .btn-buy:active { transform: translateY(1px); }
         .btn-price { font-size: 9px; opacity: 0.8; font-family: monospace; font-weight: normal; margin-top: 2px;}
 
-        /* Floating P&L */
-        .floating-pnl { position: absolute; bottom: 30px; left: 15px; background: rgba(10,10,10,0.9); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 4px; font-family: monospace; font-size: 14px; font-weight: 800; color: #888; z-index: 10; backdrop-filter: blur(5px); box-shadow: 0 4px 15px rgba(0,0,0,0.5);}
-        .pnl-positive { color: var(--profit-green); border-color: rgba(8, 153, 129, 0.4); box-shadow: 0 4px 15px rgba(8, 153, 129, 0.15);}
-        .pnl-negative { color: var(--loss-red); border-color: rgba(242, 54, 69, 0.4); box-shadow: 0 4px 15px rgba(242, 54, 69, 0.15);}
-
-        /* MTJ Data Modal */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
-        .mtj-modal { background: #080808; border: 1px solid #222; border-radius: 8px; width: 650px; padding: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.9); }
-        .mtj-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1a1a; padding-bottom: 15px; margin-bottom: 20px; }
-        .mtj-title { color: var(--text-main); font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 8px;}
-        .mtj-close { color: var(--text-dim); cursor: pointer; font-size: 18px; }
-        .mtj-close:hover { color: #fff; }
-        .mtj-stats { display: flex; justify-content: space-between; margin-bottom: 20px; background: #0a0a0a; border: 1px solid #151515; border-radius: 6px; padding: 15px;}
-        .stat-box { flex: 1; text-align: center; border-right: 1px solid #1a1a1a; }
-        .stat-box:last-child { border-right: none; }
-        .stat-label { font-size: 10px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stat-val { font-size: 20px; font-weight: 900; margin-top: 4px; font-family: monospace; }
-        .mtj-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
-        .mtj-table th { color: var(--text-dim); padding-bottom: 8px; border-bottom: 1px solid #1a1a1a; text-transform: uppercase; font-weight: 700; font-size: 10px; letter-spacing: 0.5px;}
-        .mtj-table td { padding: 10px 0; border-bottom: 1px solid #111; color: #ddd; font-family: monospace; }
-        .badge { padding: 2px 6px; border-radius: 2px; font-size: 9px; font-weight: 800; letter-spacing: 0.5px;}
-        .b-long { background: rgba(8, 153, 129, 0.15); color: var(--profit-green); border: 1px solid rgba(8, 153, 129, 0.3);}
-        .b-short { background: rgba(242, 54, 69, 0.15); color: var(--loss-red); border: 1px solid rgba(242, 54, 69, 0.3);}
-
         /* Notification Toast */
-        #algo-toast { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(10,10,10,0.95); border: 1px solid #222; padding: 10px 20px; border-radius: 4px; display: flex; align-items: center; gap: 10px; color: var(--text-main); font-size: 12px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.8); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 100; backdrop-filter: blur(5px);}
+        #algo-toast { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(10,10,10,0.95); border: 1px solid #222; padding: 10px 20px; border-radius: 4px; display: flex; align-items: center; gap: 10px; color: var(--text-main); font-size: 12px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.8); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 100;}
         #algo-toast.show { opacity: 1; bottom: 80px; }
         #algo-toast i { color: var(--gold-accent); }
+
+        /* =========================================
+           MTJ (MY TRADING JOURNEY) DASHBOARD MODAL
+           ========================================= */
+        .mtj-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 999; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
+        .mtj-dashboard { background: var(--mtj-bg); border: 1px solid #2a2c38; border-radius: 12px; width: 900px; max-height: 90vh; overflow-y: auto; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,1); display: flex; flex-direction: column; gap: 20px; }
+        .mtj-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2c38; padding-bottom: 15px; }
+        .mtj-title { color: #fff; font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 10px;}
+        .mtj-close { color: #666; cursor: pointer; font-size: 24px; transition: 0.2s;}
+        .mtj-close:hover { color: #fff; }
+
+        /* MTJ Grid Layout */
+        .mtj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        /* MTJ Panels */
+        .mtj-panel { background: var(--mtj-panel); border-radius: 10px; padding: 20px; border: 1px solid #2a2c38; }
+        .mtj-panel-title { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;}
+        
+        /* Stats List */
+        .stat-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #2a2c38; font-size: 14px;}
+        .stat-row:last-child { border-bottom: none; padding-bottom: 0;}
+        .stat-name { color: #8890a5; font-weight: 600; display: flex; align-items: center; gap: 6px;}
+        .stat-val { color: #fff; font-weight: 800; font-family: monospace; font-size: 15px;}
+        .val-green { color: var(--profit-green); }
+        .val-red { color: var(--loss-red); }
+
+        /* Performance Per Day Box */
+        .perf-day-box { display: flex; background: #12141c; border-radius: 8px; overflow: hidden; margin-top: 10px; border: 1px solid #2a2c38;}
+        .perf-half { flex: 1; padding: 15px; text-align: center; }
+        .perf-half:first-child { border-right: 1px solid #2a2c38; }
+        .perf-label { color: #8890a5; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px;}
+        .perf-data { color: #fff; font-size: 16px; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 2px;}
+        .perf-trades { font-size: 11px; color: #666; font-weight: 500;}
+
+        /* Radar Chart Container */
+        .radar-container { width: 100%; height: 220px; display: flex; justify-content: center; align-items: center; position: relative;}
     </style>
 </head>
 <body>
 
-    <div class="modal-overlay" id="mtj-overlay">
-        <div class="mtj-modal">
+    <div class="mtj-overlay" id="mtj-overlay">
+        <div class="mtj-dashboard">
             <div class="mtj-header">
-                <div class="mtj-title"><i class="fa-solid fa-server" style="color: var(--gold-accent);"></i> Jarvis Execution Log</div>
+                <div class="mtj-title"><i class="fa-solid fa-chart-pie" style="color: var(--gold-accent);"></i> My Trading Journey (Backtest Session)</div>
                 <i class="fa-solid fa-xmark mtj-close" onclick="closeMTJ()"></i>
             </div>
-            <div class="mtj-stats">
-                <div class="stat-box">
-                    <div class="stat-label">Total Trades</div>
-                    <div class="stat-val">3</div>
+
+            <div class="mtj-grid">
+                <div class="mtj-panel">
+                    <div class="mtj-panel-title">Winning Trades</div>
+                    <div class="stat-row">
+                        <div class="stat-name">Total Winners <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val">8</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-name">Best Win <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val val-green">$1,628.97</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-name">Average Win <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val val-green">$788.71</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-name">Avg Duration <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val">17h 58m 4s</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-name">Avg Win Streak <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val">1.50</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-name">Max Win Streak <i class="fa-regular fa-circle-question" style="font-size: 10px;"></i></div>
+                        <div class="stat-val">3.00</div>
+                    </div>
                 </div>
-                <div class="stat-box">
-                    <div class="stat-label">Win Rate</div>
-                    <div class="stat-val" style="color: #fff;">66.6%</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">Net P&L</div>
-                    <div class="stat-val" style="color: var(--profit-green);">+$1,350.00</div>
+
+                <div class="mtj-panel">
+                    <div class="mtj-panel-title" style="justify-content: space-between;">
+                        Session Profit
+                        <span style="font-size: 12px; color: #8890a5;"><i class="fa-solid fa-table-cells-large"></i> Stats</span>
+                    </div>
+                    <div class="radar-container">
+                        <canvas id="sessionRadar"></canvas>
+                    </div>
+                    <div class="perf-day-box">
+                        <div class="perf-half">
+                            <div class="perf-label">BEST</div>
+                            <div class="perf-data">London <span class="val-green">+19.46%</span></div>
+                            <div class="perf-trades">21 trades</div>
+                        </div>
+                        <div class="perf-half">
+                            <div class="perf-label">WORST</div>
+                            <div class="perf-data">Asia <span class="val-red">-2.64%</span></div>
+                            <div class="perf-trades">5 trades</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <table class="mtj-table">
-                <tr><th>Ticket</th><th>Type</th><th>Volume</th><th>Open Price</th><th>Close Price</th><th>P&L</th></tr>
-                <tr><td>#10042</td><td><span class="badge b-long">BUY</span></td><td>5.00</td><td>2324.50</td><td>2328.10</td><td style="color: var(--profit-green);">+$1,800.00</td></tr>
-                <tr><td>#10043</td><td><span class="badge b-short">SELL</span></td><td>2.00</td><td>2330.15</td><td>2332.40</td><td style="color: var(--loss-red);">-$450.00</td></tr>
-                <tr><td>#10044</td><td><span class="badge b-long">BUY</span></td><td>5.00</td><td>2326.80</td><td>2326.80</td><td style="color: #888;">$0.00</td></tr>
-            </table>
+
+            <div class="mtj-panel" style="margin-top: -10px;">
+                <div class="mtj-panel-title">Performance per day <i class="fa-regular fa-circle-question" style="font-size: 12px; color: #666;"></i></div>
+                <div class="perf-day-box">
+                    <div class="perf-half">
+                        <div class="perf-label">BEST</div>
+                        <div class="perf-data">Wednesday <span class="val-green">+71.40%</span></div>
+                        <div class="perf-trades">14 trades</div>
+                    </div>
+                    <div class="perf-half">
+                        <div class="perf-label">WORST</div>
+                        <div class="perf-data">Tuesday <span class="val-red">-70.14%</span></div>
+                        <div class="perf-trades">6 trades</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -161,7 +227,6 @@
         <div class="brand-icon">FX</div>
         <div class="nav-btn active" title="Charting Engine"><i class="fa-solid fa-chart-line"></i></div>
         <div class="nav-btn" title="Jarvis AI"><i class="fa-solid fa-microchip"></i></div>
-        <div class="nav-btn" title="Risk Matrix"><i class="fa-solid fa-shield-halved"></i></div>
         <div class="nav-btn" title="Settings"><i class="fa-solid fa-gear"></i></div>
     </div>
 
@@ -170,7 +235,12 @@
         <div class="top-bar">
             <div class="pair-info">
                 <div class="pair-name">XAUUSD</div>
-                <div class="pair-status">LIVE</div>
+                
+                <div class="mode-toggle">
+                    <button class="mode-btn active live" id="btn-mode-live" onclick="setMode('LIVE')">LIVE</button>
+                    <button class="mode-btn" id="btn-mode-backtest" onclick="setMode('BACKTEST')">BACKTEST</button>
+                </div>
+
                 <div class="tf-selector">
                     <div class="tf-btn">5m</div>
                     <div class="tf-btn active">15m</div>
@@ -178,19 +248,12 @@
                     <div class="tf-btn">4H</div>
                 </div>
             </div>
-            
-            <div class="system-stats">
-                <div class="stat-item"><i class="fa-solid fa-signal" style="color: var(--profit-green);"></i> Latency: <span>12ms</span></div>
-                <div class="stat-item"><i class="fa-solid fa-database" style="color: var(--gold-accent);"></i> Feed: <span>OANDA</span></div>
-            </div>
 
-            <div class="replay-toolbar">
+            <div class="replay-toolbar" id="replay-controls">
                 <span style="font-size: 10px; font-weight: 800; color: #555; margin-right: 5px; letter-spacing: 0.5px;">REPLAY</span>
-                <button class="replay-btn" title="Step Back"><i class="fa-solid fa-backward-step"></i></button>
-                <button class="replay-btn play" onclick="startReplay()" title="Play"><i class="fa-solid fa-play"></i></button>
-                <button class="replay-btn" title="Forward"><i class="fa-solid fa-forward-step"></i></button>
-                <div style="width: 1px; height: 14px; background: #222; margin: 0 4px;"></div>
-                <button class="replay-btn stop" onclick="stopReplay()" title="End Replay & Show Data"><i class="fa-solid fa-square"></i></button>
+                <button class="replay-btn play" onclick="startReplay()" title="Play Bar Replay"><i class="fa-solid fa-play"></i></button>
+                <div style="width: 1px; height: 14px; background: #333; margin: 0 4px;"></div>
+                <button class="replay-btn stop" onclick="stopReplay()" title="Stop Replay & Show MTJ"><i class="fa-solid fa-square"></i></button>
             </div>
 
             <div class="header-actions">
@@ -207,14 +270,9 @@
                 <div class="tool-icon active" onclick="triggerTool(this, 'Crosshair')" title="Cursor"><i class="fa-solid fa-crosshairs"></i></div>
                 <div class="tool-divider"></div>
                 <div class="tool-icon" onclick="triggerTool(this, 'Trendline')" title="Trendline"><i class="fa-solid fa-minus" style="transform: rotate(-45deg);"></i></div>
-                <div class="tool-icon" onclick="triggerTool(this, 'Horizontal Line')" title="Support/Resistance"><i class="fa-solid fa-minus"></i></div>
                 <div class="tool-divider"></div>
                 <div class="tool-icon" onclick="triggerTool(this, 'Fibonacci Matrix')" title="Fibonacci Matrix"><i class="fa-solid fa-bars-staggered"></i></div>
                 <div class="tool-icon" onclick="triggerTool(this, 'Liquidity Void')" title="Order Block / Rectangle"><i class="fa-regular fa-square"></i></div>
-                <div class="tool-divider"></div>
-                <div class="tool-icon" onclick="triggerTool(this, 'Position Sizer')" title="Position Calculator"><i class="fa-solid fa-arrow-right-arrow-left" style="transform: rotate(-45deg);"></i></div>
-                <div class="tool-divider"></div>
-                <div class="tool-icon" onclick="triggerTool(this, 'Text')" title="Text Tool"><i class="fa-solid fa-font"></i></div>
                 <div class="tool-divider"></div>
                 <div class="tool-icon" onclick="triggerTool(this, 'Clear')" title="Clear Chart"><i class="fa-solid fa-trash"></i></div>
             </div>
@@ -224,7 +282,7 @@
                 
                 <div class="trade-panel">
                     <div class="trade-header">
-                        <span class="trade-title">One-Click Execution</span>
+                        <span class="trade-title">Execution</span>
                         <span class="spread-badge">0.8</span>
                     </div>
                     <div class="qty-controls">
@@ -233,19 +291,9 @@
                         <button class="qty-btn" onclick="document.getElementById('lotSize').stepUp()">+</button>
                     </div>
                     <div class="exec-btns">
-                        <button class="btn-sell" onclick="simulateTrade('Sell')">
-                            SELL
-                            <span class="btn-price" id="btn-sell-price">2326.40</span>
-                        </button>
-                        <button class="btn-buy" onclick="simulateTrade('Buy')">
-                            BUY
-                            <span class="btn-price" id="btn-buy-price">2326.48</span>
-                        </button>
+                        <button class="btn-sell" onclick="simulateTrade('Sell')">SELL <span class="btn-price" id="btn-sell-price">0.00</span></button>
+                        <button class="btn-buy" onclick="simulateTrade('Buy')">BUY <span class="btn-price" id="btn-buy-price">0.00</span></button>
                     </div>
-                </div>
-
-                <div id="pnl-display" class="floating-pnl">
-                    P&L: $0.00
                 </div>
                 
                 <div id="algo-toast">
@@ -255,7 +303,6 @@
             </div>
 
         </div>
-
     </div>
 
     <script>
@@ -263,13 +310,9 @@
         function triggerTool(element, toolName) {
             document.querySelectorAll('.tool-icon').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
-
             if(toolName !== 'Crosshair' && toolName !== 'Clear') {
-                showToast(`Jarvis Math Core compiling ${toolName} geometry...`);
-                setTimeout(() => {
-                    document.querySelectorAll('.tool-icon')[0].classList.add('active');
-                    element.classList.remove('active');
-                }, 2000);
+                showToast(`Jarvis Math Core compiling ${toolName}...`);
+                setTimeout(() => { document.querySelectorAll('.tool-icon')[0].classList.add('active'); element.classList.remove('active'); }, 2000);
             }
         }
 
@@ -282,97 +325,147 @@
 
         function simulateTrade(type) {
             let lots = document.getElementById('lotSize').value;
-            showToast(`Routing ${lots} Lot ${type} order via Jarvis Node...`);
-            const pnlDisplay = document.getElementById('pnl-display');
-            setTimeout(() => {
-                pnlDisplay.innerText = "P&L: +$1,350.00";
-                pnlDisplay.className = "floating-pnl pnl-positive";
-            }, 1200);
+            showToast(`Routing ${lots} Lot ${type} order...`);
         }
 
-        // --- MTJ MODAL LOGIC ---
+        // --- CHART.JS MTJ RADAR CHART INIT ---
+        let radarChartInitialized = false;
+        function initMTJRadar() {
+            if(radarChartInitialized) return;
+            const ctx = document.getElementById('sessionRadar').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['London', 'New York', 'Asia', 'Outside'],
+                    datasets: [{
+                        data: [19.46, 5.2, -2.64, 2.1], // Mock data based on screenshot
+                        backgroundColor: 'rgba(212, 175, 55, 0.2)', // Gold fill
+                        borderColor: '#d4af37',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#d4af37',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#d4af37'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#2a2c38' },
+                            grid: { color: '#2a2c38' },
+                            pointLabels: { color: '#8890a5', font: { size: 12, family: 'Inter', weight: 'bold' } },
+                            ticks: { display: false, min: -5, max: 25 }
+                        }
+                    }
+                }
+            });
+            radarChartInitialized = true;
+        }
+
+        // --- LIVE VS BACKTEST MODE LOGIC ---
+        let isLiveMode = true;
+        let engineInterval; // Holds either live or replay interval
+
+        function setMode(mode) {
+            document.getElementById('btn-mode-live').classList.remove('active', 'live');
+            document.getElementById('btn-mode-backtest').classList.remove('active', 'backtest');
+            
+            if(engineInterval) clearInterval(engineInterval);
+
+            if(mode === 'LIVE') {
+                isLiveMode = true;
+                document.getElementById('btn-mode-live').classList.add('active', 'live');
+                document.getElementById('replay-controls').style.display = 'none';
+                showToast("Switched to Live Market Feed.");
+                startLiveFeed();
+            } else {
+                isLiveMode = false;
+                document.getElementById('btn-mode-backtest').classList.add('active', 'backtest');
+                document.getElementById('replay-controls').style.display = 'flex';
+                showToast("Switched to Backtesting Mode.");
+            }
+        }
+
+        // --- REPLAY & MTJ MODAL LOGIC ---
         function closeMTJ() { document.getElementById('mtj-overlay').style.display = 'none'; }
         
-        let replayInterval;
         function startReplay() {
+            if(isLiveMode) return;
             showToast("Bar Replay Engine Activated.");
-            if(replayInterval) clearInterval(replayInterval);
-            replayInterval = setInterval(() => {
-                let last = liveData[liveData.length - 1];
-                let tick = (Math.random() * 1.5 - 0.75);
-                last.close += tick;
-                if(last.close > last.high) last.high = last.close;
-                if(last.close < last.low) last.low = last.close;
-                
-                // Update Button Prices dynamically
-                document.getElementById('btn-sell-price').innerText = (last.close - 0.04).toFixed(2);
-                document.getElementById('btn-buy-price').innerText = (last.close + 0.04).toFixed(2);
-
-                if(Math.random() > 0.8) { 
-                    liveData.push({ time: last.time + 15*60, open: last.close, high: last.close, low: last.close, close: last.close });
-                }
-                candleSeries.setData(liveData);
-            }, 150);
+            if(engineInterval) clearInterval(engineInterval);
+            engineInterval = setInterval(generateTick, 150); // Fast ticks for replay
         }
 
         function stopReplay() {
-            if(replayInterval) clearInterval(replayInterval);
+            if(engineInterval) clearInterval(engineInterval);
             showToast("Replay Terminated. Compiling MTJ Session Log...");
             setTimeout(() => {
                 document.getElementById('mtj-overlay').style.display = 'flex';
+                initMTJRadar(); // Initialize the Chart.js radar when modal opens
             }, 1000);
         }
 
-        // --- NATIVE LIGHTWEIGHT ENGINE (INSTITUTIONAL STYLING) ---
+        // --- NATIVE LIGHTWEIGHT ENGINE ---
         const container = document.getElementById('chart-anchor');
-        
         const chart = LightweightCharts.createChart(container, {
             layout: { backgroundColor: 'transparent', textColor: '#555555', fontFamily: "'Inter', sans-serif" },
             grid: { vertLines: { color: '#090909' }, horzLines: { color: '#090909' } },
-            crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal,
-                vertLine: { color: '#222', style: 2, labelBackgroundColor: '#0a0a0a' },
-                horzLine: { color: '#222', style: 2, labelBackgroundColor: '#0a0a0a' }
-            },
+            crosshair: { mode: LightweightCharts.CrosshairMode.Normal, vertLine: { color: '#222', style: 2 }, horzLine: { color: '#222', style: 2 } },
             rightPriceScale: { borderColor: '#111', autoScale: true },
             timeScale: { borderColor: '#111', timeVisible: true }
         });
 
         const candleSeries = chart.addCandlestickSeries({
-            upColor: '#089981',       
-            downColor: '#f23645',     
-            borderUpColor: '#089981',
-            borderDownColor: '#f23645',
-            wickUpColor: '#089981',
-            wickDownColor: '#f23645'
+            upColor: '#089981', downColor: '#f23645', borderUpColor: '#089981', borderDownColor: '#f23645', wickUpColor: '#089981', wickDownColor: '#f23645'
         });
 
-        // Generate Historical Data
         const liveData = [];
         let price = 2320.50;
-        let time = new Date('2026-06-03T00:00:00Z').getTime() / 1000;
+        let time = new Date().getTime() / 1000 - (150 * 15 * 60); // Start in the past
 
         for (let i = 0; i < 150; i++) {
             let open = price;
             let close = open + (Math.random() * 6 - 3);
             let high = Math.max(open, close) + (Math.random() * 2);
             let low = Math.min(open, close) - (Math.random() * 2);
-            
             liveData.push({ time: time, open, high, low, close });
             price = close;
             time += 15 * 60; 
         }
-
         candleSeries.setData(liveData);
 
-        // Smooth Resizing
-        window.addEventListener('resize', () => {
-            chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
-        });
+        // Core Tick Generator Function
+        function generateTick() {
+            let last = liveData[liveData.length - 1];
+            let tick = (Math.random() * 1.5 - 0.75);
+            last.close += tick;
+            if(last.close > last.high) last.high = last.close;
+            if(last.close < last.low) last.low = last.close;
+            
+            document.getElementById('btn-sell-price').innerText = (last.close - 0.04).toFixed(2);
+            document.getElementById('btn-buy-price').innerText = (last.close + 0.04).toFixed(2);
 
-        // Set initial button prices
+            if(Math.random() > 0.8) { 
+                liveData.push({ time: last.time + 15*60, open: last.close, high: last.close, low: last.close, close: last.close });
+            }
+            candleSeries.update(last);
+        }
+
+        function startLiveFeed() {
+            if(engineInterval) clearInterval(engineInterval);
+            engineInterval = setInterval(generateTick, 500); // Slower ticks for "Live"
+        }
+
+        // Initialize UI
+        window.addEventListener('resize', () => { chart.applyOptions({ width: container.clientWidth, height: container.clientHeight }); });
         document.getElementById('btn-sell-price').innerText = (price - 0.04).toFixed(2);
         document.getElementById('btn-buy-price').innerText = (price + 0.04).toFixed(2);
+        
+        // Start in LIVE mode by default
+        startLiveFeed();
 
     </script>
 </body>
