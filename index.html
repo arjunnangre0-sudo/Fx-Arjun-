@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.16 NATIVE ENGINE</title>
+    <title>FX_ARJUN | V4.0.17 NATIVE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -81,7 +81,7 @@
         
         .tv-layout-container { flex: 1; display: flex; flex-direction: column; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background-color: var(--tv-bg); box-shadow: var(--card-shadow); position: relative; }
 
-        /* Top Toolbar (Expanded TV Style) */
+        /* Top Toolbar */
         .tv-top-toolbar { height: 50px; background-color: var(--tv-toolbar-bg); border-bottom: 1px solid var(--tv-border); display: flex; align-items: center; padding: 0 15px; justify-content: space-between; }
         
         .tv-top-group { display: flex; align-items: center; gap: 5px; }
@@ -93,7 +93,7 @@
         /* Main Row */
         .tv-main-row { display: flex; flex: 1; height: calc(100% - 50px); position: relative; }
 
-        /* Left Vertical Toolbar (Fully Loaded) */
+        /* Left Vertical Toolbar */
         .tv-left-toolbar { 
             width: 55px; 
             background-color: var(--tv-toolbar-bg); 
@@ -147,7 +147,7 @@
         <div class="nav-group">
             <button class="nav-btn active" onclick="switchTab(this, 'chart-page')">Pro Terminal</button>
         </div>
-        <div class="sidebar-footer">ALGO ENGINE V4.0.16</div>
+        <div class="sidebar-footer">ALGO ENGINE V4.0.17</div>
     </div>
 
     <div class="workspace">
@@ -204,30 +204,29 @@
                         <div class="tv-tool-divider"></div>
                         
                         <button class="tv-left-tool-btn" id="tool-trendline" onclick="selectTool('trendline')" title="Trend Line"><i class="fa-solid fa-minus" style="transform: rotate(-45deg);"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-ray" onclick="alert('Ray tool logic pending backend calculation.')" title="Ray"><i class="fa-solid fa-arrow-right-long" style="transform: rotate(-45deg);"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-ray" onclick="selectTool('ray')" title="Ray"><i class="fa-solid fa-arrow-right-long" style="transform: rotate(-45deg);"></i></button>
                         <button class="tv-left-tool-btn" id="tool-horzline" onclick="selectTool('horzline')" title="Horizontal Line"><i class="fa-solid fa-minus"></i></button>
                         <button class="tv-left-tool-btn" id="tool-vertline" onclick="selectTool('vertline')" title="Vertical Line"><i class="fa-solid fa-grip-lines-vertical"></i></button>
                         <div class="tv-tool-divider"></div>
 
-                        <button class="tv-left-tool-btn" id="tool-fib" onclick="alert('Fibonacci Retracement matrix active. Awaiting Jarvis sync.')" title="Fib Retracement"><i class="fa-solid fa-bars-staggered"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-pitchfork" onclick="alert('Pitchfork geometry requires 3 anchor points.')" title="Pitchfork"><i class="fa-solid fa-code-branch"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-fib" onclick="selectTool('fib')" title="Fib Retracement (Awaiting Backend Sync)"><i class="fa-solid fa-bars-staggered"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-pitchfork" onclick="selectTool('pitchfork')" title="Pitchfork (Awaiting Backend Sync)"><i class="fa-solid fa-code-branch"></i></button>
                         <div class="tv-tool-divider"></div>
 
                         <button class="tv-left-tool-btn" id="tool-rectangle" onclick="selectTool('rectangle')" title="Rectangle"><i class="fa-regular fa-square"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-brush" onclick="alert('Brush engine active.')" title="Brush"><i class="fa-solid fa-paintbrush"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-brush" onclick="selectTool('brush')" title="Brush (Awaiting Backend Sync)"><i class="fa-solid fa-paintbrush"></i></button>
                         <button class="tv-left-tool-btn" id="tool-path" onclick="selectTool('path')" title="Path"><i class="fa-solid fa-pen-nib"></i></button>
                         <div class="tv-tool-divider"></div>
 
-                        <button class="tv-left-tool-btn" id="tool-text" onclick="alert('Text Input overlay engaged.')" title="Text"><i class="fa-solid fa-t"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-callout" onclick="alert('Price Label module loading.')" title="Price Label"><i class="fa-solid fa-tag"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-text" onclick="selectTool('text')" title="Text Annotation"><i class="fa-solid fa-t"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-callout" onclick="selectTool('callout')" title="Price Label (Awaiting Backend Sync)"><i class="fa-solid fa-tag"></i></button>
                         <div class="tv-tool-divider"></div>
 
-                        <button class="tv-left-tool-btn" id="tool-elliott" onclick="alert('Elliott Wave mapping requires complex anchor states.')" title="Elliott Wave"><i class="fa-solid fa-wave-square"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-elliott" onclick="selectTool('elliott')" title="Elliott Wave (Awaiting Backend Sync)"><i class="fa-solid fa-wave-square"></i></button>
                         <div class="tv-tool-divider"></div>
 
                         <button class="tv-left-tool-btn" id="tool-long" onclick="selectTool('long')" title="Long Position"><i class="fa-solid fa-arrow-trend-up"></i></button>
                         <button class="tv-left-tool-btn" id="tool-short" onclick="selectTool('short')" title="Short Position"><i class="fa-solid fa-arrow-trend-down"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-measure" onclick="alert('Measure tool active. Click and drag to measure pips/bars.')" title="Measure"><i class="fa-solid fa-ruler"></i></button>
                         <div class="tv-tool-divider"></div>
 
                         <button class="tv-left-tool-btn" title="Stay in Drawing Mode"><i class="fa-solid fa-pencil"></i></button>
@@ -299,7 +298,7 @@ if (close > inducementLevel)
         function switchTimeframe(btn) {
             const allTfBtns = document.querySelectorAll('.tv-top-group .tv-tf-btn');
             allTfBtns.forEach(b => {
-                if(b.innerText.length <= 3) b.classList.remove('active'); // only remove from timeframe buttons
+                if(b.innerText.length <= 3) b.classList.remove('active'); 
             });
             btn.classList.add('active');
         }
@@ -367,6 +366,9 @@ if (close > inducementLevel)
             if (toolName === 'cursor') {
                 wrapper.style.cursor = 'crosshair';
                 closeSettingsPanel();
+            } else if (toolName === 'text') {
+                wrapper.style.cursor = 'text';
+                openSettingsPanel(toolName);
             } else {
                 wrapper.style.cursor = 'crosshair';
                 openSettingsPanel(toolName);
@@ -383,7 +385,9 @@ if (close > inducementLevel)
         }
 
         canvas.addEventListener('mousedown', (e) => {
-            if (currentTool === 'cursor') return;
+            // Ignore if tool is cursor or un-coded placeholders
+            if (currentTool === 'cursor' || currentTool === 'fib' || currentTool === 'pitchfork' || currentTool === 'brush' || currentTool === 'callout' || currentTool === 'elliott') return;
+            
             const rect = canvas.getBoundingClientRect();
             const startX = e.clientX - rect.left;
             const startY = e.clientY - rect.top;
@@ -391,21 +395,30 @@ if (close > inducementLevel)
             
             if (currentTool === 'horzline') { shapes.push({ type: 'horzline', y: startY, ...settings }); renderEngine(); return; } 
             else if (currentTool === 'vertline') { shapes.push({ type: 'vertline', x: startX, ...settings }); renderEngine(); return; }
+            else if (currentTool === 'text') {
+                const userText = prompt("Enter your text annotation:");
+                if (userText) {
+                    shapes.push({ type: 'text', x: startX, y: startY, text: userText, ...settings });
+                    renderEngine();
+                }
+                return; // No dragging needed for text
+            }
 
             isDrawing = true;
             if (currentTool === 'trendline') currentShape = { type: 'line', startX, startY, endX: startX, endY: startY, ...settings };
+            else if (currentTool === 'ray') currentShape = { type: 'ray', startX, startY, endX: startX, endY: startY, ...settings };
             else if (currentTool === 'rectangle') currentShape = { type: 'rect', startX, startY, width: 0, height: 0, ...settings };
             else if (currentTool === 'long') currentShape = { type: 'long', startX, startY, endY: startY, ...settings };
             else if (currentTool === 'short') currentShape = { type: 'short', startX, startY, endY: startY, ...settings };
         });
 
         canvas.addEventListener('mousemove', (e) => {
-            if (!isDrawing || currentTool === 'cursor') return;
+            if (!isDrawing) return;
             const rect = canvas.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
             
-            if (currentTool === 'trendline') { currentShape.endX = mouseX; currentShape.endY = mouseY; } 
+            if (currentTool === 'trendline' || currentTool === 'ray') { currentShape.endX = mouseX; currentShape.endY = mouseY; } 
             else if (currentTool === 'rectangle') { currentShape.width = mouseX - currentShape.startX; currentShape.height = mouseY - currentShape.startY; } 
             else if (currentTool === 'long' || currentTool === 'short') { currentShape.endY = mouseY; }
             
@@ -455,6 +468,24 @@ if (close > inducementLevel)
             
             if (shape.type === 'line') {
                 ctx.beginPath(); ctx.moveTo(shape.startX, shape.startY); ctx.lineTo(shape.endX, shape.endY); ctx.stroke();
+            } else if (shape.type === 'ray') {
+                ctx.beginPath();
+                ctx.moveTo(shape.startX, shape.startY);
+                const dx = shape.endX - shape.startX;
+                const dy = shape.endY - shape.startY;
+                if (dx === 0 && dy === 0) {
+                    ctx.lineTo(shape.endX, shape.endY);
+                } else {
+                    // Extend the ray by a huge multiplier to simulate infinity
+                    const extendX = shape.startX + dx * 2000;
+                    const extendY = shape.startY + dy * 2000;
+                    ctx.lineTo(extendX, extendY);
+                }
+                ctx.stroke();
+            } else if (shape.type === 'text') {
+                ctx.fillStyle = shape.color || '#ffffff';
+                ctx.font = `bold ${12 + parseInt(shape.thickness * 2)}px 'Inter', sans-serif`;
+                ctx.fillText(shape.text, shape.x, shape.y);
             } else if (shape.type === 'horzline') {
                 ctx.beginPath(); ctx.moveTo(0, shape.y); ctx.lineTo(canvas.width, shape.y); ctx.stroke();
             } else if (shape.type === 'vertline') {
