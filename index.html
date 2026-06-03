@@ -3,233 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.26 INSTITUTIONAL ENGINE</title>
+    <title>FX_ARJUN | V7.0 INSTITUTIONAL TERMINAL</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     
-    <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
-
     <style>
-        :root {
-            --bg-primary: #030303;
-            --bg-card: #080808;
-            --bg-sidebar: #050505;
-            --border-color: #1a1a1a;
-            --gold-accent: #d4af37;
-            --text-main: #ffffff;
-            --text-dim: #555555;
-            --profit-green: #00ff88;
-            --loss-red: #ff4444;
-            --tool-bg: #0a0a0a;
-            --tool-hover: #1f1f1f;
+        body, html { margin: 0; padding: 0; height: 100%; background: #030303; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
+        .terminal { display: flex; flex-direction: column; height: 100vh; }
+        #chart-container { flex: 1; position: relative; }
+        
+        /* Execution Panel Overlay (Left Side) */
+        .exec-panel {
+            position: absolute; top: 100px; left: 60px; width: 220px;
+            background: rgba(10, 10, 10, 0.95); border: 1px solid #333;
+            padding: 15px; border-radius: 8px; z-index: 10;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-primary); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
-
-        /* Custom Sidebar */
-        .sidebar { width: 80px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding: 20px 0; z-index: 10; }
-        .brand-icon { width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(45deg, #d4af37, #8a7322); color: #000; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 18px; margin-bottom: 40px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
-        .nav-btn { width: 45px; height: 45px; color: var(--text-dim); background: transparent; border: 1px solid transparent; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 18px; display: flex; justify-content: center; align-items: center; margin-bottom: 10px; }
-        .nav-btn:hover { color: var(--gold-accent); background: rgba(212, 175, 55, 0.05); }
-        .nav-btn.active { color: var(--gold-accent); background: rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); }
-
-        /* Workspace */
-        .workspace { flex: 1; display: flex; flex-direction: column; background: radial-gradient(circle at top right, #0a0c10 0%, var(--bg-primary) 60%); }
-        
-        /* Top Header */
-        .top-bar { height: 60px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; }
-        .pair-info { display: flex; align-items: center; gap: 15px; }
-        .pair-name { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
-        .pair-status { font-size: 10px; background: rgba(0, 255, 136, 0.1); color: var(--profit-green); padding: 4px 8px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(0, 255, 136, 0.2); }
-        
-        .header-actions { display: flex; gap: 20px; align-items: center; }
-        .algo-status { font-size: 12px; color: var(--text-dim); display: flex; align-items: center; gap: 8px; }
-        .pulse-dot { width: 6px; height: 6px; background: var(--profit-green); border-radius: 50%; box-shadow: 0 0 10px var(--profit-green); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } 100% { opacity: 1; transform: scale(1); } }
-
-        /* Chart Layout */
-        .chart-layout { flex: 1; display: flex; overflow: hidden; }
-        
-        /* Proprietary Left Toolbar */
-        .custom-toolbar { width: 50px; background-color: var(--tool-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding: 15px 0; gap: 5px; z-index: 5; }
-        .tool-icon { width: 36px; height: 36px; color: #888; border-radius: 6px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; font-size: 14px; border: 1px solid transparent; }
-        .tool-icon:hover { color: #fff; background: var(--tool-hover); }
-        .tool-icon.active { color: var(--gold-accent); background: rgba(212, 175, 55, 0.05); border-color: rgba(212, 175, 55, 0.2); }
-        .tool-divider { width: 24px; height: 1px; background: var(--border-color); margin: 8px 0; }
-
-        /* Engine Canvas */
-        .engine-container { flex: 1; position: relative; }
-        #chart-anchor { width: 100%; height: 100%; outline: none; }
-        
-        /* Premium Toast Notification */
-        #algo-toast { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: #080808; border: 1px solid var(--border-color); padding: 12px 24px; border-radius: 30px; display: flex; align-items: center; gap: 12px; color: var(--gold-accent); font-size: 12px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.8); opacity: 0; pointer-events: none; transition: 0.3s; }
-        #algo-toast.show { opacity: 1; bottom: 40px; }
-        .loader-spinner { width: 12px; height: 12px; border: 2px solid var(--gold-accent); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
+        .btn { width: 100%; padding: 10px; border: none; font-weight: 800; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="brand-icon">FX</div>
-        <div class="nav-btn active" title="Charting Engine"><i class="fa-solid fa-chart-line"></i></div>
-        <div class="nav-btn" title="Jarvis AI"><i class="fa-solid fa-microchip"></i></div>
-        <div class="nav-btn" title="Risk Matrix"><i class="fa-solid fa-shield-halved"></i></div>
-        <div class="nav-btn" title="Settings"><i class="fa-solid fa-gear"></i></div>
+<div class="terminal">
+    <div id="chart-container"></div>
+    
+    <div class="exec-panel">
+        <h4 style="color:#d4af37; margin-bottom:10px;">ONE-CLICK EXECUTION</h4>
+        <input type="number" id="lot" value="1.00" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:8px;">
+        <button class="btn" style="background:#089981; color:#fff;" onclick="alert('Long Executed')">BUY MARKET</button>
+        <button class="btn" style="background:#f23645; color:#fff;" onclick="alert('Short Executed')">SELL MARKET</button>
     </div>
+</div>
 
-    <div class="workspace">
-        
-        <div class="top-bar">
-            <div class="pair-info">
-                <div class="pair-name">XAUUSD</div>
-                <div class="pair-status">LIVE NODE</div>
-                <div style="margin-left: 20px; font-size: 12px; color: var(--text-dim); display: flex; gap: 15px;">
-                    <span style="color: #fff; font-weight: bold; border-bottom: 2px solid var(--gold-accent); padding-bottom: 4px; cursor: pointer;">15m</span>
-                    <span style="cursor: pointer;">1H</span>
-                    <span style="cursor: pointer;">4H</span>
-                    <span style="cursor: pointer;">D</span>
-                </div>
-            </div>
-            <div class="header-actions">
-                <div class="algo-status">
-                    <div class="pulse-dot"></div>
-                    Jarvis Engine Synced
-                </div>
-                <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold-accent); padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 700;">
-                    ARJUN NANGRE
-                </div>
-            </div>
-        </div>
-
-        <div class="chart-layout">
-            
-            <div class="custom-toolbar">
-                <div class="tool-icon active" onclick="triggerTool(this, 'Crosshair')" title="Cursor"><i class="fa-solid fa-crosshairs"></i></div>
-                <div class="tool-divider"></div>
-                <div class="tool-icon" onclick="triggerTool(this, 'Trendline')" title="Trendline"><i class="fa-solid fa-minus" style="transform: rotate(-45deg);"></i></div>
-                <div class="tool-icon" onclick="triggerTool(this, 'Horizontal Line')" title="Support/Resistance"><i class="fa-solid fa-minus"></i></div>
-                <div class="tool-divider"></div>
-                <div class="tool-icon" onclick="triggerTool(this, 'Fibonacci')" title="Fibonacci Matrix"><i class="fa-solid fa-bars-staggered"></i></div>
-                <div class="tool-icon" onclick="triggerTool(this, 'Order Block')" title="Order Block / Rectangle"><i class="fa-regular fa-square"></i></div>
-                <div class="tool-divider"></div>
-                <div class="tool-icon" onclick="triggerTool(this, 'Long Position')" title="Long Position Calc"><i class="fa-solid fa-arrow-trend-up"></i></div>
-                <div class="tool-icon" onclick="triggerTool(this, 'Short Position')" title="Short Position Calc"><i class="fa-solid fa-arrow-trend-down"></i></div>
-                <div class="tool-divider"></div>
-                <div class="tool-icon" onclick="triggerTool(this, 'Clear')" title="Clear Chart"><i class="fa-solid fa-trash"></i></div>
-            </div>
-
-            <div class="engine-container">
-                <div id="chart-anchor"></div>
-                
-                <div id="algo-toast">
-                    <div class="loader-spinner"></div>
-                    <span id="toast-msg">Connecting to Jarvis Mathematical Core...</span>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <script>
-        // --- PROPRIETARY TOOLBAR LOGIC ---
-        function triggerTool(element, toolName) {
-            // UI Update
-            document.querySelectorAll('.tool-icon').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
-
-            // Presentation Pitch Logic
-            if(toolName !== 'Crosshair' && toolName !== 'Clear') {
-                const toast = document.getElementById('algo-toast');
-                document.getElementById('toast-msg').innerText = `Jarvis Math Core syncing for ${toolName}...`;
-                toast.classList.add('show');
-                
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                    // Reset to crosshair
-                    document.querySelectorAll('.tool-icon')[0].classList.add('active');
-                    element.classList.remove('active');
-                }, 2500);
-            }
-        }
-
-        // --- NATIVE LIGHTWEIGHT ENGINE INITIALIZATION ---
-        const container = document.getElementById('chart-anchor');
-        
-        const chart = LightweightCharts.createChart(container, {
-            layout: {
-                backgroundColor: 'transparent',
-                textColor: '#777777',
-                fontFamily: "'Inter', sans-serif"
-            },
-            grid: {
-                vertLines: { color: '#0d0d0d' },
-                horzLines: { color: '#0d0d0d' },
-            },
-            crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal,
-                vertLine: { color: '#444', style: 2, labelBackgroundColor: '#d4af37' },
-                horzLine: { color: '#444', style: 2, labelBackgroundColor: '#d4af37' }
-            },
-            rightPriceScale: {
-                borderColor: '#1a1a1a',
-                autoScale: true,
-            },
-            timeScale: {
-                borderColor: '#1a1a1a',
-                timeVisible: true,
-            }
-        });
-
-        const candleSeries = chart.addCandlestickSeries({
-            upColor: '#00ff88',
-            downColor: '#ff4444',
-            borderVisible: false,
-            wickUpColor: '#00ff88',
-            wickDownColor: '#ff4444'
-        });
-
-        // Generate Realistic Looking SMC Data
-        const data = [];
-        let price = 2320.50;
-        let time = new Date('2026-06-01T00:00:00Z').getTime();
-
-        for (let i = 0; i < 200; i++) {
-            let open = price;
-            let close = open + (Math.random() * 6 - 3);
-            let high = Math.max(open, close) + (Math.random() * 2);
-            let low = Math.min(open, close) - (Math.random() * 2);
-            
-            // Create some liquidity sweeps (long wicks)
-            if(i % 15 === 0) low -= 5; 
-            if(i % 25 === 0) high += 5;
-
-            data.push({ time: time / 1000, open, high, low, close });
-            price = close;
-            time += 15 * 60000; // 15m intervals
-        }
-
-        candleSeries.setData(data);
-
-        // Smooth Resizing
-        window.addEventListener('resize', () => {
-            chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
-        });
-
-        // Live Tick Simulator for the Pitch
-        setInterval(() => {
-            let last = data[data.length - 1];
-            let tick = (Math.random() * 0.4 - 0.2);
-            last.close += tick;
-            if(last.close > last.high) last.high = last.close;
-            if(last.close < last.low) last.low = last.close;
-            candleSeries.update(last);
-        }, 300);
-
-    </script>
+<script type="text/javascript">
+    new TradingView.widget({
+        "container_id": "chart-container",
+        "symbol": "OANDA:XAUUSD",
+        "interval": "15",
+        "timezone": "Asia/Kolkata",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "toolbar_bg": "#030303",
+        "enable_publishing": false,
+        "allow_symbol_change": true,
+        "hide_side_toolbar": false, // This gives you the tools
+        "show_popup_button": true,
+        "popup_width": "1000",
+        "popup_height": "650",
+        "studies": ["MACD@tv-basicstudies"]
+    });
+</script>
 </body>
 </html>
