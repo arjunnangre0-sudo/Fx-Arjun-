@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.14 NATIVE ENGINE</title>
+    <title>FX_ARJUN | V4.0.15 NATIVE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -24,8 +24,8 @@
             --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
             --font-family: 'Inter', sans-serif;
             
-            /* TV-Specific Colors */
-            --tv-bg: #000000;
+            /* Custom Canvas UI Colors */
+            --tv-bg: #020202;
             --tv-toolbar-bg: #0a0a0a;
             --tv-border: #131313;
             --tv-icon-color: #777777;
@@ -247,6 +247,7 @@
             overflow: hidden;
             background-color: var(--tv-bg);
             box-shadow: var(--card-shadow);
+            position: relative;
         }
 
         /* Top Toolbar */
@@ -312,14 +313,11 @@
             align-items: center;
             padding: 10px 0;
             gap: 10px;
-            
-            /* MAGIC FIX: Hide Scrollbar but keep scroll functionality */
             overflow-y: auto;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
         }
 
-        /* Hide scrollbar for Chrome, Safari and Opera */
         .tv-left-toolbar::-webkit-scrollbar {
             display: none;
         }
@@ -363,6 +361,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .tv-canvas-wrapper {
@@ -379,7 +378,66 @@
             height: 100%;
         }
 
-        /* Bottom Editor Panel (Jarvis Algo Editor) */
+        /* =====================================================================
+           NEW: FLOATING DYNAMIC SETTINGS PANEL
+           ===================================================================== */
+        .floating-settings-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: var(--tv-toolbar-bg);
+            border: 1px solid var(--tv-border);
+            border-radius: 8px;
+            padding: 15px;
+            width: 220px;
+            box-shadow: var(--card-shadow);
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .settings-header {
+            font-size: 11px;
+            color: var(--gold-accent);
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--tv-border);
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .settings-input-color {
+            background: transparent;
+            border: 1px solid var(--tv-border);
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .settings-input-range {
+            width: 80px;
+            accent-color: var(--gold-accent);
+        }
+
+        /* Bottom Editor Panel */
         .tv-bottom-editor {
             height: 200px;
             background-color: var(--tv-toolbar-bg);
@@ -467,7 +525,7 @@
         </div>
         
         <div class="sidebar-footer">
-            ALGO ENGINE V4.0.14
+            ALGO ENGINE V4.0.15
         </div>
     </div>
 
@@ -536,8 +594,8 @@
                         <button class="tv-left-tool-btn" id="tool-path" onclick="selectTool('path')" title="Path"><i class="fa-solid fa-pen-nib"></i></button>
                         <div class="tv-tool-divider"></div>
                         
-                        <button class="tv-left-tool-btn" id="tool-fib" onclick="alert('Fibonacci Tool: Requires Jarvis Math Core sync.')" title="Fibonacci Retracement"><i class="fa-solid fa-bars-staggered"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-text" onclick="alert('Text Tool: Requires DOM Overlay update.')" title="Text Annotation"><i class="fa-solid fa-t"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-fib" onclick="selectTool('fib')" title="Fibonacci Retracement"><i class="fa-solid fa-bars-staggered"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-text" onclick="selectTool('text')" title="Text Annotation"><i class="fa-solid fa-t"></i></button>
                         <div class="tv-tool-divider"></div>
                         
                         <button class="tv-left-tool-btn" id="tool-long" onclick="selectTool('long')" title="Long Position"><i class="fa-solid fa-arrow-trend-up"></i></button>
@@ -549,6 +607,22 @@
                     </div>
 
                     <div class="tv-canvas-area">
+                        
+                        <div id="floating-settings" class="floating-settings-panel">
+                            <div class="settings-header">
+                                <span id="active-tool-name">Tool Settings</span>
+                                <i class="fa-solid fa-xmark" style="cursor: pointer; color: var(--tv-icon-color);" onclick="closeSettingsPanel()"></i>
+                            </div>
+                            <div class="settings-row">
+                                <label class="settings-label">Primary Color</label>
+                                <input type="color" id="setting-color" class="settings-input-color" value="#d4af37">
+                            </div>
+                            <div class="settings-row">
+                                <label class="settings-label">Line Thickness</label>
+                                <input type="range" id="setting-thickness" class="settings-input-range" min="1" max="5" value="2">
+                            </div>
+                        </div>
+
                         <div class="tv-canvas-wrapper" id="canvas-wrapper">
                             <canvas id="customChartCanvas"></canvas>
                         </div>
@@ -600,12 +674,8 @@ if (close > inducementLevel)
     <script>
         // --- TIMEFRAME SWITCHING LOGIC ---
         function switchTimeframe(btn) {
-            // Remove active class from all timeframe buttons
             document.querySelectorAll('.tv-tf-btn').forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
             btn.classList.add('active');
-            
-            // In future, this will fetch new timeframe data from Jarvis backend
             console.log("Switched Timeframe to:", btn.innerText);
         }
 
@@ -632,6 +702,18 @@ if (close > inducementLevel)
                 panel.style.display = 'flex';
             }
             setTimeout(resizeCanvas, 50); 
+        }
+
+        // --- FLOATING SETTINGS LOGIC ---
+        function openSettingsPanel(toolName) {
+            const panel = document.getElementById('floating-settings');
+            const title = document.getElementById('active-tool-name');
+            panel.style.display = 'flex';
+            title.innerText = toolName.toUpperCase() + " SETTINGS";
+        }
+
+        function closeSettingsPanel() {
+            document.getElementById('floating-settings').style.display = 'none';
         }
 
         // --- CANVAS ENGINE ---
@@ -669,19 +751,27 @@ if (close > inducementLevel)
             const activeBtn = document.getElementById('tool-' + toolName);
             if(activeBtn) activeBtn.classList.add('active');
             
-            // Cursor Update
+            // Manage Settings Panel & Cursor
             if (toolName === 'cursor') {
                 wrapper.style.cursor = 'default';
-            } else if (toolName === 'horzline' || toolName === 'vertline') {
-                wrapper.style.cursor = 'crosshair';
+                closeSettingsPanel();
             } else {
                 wrapper.style.cursor = 'crosshair';
+                openSettingsPanel(toolName);
             }
         }
 
         function clearCanvasDrawings() {
             shapes = [];
             renderEngine();
+        }
+
+        // Helper to grab current settings from UI
+        function getCurrentToolSettings() {
+            return {
+                color: document.getElementById('setting-color').value,
+                thickness: document.getElementById('setting-thickness').value
+            };
         }
 
         // --- MOUSE EVENTS FOR DRAWING ---
@@ -691,14 +781,15 @@ if (close > inducementLevel)
             const rect = canvas.getBoundingClientRect();
             const startX = e.clientX - rect.left;
             const startY = e.clientY - rect.top;
+            const settings = getCurrentToolSettings();
             
-            // Single Click Tools (Instantly placed)
+            // Single Click Tools
             if (currentTool === 'horzline') {
-                shapes.push({ type: 'horzline', y: startY });
+                shapes.push({ type: 'horzline', y: startY, ...settings });
                 renderEngine();
                 return;
             } else if (currentTool === 'vertline') {
-                shapes.push({ type: 'vertline', x: startX });
+                shapes.push({ type: 'vertline', x: startX, ...settings });
                 renderEngine();
                 return;
             }
@@ -707,13 +798,13 @@ if (close > inducementLevel)
             isDrawing = true;
             
             if (currentTool === 'trendline') {
-                currentShape = { type: 'line', startX, startY, endX: startX, endY: startY };
+                currentShape = { type: 'line', startX, startY, endX: startX, endY: startY, ...settings };
             } else if (currentTool === 'rectangle') {
-                currentShape = { type: 'rect', startX, startY, width: 0, height: 0 };
+                currentShape = { type: 'rect', startX, startY, width: 0, height: 0, ...settings };
             } else if (currentTool === 'long') {
-                currentShape = { type: 'long', startX, startY, endY: startY };
+                currentShape = { type: 'long', startX, startY, endY: startY, ...settings };
             } else if (currentTool === 'short') {
-                currentShape = { type: 'short', startX, startY, endY: startY };
+                currentShape = { type: 'short', startX, startY, endY: startY, ...settings };
             }
         });
 
@@ -778,8 +869,8 @@ if (close > inducementLevel)
         }
 
         function drawShape(shape) {
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = '#d4af37'; 
+            ctx.lineWidth = shape.thickness || 2;
+            ctx.strokeStyle = shape.color || '#d4af37'; 
             
             if (shape.type === 'line') {
                 ctx.beginPath();
@@ -797,7 +888,12 @@ if (close > inducementLevel)
                 ctx.lineTo(shape.x, canvas.height);
                 ctx.stroke();
             } else if (shape.type === 'rect') {
-                ctx.fillStyle = 'rgba(212, 175, 55, 0.1)'; 
+                // Generate a transparent fill based on the selected hex color
+                let r = parseInt(shape.color.slice(1, 3), 16),
+                    g = parseInt(shape.color.slice(3, 5), 16),
+                    b = parseInt(shape.color.slice(5, 7), 16);
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.1)`; 
+                
                 ctx.fillRect(shape.startX, shape.startY, shape.width, shape.height);
                 ctx.strokeRect(shape.startX, shape.startY, shape.width, shape.height);
             } else if (shape.type === 'long') {
