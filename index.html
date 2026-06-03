@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.13 NATIVE ENGINE</title>
+    <title>FX_ARJUN | V4.0.14 NATIVE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* Pro-Trader Color Palette & CSS Variables (Dark Mode Default) */
+        /* Pro-Trader Color Palette & CSS Variables */
         :root {
             --bg-primary: #050505;
             --bg-card: #0a0a0a;
@@ -230,7 +230,7 @@
             display: none; 
             flex: 1;
             padding: 20px 40px 40px 40px;
-            overflow-y: hidden; /* Keep hidden to manage layout internally */
+            overflow-y: hidden;
         }
 
         .page.active { 
@@ -299,10 +299,10 @@
             display: flex;
             flex: 1;
             height: calc(100% - 50px);
-            position: relative; /* For absolutely positioning the editor */
+            position: relative;
         }
 
-        /* Left Vertical Toolbar (Drawing Tools) */
+        /* Left Vertical Toolbar */
         .tv-left-toolbar {
             width: 50px;
             background-color: var(--tv-toolbar-bg);
@@ -312,7 +312,16 @@
             align-items: center;
             padding: 10px 0;
             gap: 10px;
+            
+            /* MAGIC FIX: Hide Scrollbar but keep scroll functionality */
             overflow-y: auto;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .tv-left-toolbar::-webkit-scrollbar {
+            display: none;
         }
 
         .tv-left-tool-btn {
@@ -346,6 +355,7 @@
             height: 1px;
             background-color: var(--tv-border);
             margin: 5px 0;
+            flex-shrink: 0;
         }
 
         /* Canvas Wrapper Area */
@@ -376,7 +386,7 @@
             border-top: 1px solid var(--tv-border);
             display: flex;
             flex-direction: column;
-            display: none; /* Hidden by default, toggled via button */
+            display: none; 
         }
 
         .editor-header {
@@ -409,7 +419,7 @@
         .editor-textarea {
             flex: 1;
             background-color: var(--bg-card);
-            color: #a3be8c; /* Hacker green text */
+            color: #a3be8c; 
             font-family: monospace;
             border: none;
             padding: 15px;
@@ -457,7 +467,7 @@
         </div>
         
         <div class="sidebar-footer">
-            ALGO ENGINE V4.0.13
+            ALGO ENGINE V4.0.14
         </div>
     </div>
 
@@ -487,21 +497,21 @@
                 
                 <div class="tv-top-toolbar">
                     <div class="tv-timeframes">
-                        <button class="tv-tf-btn">1m</button>
-                        <button class="tv-tf-btn">3m</button>
-                        <button class="tv-tf-btn">5m</button>
-                        <button class="tv-tf-btn active">15m</button>
-                        <button class="tv-tf-btn">30m</button>
-                        <button class="tv-tf-btn">45m</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">1m</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">3m</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">5m</button>
+                        <button class="tv-tf-btn active" onclick="switchTimeframe(this)">15m</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">30m</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">45m</button>
                         <div class="tv-tf-divider"></div>
-                        <button class="tv-tf-btn">1H</button>
-                        <button class="tv-tf-btn">2H</button>
-                        <button class="tv-tf-btn">3H</button>
-                        <button class="tv-tf-btn">4H</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">1H</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">2H</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">3H</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">4H</button>
                         <div class="tv-tf-divider"></div>
-                        <button class="tv-tf-btn">D</button>
-                        <button class="tv-tf-btn">W</button>
-                        <button class="tv-tf-btn">M</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">D</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">W</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">M</button>
                     </div>
 
                     <div style="display: flex; gap: 10px;">
@@ -526,14 +536,14 @@
                         <button class="tv-left-tool-btn" id="tool-path" onclick="selectTool('path')" title="Path"><i class="fa-solid fa-pen-nib"></i></button>
                         <div class="tv-tool-divider"></div>
                         
-                        <button class="tv-left-tool-btn" id="tool-fib" onclick="selectTool('fib')" title="Fibonacci Retracement"><i class="fa-solid fa-bars-staggered"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-text" onclick="selectTool('text')" title="Text Annotation"><i class="fa-solid fa-t"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-fib" onclick="alert('Fibonacci Tool: Requires Jarvis Math Core sync.')" title="Fibonacci Retracement"><i class="fa-solid fa-bars-staggered"></i></button>
+                        <button class="tv-left-tool-btn" id="tool-text" onclick="alert('Text Tool: Requires DOM Overlay update.')" title="Text Annotation"><i class="fa-solid fa-t"></i></button>
                         <div class="tv-tool-divider"></div>
                         
                         <button class="tv-left-tool-btn" id="tool-long" onclick="selectTool('long')" title="Long Position"><i class="fa-solid fa-arrow-trend-up"></i></button>
                         <button class="tv-left-tool-btn" id="tool-short" onclick="selectTool('short')" title="Short Position"><i class="fa-solid fa-arrow-trend-down"></i></button>
 
-                        <div style="flex-grow: 1;"></div>
+                        <div class="tv-tool-divider"></div>
                         
                         <button class="tv-left-tool-btn" onclick="clearCanvasDrawings()" title="Remove All Drawings"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -588,6 +598,17 @@ if (close > inducementLevel)
     </div>
 
     <script>
+        // --- TIMEFRAME SWITCHING LOGIC ---
+        function switchTimeframe(btn) {
+            // Remove active class from all timeframe buttons
+            document.querySelectorAll('.tv-tf-btn').forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            btn.classList.add('active');
+            
+            // In future, this will fetch new timeframe data from Jarvis backend
+            console.log("Switched Timeframe to:", btn.innerText);
+        }
+
         // --- THEME TOGGLE LOGIC ---
         function toggleTheme() {
             document.body.classList.toggle('light-theme');
@@ -610,7 +631,7 @@ if (close > inducementLevel)
             } else {
                 panel.style.display = 'flex';
             }
-            setTimeout(resizeCanvas, 50); // Resize canvas when panel takes up space
+            setTimeout(resizeCanvas, 50); 
         }
 
         // --- CANVAS ENGINE ---
@@ -642,11 +663,20 @@ if (close > inducementLevel)
         // --- TOOL SELECTION LOGIC ---
         function selectTool(toolName) {
             currentTool = toolName;
+            
+            // UI Button Update
             document.querySelectorAll('.tv-left-tool-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById('tool-' + toolName);
             if(activeBtn) activeBtn.classList.add('active');
             
-            wrapper.style.cursor = toolName === 'cursor' ? 'default' : 'crosshair';
+            // Cursor Update
+            if (toolName === 'cursor') {
+                wrapper.style.cursor = 'default';
+            } else if (toolName === 'horzline' || toolName === 'vertline') {
+                wrapper.style.cursor = 'crosshair';
+            } else {
+                wrapper.style.cursor = 'crosshair';
+            }
         }
 
         function clearCanvasDrawings() {
@@ -662,6 +692,18 @@ if (close > inducementLevel)
             const startX = e.clientX - rect.left;
             const startY = e.clientY - rect.top;
             
+            // Single Click Tools (Instantly placed)
+            if (currentTool === 'horzline') {
+                shapes.push({ type: 'horzline', y: startY });
+                renderEngine();
+                return;
+            } else if (currentTool === 'vertline') {
+                shapes.push({ type: 'vertline', x: startX });
+                renderEngine();
+                return;
+            }
+
+            // Drag Tools
             isDrawing = true;
             
             if (currentTool === 'trendline') {
@@ -737,15 +779,24 @@ if (close > inducementLevel)
 
         function drawShape(shape) {
             ctx.lineWidth = 2;
+            ctx.strokeStyle = '#d4af37'; 
             
             if (shape.type === 'line') {
-                ctx.strokeStyle = '#d4af37'; 
                 ctx.beginPath();
                 ctx.moveTo(shape.startX, shape.startY);
                 ctx.lineTo(shape.endX, shape.endY);
                 ctx.stroke();
+            } else if (shape.type === 'horzline') {
+                ctx.beginPath();
+                ctx.moveTo(0, shape.y);
+                ctx.lineTo(canvas.width, shape.y);
+                ctx.stroke();
+            } else if (shape.type === 'vertline') {
+                ctx.beginPath();
+                ctx.moveTo(shape.x, 0);
+                ctx.lineTo(shape.x, canvas.height);
+                ctx.stroke();
             } else if (shape.type === 'rect') {
-                ctx.strokeStyle = '#d4af37'; 
                 ctx.fillStyle = 'rgba(212, 175, 55, 0.1)'; 
                 ctx.fillRect(shape.startX, shape.startY, shape.width, shape.height);
                 ctx.strokeRect(shape.startX, shape.startY, shape.width, shape.height);
