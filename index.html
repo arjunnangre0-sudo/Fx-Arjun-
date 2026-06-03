@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V4.0.19 NATIVE ENGINE</title>
+    <title>FX_ARJUN | V4.0.20 NATIVE LIVE ENGINE</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -31,6 +31,7 @@
             --tv-icon-color: #777777;
             --tv-icon-hover: #ffffff;
             --tv-icon-active: #d4af37;
+            --grid-color: #111111;
         }
 
         /* Light Mode Variables */
@@ -46,6 +47,7 @@
             --tv-border: #cbd5e1;
             --tv-icon-color: #475569;
             --tv-icon-hover: #0f172a;
+            --grid-color: #f1f5f9;
         }
 
         /* Core Reset */
@@ -223,7 +225,7 @@
             overflow: hidden; 
         }
 
-        /* Page Content */
+        /* Page Content Logic */
         .page { 
             display: none; 
             flex: 1; 
@@ -293,7 +295,7 @@
             margin: 0 8px; 
         }
 
-        /* NEW: Top Bar Settings Inputs (Replaces Floating Box) */
+        /* Settings Inputs */
         .settings-input-color { 
             background: transparent; 
             border: 1px solid var(--tv-border); 
@@ -379,17 +381,11 @@
             display: flex; 
             flex-direction: column; 
             position: relative; 
+            background-color: var(--tv-bg);
+            cursor: crosshair;
         }
 
-        .tv-canvas-wrapper { 
-            flex: 1; 
-            position: relative; 
-            background-color: var(--tv-bg); 
-            cursor: crosshair; 
-            overflow: hidden; 
-        }
-
-        #customChartCanvas { 
+        #mainCanvas { 
             display: block; 
             width: 100%; 
             height: 100%; 
@@ -423,90 +419,6 @@
             bottom: 50px;
         }
 
-        /* CHART SETTINGS MODAL */
-        .settings-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(4px);
-        }
-
-        .settings-modal {
-            background-color: var(--bg-card);
-            width: 500px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--card-shadow);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .settings-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-            font-weight: 700;
-            color: var(--text-main);
-            font-size: 16px;
-        }
-
-        .settings-modal-close {
-            cursor: pointer;
-            color: var(--text-dim);
-            font-size: 18px;
-            transition: 0.2s;
-        }
-
-        .settings-modal-close:hover {
-            color: var(--loss-red);
-        }
-
-        .settings-modal-tabs {
-            display: flex;
-            background-color: #111;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .settings-tab {
-            padding: 12px 20px;
-            color: var(--text-dim);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-        }
-
-        .settings-tab.active {
-            color: var(--gold-accent);
-            border-bottom: 2px solid var(--gold-accent);
-            background-color: var(--bg-card);
-        }
-
-        .settings-modal-body {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .settings-control-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .settings-control-label {
-            font-size: 13px;
-            color: var(--text-dim);
-        }
-
         /* Bottom Editor Panel */
         .tv-bottom-editor { 
             height: 200px; 
@@ -514,6 +426,7 @@
             border-top: 1px solid var(--tv-border); 
             display: none; 
             flex-direction: column; 
+            z-index: 5;
         }
 
         .editor-header { 
@@ -544,73 +457,9 @@
             font-size: 14px; 
         }
 
-        /* Right Price Scale */
-        .tv-price-scale { 
-            width: 70px; 
-            background-color: var(--tv-toolbar-bg); 
-            border-left: 1px solid var(--tv-border); 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-around; 
-            align-items: flex-end; 
-            padding: 20px 10px; 
-            font-size: 11px; 
-            color: var(--text-dim); 
-            font-family: monospace; 
-        }
-
-        .current-price-badge { 
-            background-color: var(--profit-green); 
-            color: #000; 
-            padding: 4px 6px; 
-            border-radius: 2px; 
-            font-weight: 800; 
-            width: 100%; 
-            text-align: right; 
-        }
-
     </style>
 </head>
 <body>
-
-    <div id="chart-settings-overlay" class="settings-modal-overlay">
-        <div class="settings-modal">
-            <div class="settings-modal-header">
-                Chart Properties
-                <i class="fa-solid fa-xmark settings-modal-close" onclick="closeChartSettings()"></i>
-            </div>
-            <div class="settings-modal-tabs">
-                <div class="settings-tab active">Symbol</div>
-                <div class="settings-tab">Status line</div>
-                <div class="settings-tab">Scales</div>
-                <div class="settings-tab">Appearance</div>
-            </div>
-            <div class="settings-modal-body">
-                <div class="settings-control-row">
-                    <span class="settings-control-label">Body Color (Up / Down)</span>
-                    <div>
-                        <input type="color" value="#00ff88" style="background: transparent; border: 1px solid var(--tv-border); border-radius: 4px; padding: 1px;">
-                        <input type="color" value="#ff4444" style="background: transparent; border: 1px solid var(--tv-border); border-radius: 4px; padding: 1px;">
-                    </div>
-                </div>
-                <div class="settings-control-row">
-                    <span class="settings-control-label">Borders</span>
-                    <div>
-                        <input type="color" value="#00ff88" style="background: transparent; border: 1px solid var(--tv-border); border-radius: 4px; padding: 1px;">
-                        <input type="color" value="#ff4444" style="background: transparent; border: 1px solid var(--tv-border); border-radius: 4px; padding: 1px;">
-                    </div>
-                </div>
-                <div class="settings-control-row" style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                    <span class="settings-control-label">Timezone</span>
-                    <select style="background: #111; color: white; border: 1px solid var(--border-color); padding: 5px; border-radius: 4px; outline: none;">
-                        <option>(UTC+05:30) Kolkata</option>
-                        <option>(UTC-04:00) New York</option>
-                        <option>(UTC+00:00) London</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="sidebar">
         <div class="brand-section">
@@ -619,7 +468,7 @@
         <div class="nav-group">
             <button class="nav-btn active" onclick="switchTab(this, 'chart-page')">Pro Terminal</button>
         </div>
-        <div class="sidebar-footer">ALGO ENGINE V4.0.19</div>
+        <div class="sidebar-footer">ALGO ENGINE V4.0.20</div>
     </div>
 
     <div class="workspace" id="main-workspace">
@@ -642,16 +491,12 @@
                 
                 <div class="tv-top-toolbar">
                     <div class="tv-top-group">
-                        <button class="tv-tf-btn" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
-                        <button class="tv-tf-btn" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
-                        <div class="tv-tf-divider"></div>
-                        
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">1m</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">5m</button>
-                        <button class="tv-tf-btn active" onclick="switchTimeframe(this)">15m</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">1H</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">4H</button>
-                        <button class="tv-tf-btn" onclick="switchTimeframe(this)">D</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this, 1)">1m</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this, 5)">5m</button>
+                        <button class="tv-tf-btn active" onclick="switchTimeframe(this, 15)">15m</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this, 60)">1H</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this, 240)">4H</button>
+                        <button class="tv-tf-btn" onclick="switchTimeframe(this, 1440)">D</button>
                         <div class="tv-tf-divider"></div>
                         
                         <div style="display: flex; align-items: center; gap: 5px; margin-left: 5px;">
@@ -662,9 +507,10 @@
                     </div>
 
                     <div class="tv-top-group">
-                        <button class="tv-tf-btn" title="Candles"><i class="fa-solid fa-chart-simple"></i></button>
+                        <div id="live-price-display" style="color: var(--profit-green); font-weight: 800; margin-right: 15px; font-family: monospace; font-size: 16px;">
+                            XAUUSD 2345.50
+                        </div>
                         <button class="tv-tf-btn" onclick="showCustomToast('Indicators Module requires backend connection.')" title="Indicators"><i class="fa-solid fa-chart-line"></i> Indicators</button>
-                        <button class="tv-tf-btn" onclick="openChartSettings()" title="Chart Properties"><i class="fa-solid fa-gear"></i></button>
                         <button class="tv-tf-btn" onclick="toggleFullScreen()" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
                         <button class="tv-tf-btn" style="color: var(--profit-green);" onclick="toggleEditor()">
                             <i class="fa-solid fa-code"></i> Pine / Jarvis
@@ -675,43 +521,18 @@
                 <div class="tv-main-row">
                     
                     <div class="tv-left-toolbar">
-                        <button class="tv-left-tool-btn active" id="tool-cursor" onclick="selectTool('cursor')" title="Crosshair"><i class="fa-solid fa-crosshairs"></i></button>
+                        <button class="tv-left-tool-btn active" id="tool-cursor" onclick="selectTool('cursor')" title="Crosshair/Pan"><i class="fa-solid fa-hand"></i></button>
                         <div class="tv-tool-divider"></div>
-                        
                         <button class="tv-left-tool-btn" id="tool-trendline" onclick="selectTool('trendline')" title="Trend Line"><i class="fa-solid fa-minus" style="transform: rotate(-45deg);"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-ray" onclick="selectTool('ray')" title="Ray"><i class="fa-solid fa-arrow-right-long" style="transform: rotate(-45deg);"></i></button>
                         <button class="tv-left-tool-btn" id="tool-horzline" onclick="selectTool('horzline')" title="Horizontal Line"><i class="fa-solid fa-minus"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-vertline" onclick="selectTool('vertline')" title="Vertical Line"><i class="fa-solid fa-grip-lines-vertical"></i></button>
                         <div class="tv-tool-divider"></div>
-
-                        <button class="tv-left-tool-btn" id="tool-fib" onclick="selectTool('fib')" title="Fib Retracement"><i class="fa-solid fa-bars-staggered"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-pitchfork" onclick="selectTool('pitchfork')" title="Pitchfork"><i class="fa-solid fa-code-branch"></i></button>
-                        <div class="tv-tool-divider"></div>
-
                         <button class="tv-left-tool-btn" id="tool-rectangle" onclick="selectTool('rectangle')" title="Rectangle"><i class="fa-regular fa-square"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-brush" onclick="selectTool('brush')" title="Brush"><i class="fa-solid fa-paintbrush"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-path" onclick="selectTool('path')" title="Path"><i class="fa-solid fa-pen-nib"></i></button>
                         <div class="tv-tool-divider"></div>
-
-                        <button class="tv-left-tool-btn" id="tool-text" onclick="selectTool('text')" title="Text Annotation"><i class="fa-solid fa-t"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-callout" onclick="selectTool('callout')" title="Price Label"><i class="fa-solid fa-tag"></i></button>
-                        <div class="tv-tool-divider"></div>
-
-                        <button class="tv-left-tool-btn" id="tool-elliott" onclick="selectTool('elliott')" title="Elliott Wave"><i class="fa-solid fa-wave-square"></i></button>
-                        <div class="tv-tool-divider"></div>
-
-                        <button class="tv-left-tool-btn" id="tool-long" onclick="selectTool('long')" title="Long Position"><i class="fa-solid fa-arrow-trend-up"></i></button>
-                        <button class="tv-left-tool-btn" id="tool-short" onclick="selectTool('short')" title="Short Position"><i class="fa-solid fa-arrow-trend-down"></i></button>
-                        <div class="tv-tool-divider"></div>
-
                         <button class="tv-left-tool-btn" onclick="clearCanvasDrawings()" title="Remove Drawings"><i class="fa-solid fa-trash"></i></button>
                     </div>
 
-                    <div class="tv-canvas-area">
-                        
-                        <div class="tv-canvas-wrapper" id="canvas-wrapper">
-                            <canvas id="customChartCanvas"></canvas>
-                        </div>
+                    <div class="tv-canvas-area" id="canvas-container">
+                        <canvas id="mainCanvas"></canvas>
                         
                         <div id="custom-toast">Notification Message</div>
 
@@ -720,31 +541,11 @@
                                 <span class="editor-title">Jarvis Algo Editor</span>
                                 <div><button onclick="toggleEditor()" style="background: transparent; border: none; cursor: pointer;"><i class="fa-solid fa-xmark" style="color:var(--text-dim)"></i></button></div>
                             </div>
-                            <textarea class="editor-textarea" spellcheck="false">// Welcome to Jarvis Algo Editor
+                            <textarea class="editor-textarea" spellcheck="false">// Author: Fx_arjun
 // Connects natively to FX_ARJUN Backend
-// Author: Fx_arjun
-
-study("SMC Liquidity Sweep Algorithm", overlay=true)
-
-// Define parameters
-length = input(14, title="Lookback Period")
-inducementLevel = ta.highest(high, length)
-
-// Execution Logic
-if (close > inducementLevel)
-    strategy.entry("Long", strategy.long)
+study("SMC Liquidity Sweep", overlay=true)
                             </textarea>
                         </div>
-                    </div>
-
-                    <div class="tv-price-scale">
-                        <div>2400.00</div>
-                        <div>2380.00</div>
-                        <div>2360.00</div>
-                        <div>2340.00</div>
-                        <div class="current-price-badge">2326.83</div>
-                        <div>2300.00</div>
-                        <div>2280.00</div>
                     </div>
 
                 </div>
@@ -753,252 +554,38 @@ if (close > inducementLevel)
     </div>
 
     <script>
-        // --- CUSTOM TOAST NOTIFICATION LOGIC ---
+        // --- UI UTILITIES ---
         function showCustomToast(message) {
             const toast = document.getElementById("custom-toast");
             toast.innerText = message;
             toast.classList.add("show");
-            setTimeout(function(){ toast.classList.remove("show"); }, 3000);
+            setTimeout(() => toast.classList.remove("show"), 3000);
         }
 
-        // --- FULLSCREEN LOGIC ---
         function toggleFullScreen() {
             const elem = document.getElementById("tv-layout-container");
             if (!document.fullscreenElement) {
-                elem.requestFullscreen().catch(err => {
-                    showCustomToast(`Error attempting to enable full-screen mode: ${err.message}`);
-                });
+                elem.requestFullscreen().catch(err => showCustomToast(`Error: ${err.message}`));
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+                if (document.exitFullscreen) document.exitFullscreen();
             }
-        }
-
-        // --- CHART SETTINGS MODAL LOGIC ---
-        function openChartSettings() {
-            document.getElementById('chart-settings-overlay').style.display = 'flex';
-        }
-
-        function closeChartSettings() {
-            document.getElementById('chart-settings-overlay').style.display = 'none';
-        }
-
-        function switchTimeframe(btn) {
-            const allTfBtns = document.querySelectorAll('.tv-top-group .tv-tf-btn');
-            allTfBtns.forEach(b => {
-                if(b.innerText.length <= 3) b.classList.remove('active'); 
-            });
-            btn.classList.add('active');
         }
 
         function toggleTheme() {
             document.body.classList.toggle('light-theme');
             const icon = document.getElementById('theme-icon');
             if (document.body.classList.contains('light-theme')) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
+                icon.classList.remove('fa-moon'); icon.classList.add('fa-sun');
             } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
+                icon.classList.remove('fa-sun'); icon.classList.add('fa-moon');
             }
-            renderEngine(); 
+            renderChart(); 
         }
 
         function toggleEditor() {
             const panel = document.getElementById('jarvis-editor-panel');
             panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
             setTimeout(resizeCanvas, 50); 
-        }
-
-        // --- CANVAS ENGINE ---
-        const canvas = document.getElementById('customChartCanvas');
-        const ctx = canvas.getContext('2d');
-        const wrapper = document.getElementById('canvas-wrapper');
-
-        let currentTool = 'cursor';
-        let isDrawing = false;
-        let shapes = [];
-        let currentShape = null;
-
-        function resizeCanvas() {
-            canvas.width = wrapper.clientWidth;
-            canvas.height = wrapper.clientHeight;
-            renderEngine();
-        }
-        
-        window.addEventListener('resize', resizeCanvas);
-
-        const dummyCandles = [
-            { x: 150, open: 250, high: 180, low: 320, close: 290, color: '#ff4444' }, 
-            { x: 200, open: 290, high: 220, low: 350, close: 260, color: '#00ff88' }, 
-            { x: 250, open: 260, high: 150, low: 280, close: 180, color: '#00ff88' }, 
-            { x: 300, open: 180, high: 100, low: 220, close: 120, color: '#00ff88' },
-            { x: 350, open: 120, high: 90,  low: 180, close: 160, color: '#ff4444' }
-        ];
-
-        function selectTool(toolName) {
-            currentTool = toolName;
-            document.querySelectorAll('.tv-left-tool-btn').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById('tool-' + toolName);
-            if(activeBtn) activeBtn.classList.add('active');
-            
-            // Handle Placeholders via Custom Toast
-            if (['fib', 'pitchfork', 'brush', 'callout', 'elliott', 'path'].includes(toolName)) {
-                showCustomToast(`${toolName.toUpperCase()} logic awaiting Jarvis Backend processing.`);
-                wrapper.style.cursor = 'default';
-                return;
-            }
-
-            if (toolName === 'cursor') {
-                wrapper.style.cursor = 'crosshair';
-            } else if (toolName === 'text') {
-                wrapper.style.cursor = 'text';
-            } else {
-                wrapper.style.cursor = 'crosshair';
-            }
-        }
-
-        function clearCanvasDrawings() {
-            shapes = [];
-            renderEngine();
-        }
-
-        // Modified: Now reads from the top toolbar inputs
-        function getCurrentToolSettings() {
-            return { 
-                color: document.getElementById('topbar-color').value, 
-                thickness: document.getElementById('topbar-thickness').value 
-            };
-        }
-
-        canvas.addEventListener('mousedown', (e) => {
-            // Ignore placeholders
-            if (['cursor', 'fib', 'pitchfork', 'brush', 'callout', 'elliott', 'path'].includes(currentTool)) return;
-            
-            const rect = canvas.getBoundingClientRect();
-            const startX = e.clientX - rect.left;
-            const startY = e.clientY - rect.top;
-            const settings = getCurrentToolSettings();
-            
-            // Single Click Tools
-            if (currentTool === 'horzline') { 
-                shapes.push({ type: 'horzline', y: startY, ...settings }); 
-                renderEngine(); 
-                return; 
-            } else if (currentTool === 'vertline') { 
-                shapes.push({ type: 'vertline', x: startX, ...settings }); 
-                renderEngine(); 
-                return; 
-            } else if (currentTool === 'text') {
-                shapes.push({ type: 'text', x: startX, y: startY, text: "FX_ARJUN TEXT", ...settings });
-                renderEngine();
-                selectTool('cursor'); // Auto switch back
-                return; 
-            }
-
-            // Drag Tools
-            isDrawing = true;
-            if (currentTool === 'trendline') currentShape = { type: 'line', startX, startY, endX: startX, endY: startY, ...settings };
-            else if (currentTool === 'ray') currentShape = { type: 'ray', startX, startY, endX: startX, endY: startY, ...settings };
-            else if (currentTool === 'rectangle') currentShape = { type: 'rect', startX, startY, width: 0, height: 0, ...settings };
-            else if (currentTool === 'long') currentShape = { type: 'long', startX, startY, endY: startY, ...settings };
-            else if (currentTool === 'short') currentShape = { type: 'short', startX, startY, endY: startY, ...settings };
-        });
-
-        canvas.addEventListener('mousemove', (e) => {
-            if (!isDrawing) return;
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-            
-            if (currentTool === 'trendline' || currentTool === 'ray') { currentShape.endX = mouseX; currentShape.endY = mouseY; } 
-            else if (currentTool === 'rectangle') { currentShape.width = mouseX - currentShape.startX; currentShape.height = mouseY - currentShape.startY; } 
-            else if (currentTool === 'long' || currentTool === 'short') { currentShape.endY = mouseY; }
-            
-            renderEngine();
-        });
-
-        canvas.addEventListener('mouseup', () => {
-            if (!isDrawing) return;
-            isDrawing = false;
-            if (currentShape) shapes.push(currentShape);
-            currentShape = null;
-        });
-
-        function renderEngine() {
-            const isLightMode = document.body.classList.contains('light-theme');
-            ctx.fillStyle = isLightMode ? '#ffffff' : '#000000';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.strokeStyle = isLightMode ? '#e2e8f0' : '#131313';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            for(let i = 0; i < canvas.width; i += 60) { ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); }
-            for(let i = 0; i < canvas.height; i += 60) { ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); }
-            ctx.stroke();
-
-            dummyCandles.forEach(c => {
-                ctx.strokeStyle = c.color;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(c.x, c.high);
-                ctx.lineTo(c.x, c.low);
-                ctx.stroke();
-                
-                ctx.fillStyle = c.color;
-                const bodyY = Math.min(c.open, c.close);
-                const bodyHeight = Math.max(c.open, c.close) - bodyY;
-                ctx.fillRect(c.x - 6, bodyY, 12, Math.max(bodyHeight, 2));
-            });
-
-            shapes.forEach(shape => drawShape(shape));
-            if (currentShape) drawShape(currentShape);
-        }
-
-        function drawShape(shape) {
-            ctx.lineWidth = shape.thickness || 2;
-            ctx.strokeStyle = shape.color || '#d4af37'; 
-            
-            if (shape.type === 'line') {
-                ctx.beginPath(); ctx.moveTo(shape.startX, shape.startY); ctx.lineTo(shape.endX, shape.endY); ctx.stroke();
-            } else if (shape.type === 'ray') {
-                ctx.beginPath();
-                ctx.moveTo(shape.startX, shape.startY);
-                const dx = shape.endX - shape.startX;
-                const dy = shape.endY - shape.startY;
-                if (dx === 0 && dy === 0) {
-                    ctx.lineTo(shape.endX, shape.endY);
-                } else {
-                    const extendX = shape.startX + dx * 2000;
-                    const extendY = shape.startY + dy * 2000;
-                    ctx.lineTo(extendX, extendY);
-                }
-                ctx.stroke();
-            } else if (shape.type === 'text') {
-                ctx.fillStyle = shape.color || '#ffffff';
-                ctx.font = `bold ${12 + parseInt(shape.thickness * 2)}px 'Inter', sans-serif`;
-                ctx.fillText(shape.text, shape.x, shape.y);
-            } else if (shape.type === 'horzline') {
-                ctx.beginPath(); ctx.moveTo(0, shape.y); ctx.lineTo(canvas.width, shape.y); ctx.stroke();
-            } else if (shape.type === 'vertline') {
-                ctx.beginPath(); ctx.moveTo(shape.x, 0); ctx.lineTo(shape.x, canvas.height); ctx.stroke();
-            } else if (shape.type === 'rect') {
-                let r = parseInt(shape.color.slice(1, 3), 16), g = parseInt(shape.color.slice(3, 5), 16), b = parseInt(shape.color.slice(5, 7), 16);
-                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.1)`; 
-                ctx.fillRect(shape.startX, shape.startY, shape.width, shape.height);
-                ctx.strokeRect(shape.startX, shape.startY, shape.width, shape.height);
-            } else if (shape.type === 'long') {
-                const width = 120; const diff = shape.startY - shape.endY; 
-                ctx.fillStyle = 'rgba(0, 255, 136, 0.2)'; ctx.fillRect(shape.startX, shape.startY - diff, width, diff); ctx.strokeStyle = '#00ff88'; ctx.strokeRect(shape.startX, shape.startY - diff, width, diff);
-                ctx.fillStyle = 'rgba(255, 68, 68, 0.2)'; ctx.fillRect(shape.startX, shape.startY, width, diff / 2); ctx.strokeStyle = '#ff4444'; ctx.strokeRect(shape.startX, shape.startY, width, diff / 2);
-                ctx.beginPath(); ctx.moveTo(shape.startX, shape.startY); ctx.lineTo(shape.startX + width, shape.startY); ctx.stroke();
-            } else if (shape.type === 'short') {
-                const width = 120; const diff = shape.endY - shape.startY; 
-                ctx.fillStyle = 'rgba(0, 255, 136, 0.2)'; ctx.fillRect(shape.startX, shape.startY, width, diff); ctx.strokeStyle = '#00ff88'; ctx.strokeRect(shape.startX, shape.startY, width, diff);
-                ctx.fillStyle = 'rgba(255, 68, 68, 0.2)'; ctx.fillRect(shape.startX, shape.startY - (diff / 2), width, diff / 2); ctx.strokeStyle = '#ff4444'; ctx.strokeRect(shape.startX, shape.startY - (diff / 2), width, diff / 2);
-                ctx.beginPath(); ctx.moveTo(shape.startX, shape.startY); ctx.lineTo(shape.startX + width, shape.startY); ctx.stroke();
-            }
         }
 
         function switchTab(btn, tabId) {
@@ -1009,7 +596,354 @@ if (close > inducementLevel)
             resizeCanvas(); 
         }
 
-        setTimeout(resizeCanvas, 100);
+        function switchTimeframe(btn, tf) {
+            document.querySelectorAll('.tv-tf-btn').forEach(b => { if(b.innerText.length <= 3) b.classList.remove('active'); });
+            btn.classList.add('active');
+            showCustomToast(`Timeframe switched to ${btn.innerText}. Re-calculating tick matrix...`);
+            // In a real scenario, this resets data. For simulation, we just notify.
+        }
+
+        // --- NATIVE MATH ENGINE & LIVE DATA SIMULATOR ---
+        
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('canvas-container');
+
+        // State Variables
+        let candles = [];
+        let drawings = [];
+        let currentTool = 'cursor';
+        
+        // Viewport Math Variables
+        let panX = 0;            // How far we have dragged horizontally
+        const candleWidth = 8;
+        const candleSpacing = 16;
+        let rightMargin = 100;  // Space for price scale
+        let priceMin = 0;
+        let priceMax = 0;
+        let isDragging = false;
+        let lastMouseX = 0;
+
+        // Drawing State
+        let activeDrawing = null;
+
+        // 1. Generate Historical XAUUSD Data
+        function generateHistoricalData() {
+            let startPrice = 2330.50;
+            let time = new Date('2026-06-03T00:00:00Z').getTime();
+            
+            for(let i=0; i<100; i++) {
+                let open = startPrice;
+                let close = open + (Math.random() * 4 - 2); // Random walk
+                let high = Math.max(open, close) + (Math.random() * 2);
+                let low = Math.min(open, close) - (Math.random() * 2);
+                
+                candles.push({ xIndex: i, open, high, low, close, time });
+                startPrice = close;
+                time += 15 * 60000; // +15 mins
+            }
+            
+            // Set initial Pan to view the most recent candles
+            panX = -((candles.length * candleSpacing) - (window.innerWidth - rightMargin - 300));
+        }
+
+        // 2. LIVE TICK SIMULATOR (Fires every 200ms)
+        function startLiveSimulation() {
+            setInterval(() => {
+                let lastCandle = candles[candles.length - 1];
+                let tick = (Math.random() * 0.6 - 0.3); // Micro movement
+                
+                lastCandle.close += tick;
+                if(lastCandle.close > lastCandle.high) lastCandle.high = lastCandle.close;
+                if(lastCandle.close < lastCandle.low) lastCandle.low = lastCandle.close;
+
+                // Update UI Header Price
+                const priceDisplay = document.getElementById('live-price-display');
+                priceDisplay.innerText = `XAUUSD ${lastCandle.close.toFixed(2)}`;
+                priceDisplay.style.color = lastCandle.close >= lastCandle.open ? 'var(--profit-green)' : 'var(--loss-red)';
+
+                // Randomly start a new candle occasionally
+                if (Math.random() > 0.95) {
+                    let newTime = lastCandle.time + 15 * 60000;
+                    candles.push({ xIndex: candles.length, open: lastCandle.close, high: lastCandle.close, low: lastCandle.close, close: lastCandle.close, time: newTime });
+                    // Auto-pan slightly to keep chart moving forward
+                    panX -= candleSpacing; 
+                }
+
+                renderChart();
+            }, 200);
+        }
+
+        // 3. CORE MATH: Map Price to Canvas Y Coordinate
+        function priceToY(price) {
+            const range = priceMax - priceMin;
+            if(range === 0) return canvas.height / 2;
+            const drawableHeight = canvas.height - 40; // Add padding top/bottom
+            // Calculate percentage from bottom, invert for canvas (0 is top)
+            const percent = (price - priceMin) / range;
+            return canvas.height - 20 - (percent * drawableHeight);
+        }
+
+        // Map Canvas Y Coordinate to Price
+        function yToPrice(y) {
+            const drawableHeight = canvas.height - 40;
+            const percent = (canvas.height - 20 - y) / drawableHeight;
+            return priceMin + (percent * (priceMax - priceMin));
+        }
+
+        // Map X Index to Canvas X Coordinate
+        function indexToX(index) {
+            return (index * candleSpacing) + panX;
+        }
+
+        // Map Canvas X Coordinate to nearest Index
+        function xToIndex(x) {
+            return (x - panX) / candleSpacing;
+        }
+
+        // 4. MASTER RENDER LOOP
+        function renderChart() {
+            // Clear Canvas
+            const isLightMode = document.body.classList.contains('light-theme');
+            ctx.fillStyle = isLightMode ? '#ffffff' : '#020202';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if(candles.length === 0) return;
+
+            // Calculate Min/Max Price for VISIBLE candles to dynamically scale Y-Axis
+            priceMin = Infinity;
+            priceMax = -Infinity;
+            
+            candles.forEach(c => {
+                let cx = indexToX(c.xIndex);
+                if (cx > -50 && cx < canvas.width - rightMargin + 50) {
+                    if (c.high > priceMax) priceMax = c.high;
+                    if (c.low < priceMin) priceMin = c.low;
+                }
+            });
+
+            // Add margin to min/max so candles don't touch edges
+            const buffer = (priceMax - priceMin) * 0.1;
+            priceMax += buffer;
+            priceMin -= buffer;
+
+            // Draw Background Grid
+            ctx.strokeStyle = isLightMode ? '#e2e8f0' : '#111111';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            // Horizontal grid based on price scale
+            let priceStep = (priceMax - priceMin) / 5;
+            for(let i=1; i<=5; i++) {
+                let p = priceMin + (i * priceStep);
+                let y = priceToY(p);
+                ctx.moveTo(0, y); ctx.lineTo(canvas.width - rightMargin, y);
+            }
+            // Vertical grid based on arbitrary spacing
+            for(let i = 0; i < canvas.width - rightMargin; i += 100) { 
+                ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); 
+            }
+            ctx.stroke();
+
+            // Draw Candles
+            candles.forEach(c => {
+                let cx = indexToX(c.xIndex);
+                // Optimization: Don't draw if off-screen
+                if (cx < -20 || cx > canvas.width - rightMargin + 20) return;
+
+                let isUp = c.close >= c.open;
+                ctx.strokeStyle = isUp ? '#00ff88' : '#ff4444';
+                ctx.fillStyle = isUp ? '#00ff88' : '#ff4444';
+                ctx.lineWidth = 2;
+
+                // Wick
+                ctx.beginPath();
+                ctx.moveTo(cx, priceToY(c.high));
+                ctx.lineTo(cx, priceToY(c.low));
+                ctx.stroke();
+
+                // Body
+                let bodyTop = priceToY(Math.max(c.open, c.close));
+                let bodyBottom = priceToY(Math.min(c.open, c.close));
+                let bodyHeight = bodyBottom - bodyTop;
+                
+                ctx.fillRect(cx - (candleWidth/2), bodyTop, candleWidth, Math.max(bodyHeight, 2));
+            });
+
+            // Draw Price Axis (Right Side)
+            ctx.fillStyle = isLightMode ? '#f1f5f9' : '#0a0a0a';
+            ctx.fillRect(canvas.width - rightMargin, 0, rightMargin, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - rightMargin, 0);
+            ctx.lineTo(canvas.width - rightMargin, canvas.height);
+            ctx.strokeStyle = isLightMode ? '#cbd5e1' : '#131313';
+            ctx.stroke();
+
+            // Price Labels on Axis
+            ctx.fillStyle = isLightMode ? '#64748b' : '#777777';
+            ctx.font = "11px monospace";
+            for(let i=1; i<=5; i++) {
+                let p = priceMin + (i * priceStep);
+                let y = priceToY(p);
+                ctx.fillText(p.toFixed(2), canvas.width - rightMargin + 10, y + 4);
+            }
+
+            // Current Live Price Badge
+            let currentPrice = candles[candles.length-1].close;
+            let currentY = priceToY(currentPrice);
+            ctx.fillStyle = candles[candles.length-1].close >= candles[candles.length-1].open ? '#00ff88' : '#ff4444';
+            ctx.fillRect(canvas.width - rightMargin, currentY - 10, rightMargin, 20);
+            ctx.fillStyle = '#000000';
+            ctx.font = "bold 12px monospace";
+            ctx.fillText(currentPrice.toFixed(2), canvas.width - rightMargin + 10, currentY + 4);
+            
+            // Draw current price line across chart
+            ctx.beginPath();
+            ctx.setLineDash([2, 2]);
+            ctx.moveTo(0, currentY);
+            ctx.lineTo(canvas.width - rightMargin, currentY);
+            ctx.strokeStyle = ctx.fillStyle; // Use green/red
+            ctx.stroke();
+            ctx.setLineDash([]); // reset
+
+            // Draw Completed Tools/Shapes
+            drawings.forEach(shape => drawShape(shape));
+
+            // Draw Active Shape
+            if (activeDrawing) drawShape(activeDrawing);
+        }
+
+        function drawShape(shape) {
+            ctx.lineWidth = shape.thickness || 2;
+            ctx.strokeStyle = shape.color || '#d4af37'; 
+            
+            // Map shape mathematical coordinates back to screen pixels
+            let sx = indexToX(shape.startIndex);
+            let sy = priceToY(shape.startPrice);
+            let ex = shape.endIndex ? indexToX(shape.endIndex) : sx;
+            let ey = shape.endPrice ? priceToY(shape.endPrice) : sy;
+
+            // Don't draw over price scale
+            ctx.save();
+            ctx.rect(0, 0, canvas.width - rightMargin, canvas.height);
+            ctx.clip();
+
+            if (shape.type === 'line') {
+                ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
+            } else if (shape.type === 'horzline') {
+                ctx.beginPath(); ctx.moveTo(0, sy); ctx.lineTo(canvas.width, sy); ctx.stroke();
+            } else if (shape.type === 'rect') {
+                let r = parseInt(shape.color.slice(1, 3), 16), g = parseInt(shape.color.slice(3, 5), 16), b = parseInt(shape.color.slice(5, 7), 16);
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.1)`; 
+                ctx.fillRect(sx, sy, ex - sx, ey - sy);
+                ctx.strokeRect(sx, sy, ex - sx, ey - sy);
+            }
+            
+            ctx.restore();
+        }
+
+        // --- MOUSE INTERACTIONS (Panning & Drawing mapped to Math) ---
+        
+        function selectTool(toolName) {
+            currentTool = toolName;
+            document.querySelectorAll('.tv-left-tool-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('tool-' + toolName);
+            if(activeBtn) activeBtn.classList.add('active');
+            
+            container.style.cursor = toolName === 'cursor' ? 'grab' : 'crosshair';
+        }
+
+        function clearCanvasDrawings() {
+            drawings = [];
+            renderChart();
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // Ignore clicks on price scale
+            if (mouseX > canvas.width - rightMargin) return;
+
+            isDragging = true;
+            lastMouseX = mouseX;
+
+            if (currentTool === 'cursor') {
+                container.style.cursor = 'grabbing';
+                return;
+            }
+
+            // Math: Calculate real price and time index from pixels
+            let targetPrice = yToPrice(mouseY);
+            let targetIndex = xToIndex(mouseX);
+            
+            const color = document.getElementById('topbar-color').value;
+            const thickness = document.getElementById('topbar-thickness').value;
+
+            if (currentTool === 'horzline') {
+                drawings.push({ type: 'horzline', startPrice: targetPrice, startIndex: targetIndex, color, thickness });
+                renderChart();
+                return;
+            }
+
+            // Start drag drawing
+            if (currentTool === 'trendline') {
+                activeDrawing = { type: 'line', startPrice: targetPrice, startIndex: targetIndex, endPrice: targetPrice, endIndex: targetIndex, color, thickness };
+            } else if (currentTool === 'rectangle') {
+                activeDrawing = { type: 'rect', startPrice: targetPrice, startIndex: targetIndex, endPrice: targetPrice, endIndex: targetIndex, color, thickness };
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            if (currentTool === 'cursor') {
+                // PAN THE CHART
+                let deltaX = mouseX - lastMouseX;
+                panX += deltaX;
+                lastMouseX = mouseX;
+            } else if (activeDrawing) {
+                // UPDATE DRAWING MATH COORDINATES
+                activeDrawing.endPrice = yToPrice(mouseY);
+                activeDrawing.endIndex = xToIndex(mouseX);
+            }
+            
+            renderChart();
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            if (currentTool === 'cursor') {
+                container.style.cursor = 'grab';
+            }
+            if (activeDrawing) {
+                drawings.push(activeDrawing);
+                activeDrawing = null;
+            }
+        });
+
+        // --- INITIALIZATION ---
+        function resizeCanvas() {
+            // Deal with high DPI displays for crisp rendering
+            const rect = container.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            renderChart();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Boot Sequence
+        setTimeout(() => {
+            generateHistoricalData();
+            resizeCanvas();
+            startLiveSimulation(); // Start the live heartbeat
+        }, 100);
+
     </script>
 </body>
 </html>
