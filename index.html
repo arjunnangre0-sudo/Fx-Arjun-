@@ -3,77 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | V9.1 MASTER TERMINAL</title>
+    <title>FX_ARJUN | MASTER TERMINAL V10.0</title>
     <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --bg: #030303; --gold: #d4af37; --border: #1a1a1a; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: sans-serif; display: flex; height: 100vh; overflow: hidden; }
-        
+        :root { --bg: #030303; --sidebar: #050505; --border: #1a1a1a; --gold: #d4af37; --green: #089981; --red: #f23645; --text: #fff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); height: 100vh; display: flex; overflow: hidden; }
+
+        /* Sidebar */
+        .sidebar { width: 60px; background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
+        .nav-btn { width: 40px; height: 40px; margin-bottom: 20px; color: #555; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; border-radius: 6px; }
+        .nav-btn.active { color: var(--gold); background: #111; }
+
+        /* Workspace */
         .workspace { flex: 1; display: flex; flex-direction: column; }
-        .toolbar-top { height: 50px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 20px; }
+        .top-bar { height: 50px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 20px; }
         
-        #chart { flex: 1; position: relative; }
-        
-        /* Replay Control Styling */
-        .replay-controls { background: #111; padding: 5px 15px; border-radius: 4px; display: flex; gap: 15px; align-items: center; }
-        .replay-btn { color: #aaa; cursor: pointer; border: none; background: none; font-size: 14px; }
+        /* Chart Area */
+        .chart-container { flex: 1; position: relative; background: #000; }
+        #main-chart { width: 100%; height: 100%; }
+
+        /* Order Panel */
+        .order-panel { position: absolute; top: 20px; left: 20px; width: 220px; background: #0a0a0a; border: 1px solid var(--border); padding: 15px; border-radius: 8px; z-index: 5; }
+        .btn { width: 100%; padding: 12px; border: none; font-weight: 800; cursor: pointer; margin-top: 10px; border-radius: 4px; color: #fff; }
+
+        /* Bottom PnL Table */
+        .bottom-panel { height: 200px; border-top: 1px solid var(--border); background: #050505; padding: 20px; }
+        table { width: 100%; color: #888; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding-bottom: 10px; color: #555; }
+        td { padding: 8px 0; border-bottom: 1px solid #111; }
+
+        /* Replay UI */
+        .replay-bar { display: flex; gap: 15px; background: #111; padding: 5px 15px; border-radius: 4px; }
+        .replay-btn { background: none; border: none; color: #aaa; cursor: pointer; }
         .replay-btn:hover { color: var(--gold); }
     </style>
 </head>
 <body>
-    <div class="workspace">
-        <div class="toolbar-top">
-            <h3 style="color:var(--gold);">XAUUSD</h3>
-            <div class="replay-controls">
-                <button class="replay-btn" onclick="initReplay()"><i class="fa-solid fa-backward-step"></i> REPLAY</button>
-                <button class="replay-btn" id="play-pause" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
-                <button class="replay-btn" onclick="endReplay()"><i class="fa-solid fa-square"></i> STOP</button>
-            </div>
+
+<div class="sidebar">
+    <div class="nav-btn active"><i class="fa-solid fa-chart-line"></i></div>
+    <div class="nav-btn"><i class="fa-solid fa-microchip"></i></div>
+</div>
+
+<div class="workspace">
+    <div class="top-bar">
+        <h3 style="color:var(--gold);">XAUUSD</h3>
+        <div class="replay-bar">
+            <button class="replay-btn" onclick="toggleReplay()"><i class="fa-solid fa-play"></i> REPLAY</button>
+            <button class="replay-btn" onclick="stopReplay()"><i class="fa-solid fa-square"></i> STOP</button>
         </div>
-        <div id="chart"></div>
     </div>
 
-    <script>
-        const chart = LightweightCharts.createChart(document.getElementById('chart'), {
-            layout: { backgroundColor: '#030303', textColor: '#ccc' },
-            grid: { vertLines: { color: '#111' }, horzLines: { color: '#111' } }
-        });
-        const series = chart.addCandlestickSeries({ upColor: '#089981', downColor: '#f23645' });
+    <div class="chart-container">
+        <div id="main-chart"></div>
+        <div class="order-panel">
+            <h4 style="margin-bottom:10px;">ORDER PANEL</h4>
+            <input type="number" id="lot" value="1.00" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:8px; margin-bottom:10px;">
+            <button class="btn" style="background:var(--green);" onclick="placeTrade('BUY')">BUY (MARKET)</button>
+            <button class="btn" style="background:var(--red);" onclick="placeTrade('SELL')">SELL (MARKET)</button>
+        </div>
+    </div>
 
-        // Historical Data for Replay
-        const allData = []; // Imagine 1000 candles here
-        let replayIndex = 0;
-        let isPlaying = false;
-        let replayTimer = null;
+    <div class="bottom-panel">
+        <table>
+            <thead><tr><th>Ticket</th><th>Type</th><th>Price</th><th>P&L</th></tr></thead>
+            <tbody>
+                <tr><td>#88219</td><td style="color:var(--green);">BUY</td><td>2324.50</td><td style="color:var(--green);">+$450.00</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-        function initReplay() {
-            replayIndex = 50; // Start back in time
-            series.setData(allData.slice(0, replayIndex));
+<script>
+    // Initialize Chart
+    const chart = LightweightCharts.createChart(document.getElementById('main-chart'), {
+        layout: { backgroundColor: '#000', textColor: '#ccc' },
+        grid: { vertLines: { color: '#111' }, horzLines: { color: '#111' } }
+    });
+    const series = chart.addCandlestickSeries({ upColor: '#089981', downColor: '#f23645' });
+
+    // Dummy Data for stability
+    const data = [{time: '2026-06-01', open: 2320, high: 2330, low: 2315, close: 2325}, {time: '2026-06-02', open: 2325, high: 2335, low: 2320, close: 2330}];
+    series.setData(data);
+
+    // Trade Logic
+    function placeTrade(type) {
+        const balance = 0; // Simulated balance
+        if(balance <= 0) {
+            alert("Please Connect Your Trading Account");
+            return;
         }
+        alert(type + " Executed");
+    }
 
-        function togglePlay() {
-            isPlaying = !isPlaying;
-            document.getElementById('play-pause').innerHTML = isPlaying ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
-            if(isPlaying) {
-                replayTimer = setInterval(() => {
-                    if(replayIndex < allData.length) {
-                        series.update(allData[replayIndex]);
-                        replayIndex++;
-                    }
-                }, 500);
-            } else {
-                clearInterval(replayTimer);
-            }
-        }
+    // Replay Logic
+    function toggleReplay() { alert("Replay Initialized"); }
+    function stopReplay() { alert("Replay Stopped"); }
+</script>
 
-        function endReplay() {
-            clearInterval(replayTimer);
-            isPlaying = false;
-            series.setData(allData); // Show all data
-            alert("Replay Ended. Opening MTJ Dashboard...");
-        }
-    </script>
 </body>
 </html>
-
