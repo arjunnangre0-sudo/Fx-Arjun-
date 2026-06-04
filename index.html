@@ -168,10 +168,10 @@
             color: var(--gold-accent);
             border: 1px solid var(--gold-accent);
             font-weight: 700;
-            padding: 10px 20px;
+            padding: 6px 15px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 11px;
             transition: 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -357,6 +357,7 @@
             font-weight: 700; 
             display: flex; 
             justify-content: space-between; 
+            align-items: center;
             border-bottom: 1px solid var(--border-color); 
             padding-bottom: 12px; 
         }
@@ -481,6 +482,12 @@
             opacity: 0.9; 
             transform: translateY(-2px); 
         }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
         
         .calc-result-box { 
             grid-column: span 2; 
@@ -502,6 +509,18 @@
         .flex-col { display: flex; flex-direction: column; gap: 24px; }
         
         .cli-window { background: #000; padding: 25px; border-radius: 8px; border: 1px solid #222; font-family: 'Courier New', Courier, monospace; color: #00ff88; height: 350px; overflow-y: auto; line-height: 1.6; font-size: 14px; }
+
+        /* Fullscreen styles for live market wrapper */
+        #live-market-wrapper:fullscreen {
+            background-color: var(--bg-card);
+            padding: 30px;
+            overflow-y: auto;
+        }
+        #live-market-wrapper:-webkit-full-screen {
+            background-color: var(--bg-card);
+            padding: 30px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -563,7 +582,6 @@
     <div class="workspace">
         <div class="top-bar">
             <div class="auth-controls">
-                <button class="fullscreen-btn" onclick="toggleFullScreen()">⛶ Full Screen</button>
                 <button class="login-btn" id="google-login-btn">Google Sign-In</button>
             </div>
             <div class="profile-widget" onclick="handleProfileClick()">
@@ -614,8 +632,11 @@
         </div>
 
         <div id="live-market" class="page">
-            <div class="boundary-box">
-                <div class="header-label">LIVE MARKET: XAUUSD SMC EXECUTION PANEL</div>
+            <div class="boundary-box" id="live-market-wrapper">
+                <div class="header-label">
+                    LIVE MARKET: XAUUSD SMC EXECUTION PANEL
+                    <button class="fullscreen-btn" onclick="toggleLiveMarketFullScreen()">⛶ Full Screen Chart</button>
+                </div>
                 <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 20px; height: 550px;">
                     
                     <div id="tv-live-market-container" style="width: 100%; height: 100%; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background-color: #000;"></div>
@@ -720,11 +741,29 @@
 
         <div id="acc" class="page">
             <div class="boundary-box" style="max-width: 550px;">
-                <div class="header-label">Prop Firm API Gateway</div>
-                <div class="input-group" style="margin-bottom: 20px;"><label>MetaTrader 5 Server Designation</label><input type="text" class="input-field" value="VPropTrader-Live"></div>
-                <div class="input-group" style="margin-bottom: 20px;"><label>Account Login ID</label><input type="text" class="input-field" placeholder="Enter MT5 Account ID"></div>
-                <div class="input-group" style="margin-bottom: 20px;"><label>Master Password</label><input type="password" class="input-field" placeholder="••••••••"></div>
-                <button class="action-btn" onclick="window.simulateBrokerConnection()">Initialize Terminal Bridge</button>
+                <div class="header-label">Broker / Capital API Gateway</div>
+                <div class="calculator-grid" style="margin-top: 15px;">
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label>Broker Name</label>
+                        <input type="text" id="broker-name" class="input-field" placeholder="Enter Broker Name">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label>Server Name</label>
+                        <input type="text" id="broker-server" class="input-field" placeholder="Enter MT5 Server Name">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label>Account Login ID</label>
+                        <input type="number" id="broker-id" class="input-field" placeholder="Enter Login ID">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label>Master Password</label>
+                        <input type="password" id="broker-pass" class="input-field" placeholder="••••••••">
+                    </div>
+                    <button class="action-btn" id="connect-broker-btn" onclick="window.simulateBrokerConnection()">Initialize Terminal Bridge</button>
+                </div>
+                
+                <div id="broker-log-box" style="display: none; margin-top: 25px; background: #000; border: 1px solid #222; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 12px; color: var(--profit-green); line-height: 1.6;">
+                </div>
             </div>
         </div>
 
@@ -758,10 +797,11 @@
             if (pageId === 'mtj') { initMTJChart(); }
         };
 
-        // Full Screen Toggle Engine
-        window.toggleFullScreen = function() {
+        // Targeted Full Screen Engine (Live Market Only)
+        window.toggleLiveMarketFullScreen = function() {
+            const liveMarketWrapper = document.getElementById('live-market-wrapper');
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch((err) => {
+                liveMarketWrapper.requestFullscreen().catch((err) => {
                     console.log(`Error attempting to enable fullscreen: ${err.message}`);
                 });
             } else {
@@ -849,9 +889,36 @@
             document.getElementById('risk-result').style.display = "block";
         };
 
-        // Broker Simulation Logic
+        // Advanced Broker Terminal Simulation Logic
         window.simulateBrokerConnection = function() {
-            alert("Establishing secure tunnel to MT5 Broker Server...\n\n[Status: Pending Backend Sync. Waiting for Data Stream.]");
+            const btn = document.getElementById('connect-broker-btn');
+            const logBox = document.getElementById('broker-log-box');
+            const brokerName = document.getElementById('broker-name').value || 'Unknown Server';
+            
+            btn.innerText = "CONNECTING...";
+            btn.style.opacity = "0.5";
+            btn.disabled = true;
+            
+            logBox.style.display = "block";
+            logBox.innerHTML = `> Initializing secure bridge to ${brokerName} API...<br>`;
+            
+            setTimeout(() => { 
+                logBox.innerHTML += `> Resolving MetaTrader 5 server DNS... [OK]<br>`; 
+            }, 1200);
+            
+            setTimeout(() => { 
+                logBox.innerHTML += `> Authenticating trader credentials...<br>`; 
+            }, 2500);
+            
+            setTimeout(() => { 
+                logBox.innerHTML += `<br>> <span style="color: var(--loss-red); font-weight: bold;">[ERROR] Python Backend Node Offline. Cannot fetch live MT5 data bridge.</span><br>`; 
+                logBox.innerHTML += `> <span style="color: var(--text-dim);">To enable live execution, please boot the 'Jarvis' Python backend server and ensure Termux:API bridges are routing.</span>`;
+                
+                btn.innerText = "CONNECTION FAILED";
+                btn.style.background = "var(--loss-red)";
+                btn.style.color = "#fff";
+                btn.style.opacity = "1";
+            }, 4500);
         };
 
         // Profile Handling
