@@ -515,7 +515,7 @@
         
         .cli-window { background: #000; padding: 25px; border-radius: 8px; border: 1px solid #222; font-family: 'Courier New', Courier, monospace; color: #00ff88; height: 350px; overflow-y: auto; line-height: 1.6; font-size: 14px; }
 
-        /* UPGRADED: Fullscreen styles for live market wrapper to stretch edge-to-edge */
+        /* Fullscreen styles for live market wrapper */
         #live-market-wrapper:fullscreen {
             background-color: var(--bg-primary);
             padding: 20px;
@@ -550,14 +550,17 @@
         <div class="login-box">
             <h1>FX_ARJUN</h1>
             <p>INSTITUTIONAL ALGO ENGINE V5.0</p>
-            <button class="btn-google" id="gate-google-login">
+            
+            <button class="btn-google" onclick="window.triggerGoogleLogin(false)">
                 <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/><path d="M1 1h22v22H1z" fill="none"/></svg>
                 Sign In with Google
             </button>
+            
             <div style="margin: 35px 0; border-top: 1px solid var(--border-color); position: relative;">
                 <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--bg-card); padding: 0 15px; font-size: 12px; color: var(--text-dim); font-weight: 600;">OR</span>
             </div>
-            <button class="btn-mgmt" onclick="bypassAuth('MANAGEMENT')">Restricted: Management Access</button>
+            
+            <button class="btn-mgmt" onclick="window.triggerGoogleLogin(true)">Restricted: Management Access</button>
         </div>
     </div>
 
@@ -603,7 +606,7 @@
     <div class="workspace">
         <div class="top-bar">
             <div class="auth-controls">
-                <button class="login-btn" id="google-login-btn">Google Sign-In</button>
+                <button class="login-btn" id="google-login-btn" onclick="window.triggerGoogleLogin(false)">Google Sign-In</button>
             </div>
             <div class="profile-widget" onclick="handleProfileClick()">
                 <div class="profile-info">
@@ -793,11 +796,9 @@
                 <div class="header-label" style="color: var(--loss-red);">RESTRICTED AREA: MANAGEMENT DASHBOARD</div>
                 <p style="color: var(--text-dim); margin-bottom: 30px; font-size: 14px;">Viewing Booming Bulls applicant database and associated institutional traders.</p>
                 <table>
-                    <thead><tr><th>User ID</th><th>Name</th><th>Role</th><th>Status</th></tr></thead>
-                    <tbody>
-                        <tr><td>FXA-77120</td><td>Arjun</td><td>Institutional Prop Trader</td><td style="color:var(--profit-green);">Active / Verified</td></tr>
-                        <tr><td>USR-99211</td><td>Guest_01</td><td>Trainee</td><td style="color:var(--text-dim);">Inactive</td></tr>
-                    </tbody>
+                    <thead><tr><th>Trader Account</th><th>Registered Email</th><th>Status Profile</th><th>Risk Exposure</th></tr></thead>
+                    <tbody id="traders-table-body">
+                        </tbody>
                 </table>
             </div>
         </div>
@@ -816,6 +817,7 @@
 
             if (pageId === 'live-market') { initTradingViewWidget(); }
             if (pageId === 'mtj') { initMTJChart(); }
+            if (pageId === 'peoples') { window.loadTradersTable(); }
         };
 
         // Targeted Full Screen Engine (Live Market Only)
@@ -955,21 +957,42 @@
             document.getElementById('profile-page').style.display = 'none';
         };
 
-        // Management Bypass
-        window.bypassAuth = function(role) {
-            document.getElementById('auth-gate').style.display = 'none';
-            if (role === 'MANAGEMENT') {
-                document.getElementById('mgmt-nav-btn').style.display = 'block';
-                window.isLoggedIn = true;
-                alert("Management Access Granted.");
-                setTimeout(() => { initMTJChart(); }, 200);
-            }
+        // Traders Dynamic Table Update Function
+        window.loadTradersTable = function() {
+            const tbody = document.getElementById('traders-table-body');
+            if (!tbody) return;
+            
+            let html = `
+                <tr>
+                    <td style="font-weight: bold; color: var(--gold-accent);">Fx_arjun (Admin)</td>
+                    <td>tradingjournalmanagement@gmail.com</td>
+                    <td><span class="badge-active">MANAGEMENT</span></td>
+                    <td>0.00%</td>
+                </tr>
+            `;
+            
+            let traders = JSON.parse(localStorage.getItem('fx_traders')) || [];
+            traders.forEach(t => {
+                html += `
+                    <tr>
+                        <td style="font-weight: bold;">${t.name}</td>
+                        <td>${t.email}</td>
+                        <td><span class="badge-med">${t.status}</span></td>
+                        <td>${t.risk}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
         };
+
+        // Call on boot to populate existing local traders
+        window.loadTradersTable();
+
     </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
         try {
             const firebaseConfig = {
@@ -989,19 +1012,28 @@
             window.isLoggedIn = false;
             window.currentUser = null;
 
-            const loginBtn = document.getElementById('google-login-btn');
-            const gateLoginBtn = document.getElementById('gate-google-login');
-
-            function triggerLogin() {
+            // Updated Google Login with Security Check
+            window.triggerGoogleLogin = function(isMgmtRequest = false) {
                 signInWithPopup(auth, provider)
                     .then((result) => {
                         const user = result.user;
+                        const userEmail = user.email.toLowerCase();
+                        const isAdmin = (userEmail === "tradingjournalmanagement@gmail.com");
+
+                        // Security Check: Block non-admins from Management Access
+                        if (isMgmtRequest && !isAdmin) {
+                            alert("ACCESS DENIED: You are not authorized. This is not the registered Management Account.");
+                            signOut(auth);
+                            return;
+                        }
+
                         window.isLoggedIn = true;
                         window.currentUser = user;
 
                         // Hide the Login Gate
                         document.getElementById('auth-gate').style.display = 'none';
-                        if(loginBtn) loginBtn.style.display = 'none';
+                        const loginBtn = document.getElementById('google-login-btn');
+                        if (loginBtn) loginBtn.style.display = 'none';
 
                         // Update Top Bar UI
                         document.getElementById('user-name-display').innerText = user.displayName.toUpperCase();
@@ -1016,21 +1048,37 @@
                         document.getElementById('prof-img-tag').src = user.photoURL;
                         document.getElementById('prof-img-tag').style.display = 'block';
 
-                        // Security check for Management Button
-                        if (user.email === "your.actual.email@gmail.com") {
+                        // Route Logic
+                        if (isAdmin) {
                             document.getElementById('mgmt-nav-btn').style.display = 'block';
+                            if (isMgmtRequest) {
+                                alert("Admin Access Granted: Welcome FX_ARJUN Management.");
+                            }
+                        } else {
+                            document.getElementById('mgmt-nav-btn').style.display = 'none';
+                            alert("Trader Connected: " + user.displayName);
+                            
+                            // Save Trader to Database (Local Storage)
+                            let traders = JSON.parse(localStorage.getItem('fx_traders')) || [];
+                            if (!traders.find(t => t.email === userEmail)) {
+                                traders.push({ 
+                                    name: user.displayName, 
+                                    email: user.email, 
+                                    status: 'ACTIVE USER', 
+                                    risk: (Math.random() * 2).toFixed(2) + '%' 
+                                });
+                                localStorage.setItem('fx_traders', JSON.stringify(traders));
+                            }
                         }
                         
+                        window.loadTradersTable(); // Refresh the Management Table
                         setTimeout(() => { initMTJChart(); }, 200);
                     })
                     .catch((error) => {
                         console.error("Firebase Auth Error:", error);
                         alert("Login Failed: " + error.message);
                     });
-            }
-
-            if(loginBtn) loginBtn.addEventListener('click', triggerLogin);
-            if(gateLoginBtn) gateLoginBtn.addEventListener('click', triggerLogin);
+            };
             
         } catch (e) {
             console.error("Firebase failed to load:", e);
