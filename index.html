@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | ULTRA TRADING TERMINAL</title>
+    <title>FX_ARJUN | ULTRA TRADING TERMINAL V5.0</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* Pro-Trader Color Palette & CSS Variables */
         :root {
             --bg-primary: #030303;
             --bg-card: #0a0a0a;
@@ -27,7 +26,6 @@
             --transition-speed: 0.3s;
         }
 
-        /* Core Reset */
         * { 
             margin: 0; 
             padding: 0; 
@@ -44,7 +42,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Premium Sidebar Navigation */
         .sidebar { 
             width: 280px; 
             background-color: var(--bg-sidebar); 
@@ -116,7 +113,6 @@
             padding-top: 20px; 
         }
 
-        /* Workspace Core Container */
         .workspace { 
             flex: 1; 
             padding: 20px 40px 40px 40px; 
@@ -124,7 +120,6 @@
             background: radial-gradient(circle at top right, #0f1218 0%, var(--bg-primary) 60%); 
         }
 
-        /* Top Bar & Profile Widget */
         .top-bar { 
             display: flex; 
             justify-content: space-between; 
@@ -141,8 +136,8 @@
         }
 
         .login-btn { 
-            background: #fff; 
-            color: #000; 
+            background: #ffffff; 
+            color: #000000; 
             font-weight: 700; 
             border: none; 
             padding: 10px 20px; 
@@ -152,7 +147,7 @@
             align-items: center; 
             gap: 10px; 
             font-size: 13px; 
-            transition: 0.3s; 
+            transition: var(--transition-speed); 
         }
 
         .login-btn:hover { 
@@ -172,7 +167,7 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 11px;
-            transition: 0.3s;
+            transition: var(--transition-speed);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -238,7 +233,7 @@
             width: 42px; 
             height: 42px; 
             border-radius: 50%; 
-            background: #111; 
+            background: #111111; 
             border: 1px solid var(--border-color); 
             color: var(--text-dim); 
             display: flex; 
@@ -256,14 +251,13 @@
             object-fit: cover; 
         }
 
-        /* Authentication Gate Overlay */
         #auth-gate {
             position: fixed; 
             top: 0; 
             left: 0; 
             width: 100%; 
             height: 100%;
-            background: radial-gradient(circle at center, #0f1218 0%, #000 100%);
+            background: radial-gradient(circle at center, #0f1218 0%, #000000 100%);
             z-index: 100000; 
             display: flex; 
             align-items: center; 
@@ -281,14 +275,64 @@
             box-shadow: 0 0 60px rgba(212, 175, 55, 0.05);
         }
         
-        .login-box h1 { color: var(--gold-accent); margin-bottom: 15px; font-weight: 900; font-size: 32px; letter-spacing: 2px; }
-        .login-box p { color: var(--text-dim); font-size: 14px; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-google { width: 100%; padding: 16px; background: #ffffff; color: #000000; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 25px; font-size: 15px; transition: var(--transition-speed); }
-        .btn-google:hover { background: #f0f0f0; transform: translateY(-2px); }
-        .btn-mgmt { width: 100%; padding: 16px; background: transparent; color: var(--gold-accent); border: 1px dashed var(--gold-accent); font-weight: 700; border-radius: 8px; cursor: pointer; transition: var(--transition-speed); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-mgmt:hover { background: rgba(212, 175, 55, 0.1); }
+        .login-box h1 { 
+            color: var(--gold-accent); 
+            margin-bottom: 15px; 
+            font-weight: 900; 
+            font-size: 32px; 
+            letter-spacing: 2px; 
+        }
+        
+        .login-box p { 
+            color: var(--text-dim); 
+            font-size: 14px; 
+            margin-bottom: 50px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        
+        .btn-google { 
+            width: 100%; 
+            padding: 16px; 
+            background: #ffffff; 
+            color: #000000; 
+            font-weight: 700; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+            margin-bottom: 25px; 
+            font-size: 15px; 
+            transition: var(--transition-speed); 
+        }
+        
+        .btn-google:hover { 
+            background: #f0f0f0; 
+            transform: translateY(-2px); 
+        }
+        
+        .btn-mgmt { 
+            width: 100%; 
+            padding: 16px; 
+            background: transparent; 
+            color: var(--gold-accent); 
+            border: 1px dashed var(--gold-accent); 
+            font-weight: 700; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: var(--transition-speed); 
+            font-size: 13px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        
+        .btn-mgmt:hover { 
+            background: rgba(212, 175, 55, 0.1); 
+        }
 
-        /* Profile Page Overlay */
         #profile-page {
             display: none; 
             position: fixed; 
@@ -309,21 +353,122 @@
             to { transform: scale(1); opacity: 1; } 
         }
 
-        .profile-container { max-width: 1000px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 50px; box-shadow: var(--card-shadow); }
-        .profile-header { display: flex; align-items: center; gap: 50px; border-bottom: 1px solid var(--border-color); padding-bottom: 50px; margin-bottom: 50px; }
-        .large-avatar { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--gold-accent); background-color: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 0 40px rgba(212, 175, 55, 0.15); }
-        .large-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .trader-title h1 { font-size: 56px; font-weight: 900; color: var(--gold-accent); letter-spacing: -2px; margin-bottom: 15px; }
-        .trader-badge { display: inline-block; background: rgba(212, 175, 55, 0.1); color: var(--gold-accent); padding: 8px 20px; border-radius: 30px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; border: 1px solid rgba(212, 175, 55, 0.3); }
-        .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .detail-card { background-color: #050505; border: 1px solid var(--border-color); padding: 35px; border-radius: 12px; transition: var(--transition-speed); }
-        .detail-card:hover { border-color: var(--gold-accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .detail-card label { display: block; color: var(--text-dim); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; font-weight: 700; }
-        .detail-card span { font-size: 20px; font-weight: 700; color: var(--text-main); }
-        .back-btn { margin-top: 60px; background: transparent; border: 1px solid var(--gold-accent); color: var(--gold-accent); padding: 18px 50px; border-radius: 8px; cursor: pointer; font-weight: 800; text-transform: uppercase; transition: var(--transition-speed); font-size: 14px; letter-spacing: 1px; }
-        .back-btn:hover { background-color: var(--gold-accent); color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+        .profile-container { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            background: var(--bg-card); 
+            border: 1px solid var(--border-color); 
+            border-radius: 16px; 
+            padding: 50px; 
+            box-shadow: var(--card-shadow); 
+        }
+        
+        .profile-header { 
+            display: flex; 
+            align-items: center; 
+            gap: 50px; 
+            border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 50px; 
+            margin-bottom: 50px; 
+        }
+        
+        .large-avatar { 
+            width: 180px; 
+            height: 180px; 
+            border-radius: 50%; 
+            border: 4px solid var(--gold-accent); 
+            background-color: #050505; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.15); 
+        }
 
-        /* Page Content Logic */
+              .large-avatar img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        
+        .trader-title h1 { 
+            font-size: 56px; 
+            font-weight: 900; 
+            color: var(--gold-accent); 
+            letter-spacing: -2px; 
+            margin-bottom: 15px; 
+        }
+        
+        .trader-badge { 
+            display: inline-block; 
+            background: rgba(212, 175, 55, 0.1); 
+            color: var(--gold-accent); 
+            padding: 8px 20px; 
+            border-radius: 30px; 
+            font-size: 13px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            margin-bottom: 20px; 
+            border: 1px solid rgba(212, 175, 55, 0.3); 
+        }
+        
+        .detail-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 30px; 
+        }
+        
+        .detail-card { 
+            background-color: #050505; 
+            border: 1px solid var(--border-color); 
+            padding: 35px; 
+            border-radius: 12px; 
+            transition: var(--transition-speed); 
+        }
+        
+        .detail-card:hover { 
+            border-color: var(--gold-accent); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+        }
+        
+        .detail-card label { 
+            display: block; 
+            color: var(--text-dim); 
+            font-size: 12px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 15px; 
+            font-weight: 700; 
+        }
+        
+        .detail-card span { 
+            font-size: 20px; 
+            font-weight: 700; 
+            color: var(--text-main); 
+        }
+        
+        .back-btn { 
+            margin-top: 60px; 
+            background: transparent; 
+            border: 1px solid var(--gold-accent); 
+            color: var(--gold-accent); 
+            padding: 18px 50px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            transition: var(--transition-speed); 
+            font-size: 14px; 
+            letter-spacing: 1px; 
+        }
+        
+        .back-btn:hover { 
+            background-color: var(--gold-accent); 
+            color: #000; 
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); 
+        }
+
         .page { 
             display: none; 
             animation: fadeIn 0.4s ease-out; 
@@ -340,7 +485,6 @@
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        /* Technical Components */
         .boundary-box { 
             border: 1px solid var(--border-color); 
             background-color: var(--bg-card); 
@@ -367,7 +511,6 @@
             padding-bottom: 12px; 
         }
 
-        /* Stats Grid */
         .stats-grid { 
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
@@ -403,7 +546,6 @@
             margin-top: 6px; 
         }
 
-        /* Tables */
         table { 
             width: 100%; 
             border-collapse: collapse; 
@@ -431,7 +573,6 @@
             background-color: rgba(255, 255, 255, 0.01); 
         }
 
-        /* Form & Calculator */
         .calculator-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
@@ -453,14 +594,14 @@
         }
         
         .input-field { 
-            background-color: #000; 
+            background-color: #000000; 
             border: 1px solid var(--border-color); 
             color: var(--text-main); 
             padding: 14px; 
             font-size: 14px; 
             border-radius: 6px; 
             outline: none; 
-            transition: 0.3s; 
+            transition: var(--transition-speed); 
         }
         
         .input-field:focus { 
@@ -470,7 +611,7 @@
         .action-btn { 
             grid-column: span 2; 
             background-color: var(--gold-accent); 
-            color: #000; 
+            color: #000000; 
             font-weight: 700; 
             border: none; 
             padding: 16px; 
@@ -479,7 +620,7 @@
             letter-spacing: 2px; 
             border-radius: 6px; 
             cursor: pointer; 
-            transition: 0.3s; 
+            transition: var(--transition-speed); 
             margin-top: 10px; 
         }
         
@@ -504,18 +645,58 @@
             display: none; 
         }
 
-        /* Status Badges */
-        .badge-high { color: var(--loss-red); font-weight: bold; background: rgba(255, 68, 68, 0.1); padding: 4px 8px; border-radius: 4px; font-size: 11px; }
-        .badge-med { color: var(--gold-accent); font-weight: bold; background: rgba(212, 175, 55, 0.1); padding: 4px 8px; border-radius: 4px; font-size: 11px; }
-        .badge-active { color: var(--profit-green); font-weight: bold; background: rgba(0, 255, 136, 0.1); padding: 4px 8px; border-radius: 4px; font-size: 11px; }
-
-        /* Dashboard Split Layout */
-        .dashboard-split { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
-        .flex-col { display: flex; flex-direction: column; gap: 24px; }
+        .badge-high { 
+            color: var(--loss-red); 
+            font-weight: bold; 
+            background: rgba(255, 68, 68, 0.1); 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+        }
         
-        .cli-window { background: #000; padding: 25px; border-radius: 8px; border: 1px solid #222; font-family: 'Courier New', Courier, monospace; color: #00ff88; height: 350px; overflow-y: auto; line-height: 1.6; font-size: 14px; }
+        .badge-med { 
+            color: var(--gold-accent); 
+            font-weight: bold; 
+            background: rgba(212, 175, 55, 0.1); 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+        }
+        
+        .badge-active { 
+            color: var(--profit-green); 
+            font-weight: bold; 
+            background: rgba(0, 255, 136, 0.1); 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+        }
 
-        /* Fullscreen styles for live market wrapper */
+        .dashboard-split { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr; 
+            gap: 24px; 
+        }
+        
+        .flex-col { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 24px; 
+        }
+        
+        .cli-window { 
+            background: #000000; 
+            padding: 25px; 
+            border-radius: 8px; 
+            border: 1px solid #222222; 
+            font-family: 'Courier New', Courier, monospace; 
+            color: var(--profit-green); 
+            height: 350px; 
+            overflow-y: auto; 
+            line-height: 1.6; 
+            font-size: 14px; 
+        }
+
         #live-market-wrapper:fullscreen {
             background-color: var(--bg-primary);
             padding: 20px;
@@ -525,6 +706,7 @@
             border-radius: 0;
             border: none;
         }
+        
         #live-market-wrapper:-webkit-full-screen {
             background-color: var(--bg-primary);
             padding: 20px;
@@ -534,10 +716,12 @@
             border-radius: 0;
             border: none;
         }
+        
         #live-market-wrapper:fullscreen .grid-container-live {
             height: 100% !important;
             flex: 1;
         }
+        
         #live-market-wrapper:-webkit-full-screen .grid-container-live {
             height: 100% !important;
             flex: 1;
@@ -552,7 +736,13 @@
             <p>INSTITUTIONAL ALGO ENGINE V5.0</p>
             
             <button class="btn-google" onclick="window.triggerGoogleLogin(false)">
-                <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/><path d="M1 1h22v22H1z" fill="none"/></svg>
+                <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    <path d="M1 1h22v22H1z" fill="none"/>
+                </svg>
                 Sign In with Google
             </button>
             
@@ -578,17 +768,32 @@
                 </div>
             </div>
             <div class="detail-grid">
-                <div class="detail-card"><label>Registered Email API</label><span id="prof-email-tag">Not Connected</span></div>
-                <div class="detail-card"><label>Location Context</label><span id="prof-phone-tag">Navi Mumbai, India</span></div>
-                <div class="detail-card"><label>Trading Status</label><span style="color:var(--profit-green);">ACTIVE SECURED</span></div>
-                <div class="detail-card"><label>Risk Tier & Strategy</label><span>TIER 1 (SMC Institutional)</span></div>
+                <div class="detail-card">
+                    <label>Registered Email API</label>
+                    <span id="prof-email-tag">Not Connected</span>
+                </div>
+                <div class="detail-card">
+                    <label>Location Context</label>
+                    <span id="prof-phone-tag">Navi Mumbai, India</span>
+                </div>
+                <div class="detail-card">
+                    <label>Trading Status</label>
+                    <span style="color:var(--profit-green);">ACTIVE SECURED</span>
+                </div>
+                <div class="detail-card">
+                    <label>Risk Tier & Strategy</label>
+                    <span>TIER 1 (SMC Institutional)</span>
+                </div>
             </div>
             <button class="back-btn" onclick="closeProfilePage()">← BACK TO SECURE TERMINAL</button>
         </div>
     </div>
 
-    <div class="sidebar">
-        <div class="brand-section"><h1>FX_ARJUN</h1></div>
+        <div class="sidebar">
+        <div class="brand-section">
+            <h1>FX_ARJUN</h1>
+        </div>
+        
         <div class="nav-group">
             <button class="nav-btn active" onclick="switchTab(this, 'dash')">Dashboard Engine</button>
             <button class="nav-btn" onclick="switchTab(this, 'live-market')" style="color: var(--profit-green); border-color: rgba(0,255,136,0.2);">Live Market</button>
@@ -598,12 +803,17 @@
             <button class="nav-btn" onclick="switchTab(this, 'mtj')">MTJ Performance</button>
             <button class="nav-btn" onclick="switchTab(this, 'calendar')">Macro Calendar</button>
             <button class="nav-btn" onclick="switchTab(this, 'acc')">Broker API Connect</button>
+            
             <button class="nav-btn" id="mgmt-nav-btn" onclick="switchTab(this, 'peoples')">⚠ Traders Data (Mgmt)</button>
         </div>
-        <div class="sidebar-footer">ALGO ENGINE V5.0</div>
+        
+        <div class="sidebar-footer">
+            ALGO ENGINE V5.0
+        </div>
     </div>
 
     <div class="workspace">
+        
         <div class="top-bar">
             <div class="auth-controls">
                 <button class="login-btn" id="google-login-btn" onclick="window.triggerGoogleLogin(false)">Google Sign-In</button>
@@ -611,19 +821,40 @@
             <div class="profile-widget" onclick="handleProfileClick()">
                 <div class="profile-info">
                     <span class="profile-name" id="user-name-display">GUEST_USER</span>
-                    <span class="profile-status"><span class="status-dot" id="user-status-dot"></span><span id="user-status-text">OFFLINE</span></span>
+                    <span class="profile-status">
+                        <span class="status-dot" id="user-status-dot"></span>
+                        <span id="user-status-text">OFFLINE</span>
+                    </span>
                 </div>
                 <div class="profile-avatar" id="user-avatar-display">LOGIN</div>
             </div>
         </div>
         
         <div id="dash" class="page active">
+            
             <div class="stats-grid">
-                <div class="stat-card"><div class="label">Equity Balance</div><div class="stat-value">$24,500.00</div><div class="stat-sub">Live Secured Funds</div></div>
-                <div class="stat-card"><div class="label">Daily Floating P&L</div><div class="stat-value" style="color: var(--profit-green);">+$1,240.50</div><div class="stat-sub">Smart Money Gains</div></div>
-                <div class="stat-card"><div class="label">Terminal Win Rate</div><div class="stat-value">78.4%</div><div class="stat-sub">High Probability Ratio</div></div>
-                <div class="stat-card"><div class="label">Margin Level</div><div class="stat-value">3250%</div><div class="stat-sub">Risk Profile Optimized</div></div>
+                <div class="stat-card">
+                    <div class="label">Equity Balance</div>
+                    <div class="stat-value">$24,500.00</div>
+                    <div class="stat-sub">Live Secured Funds</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Daily Floating P&L</div>
+                    <div class="stat-value" style="color: var(--profit-green);">+$1,240.50</div>
+                    <div class="stat-sub">Smart Money Gains</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Terminal Win Rate</div>
+                    <div class="stat-value">78.4%</div>
+                    <div class="stat-sub">High Probability Ratio</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Margin Level</div>
+                    <div class="stat-value">3250%</div>
+                    <div class="stat-sub">Risk Profile Optimized</div>
+                </div>
             </div>
+            
             <div class="dashboard-split">
                 <div class="flex-col">
                     <div class="boundary-box" style="margin-bottom: 0;">
@@ -639,6 +870,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="flex-col">
                     <div class="boundary-box" style="height: 100%; margin-bottom: 0;">
                         <div class="header-label">System Architecture Status</div>
@@ -647,7 +879,7 @@
                             <p style="color:var(--text-main); margin-bottom:20px; font-size:14px; font-weight:600;"><span style="color:var(--text-dim);">Primary Instrument Focus:</span> XAUUSD (Gold)</p>
                             <div style="padding: 15px; background: rgba(0, 255, 136, 0.05); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 8px; margin-top: 30px;">
                                 <p style="color:var(--profit-green); font-size:13px; font-weight:700; margin-bottom: 8px;">GitHub / Vercel Backend Active</p>
-                                <p style="color:var(--profit-green); font-size:13px; font-weight:700;">Server Status: <span style="color:#fff;">Synced</span></p>
+                                <p style="color:var(--profit-green); font-size:13px; font-weight:700;">Server Status: <span style="color:#ffffff;">Synced</span></p>
                             </div>
                         </div>
                     </div>
@@ -661,24 +893,74 @@
                     LIVE MARKET: XAUUSD SMC EXECUTION PANEL
                     <button class="fullscreen-btn" onclick="toggleLiveMarketFullScreen()">⛶ Full Screen Chart</button>
                 </div>
+                
                 <div class="grid-container-live" style="display: grid; grid-template-columns: 3fr 1fr; gap: 20px; flex: 1; min-height: 550px;">
                     
-                    <div id="tv-live-market-container" style="width: 100%; height: 100%; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background-color: #000;"></div>
+                    <div id="tv-live-market-container" style="width: 100%; height: 100%; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background-color: #000000;">
+                    </div>
                     
                     <div style="display: flex; flex-direction: column; gap: 20px; overflow-y: auto;">
                         
                         <div style="background: #050505; border: 1px solid var(--border-color); padding: 20px; border-radius: 8px;">
                             <h3 style="color: var(--gold-accent); font-size: 12px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Market Execution</h3>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #000000; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px;">
+                                <span style="color: var(--text-dim); font-size: 11px; font-weight: 700; letter-spacing: 1px;">LOT SIZE</span>
+                                <input type="number" value="1.00" step="0.01" min="0.01" style="background: transparent; border: none; color: var(--text-main); font-size: 16px; font-weight: bold; width: 60px; text-align: right; outline: none;">
+                            </div>
+
                             <div style="display: flex; flex-direction: row; gap: 10px;">
-                                <button class="action-btn" style="margin-top: 0; flex: 1; padding: 12px; font-size: 12px; background: var(--loss-red); color: white;" onclick="alert('SELL Order Sent')">SELL</button>
-                                <button class="action-btn" style="margin-top: 0; flex: 1; padding: 12px; font-size: 12px; background: var(--profit-green); color: black;" onclick="alert('BUY Order Sent')">BUY</button>
+                                <button class="action-btn" style="margin-top: 0; flex: 1; padding: 12px; font-size: 12px; background: var(--loss-red); color: #ffffff;" onclick="alert('SELL Order Sent to Backend API')">SELL</button>
+                                <button class="action-btn" style="margin-top: 0; flex: 1; padding: 12px; font-size: 12px; background: var(--profit-green); color: #000000;" onclick="alert('BUY Order Sent to Backend API')">BUY</button>
                             </div>
                         </div>
 
                         <div style="background: #050505; border: 1px solid var(--border-color); padding: 20px; border-radius: 8px;">
                             <h3 style="color: var(--gold-accent); font-size: 12px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">SMC Bar Replay</h3>
                             <p style="color: var(--text-dim); font-size: 12px; margin-bottom: 15px; line-height: 1.5;">Simulate forward price action for backtesting.</p>
-                            <button class="action-btn" style="width: 100%; margin-top: 0; background: #222; color: white; border: 1px solid #444;" onclick="alert('Replay functionality requires TradingView Advanced API.')">Step Forward (1 Bar)</button>
+                            <button class="action-btn" style="width: 100%; margin-top: 0; background: #222222; color: #ffffff; border: 1px solid #444444;" onclick="alert('Replay functionality requires TradingView Advanced License Integration.')">Step Forward (1 Bar)</button>
+                        </div>
+
+                        <div style="background: #050505; border: 1px solid var(--border-color); padding: 20px; border-radius: 8px;">
+                            <h3 style="color: var(--gold-accent); font-size: 12px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Running Trades</h3>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="background: #000000; border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-weight: bold; font-size: 13px;">
+                                            XAUUSD 
+                                            <span style="color: var(--profit-green); font-size: 11px; margin-left: 6px;">BUY 1.00</span>
+                                        </div>
+                                        <div style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">Entry: 2341.20</div>
+                                    </div>
+                                    <div style="color: var(--profit-green); font-weight: bold; font-size: 15px;">+$324.50</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: #050505; border: 1px solid var(--border-color); padding: 20px; border-radius: 8px;">
+                            <h3 style="color: var(--gold-accent); font-size: 12px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Trade History</h3>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="background: #000000; border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-weight: bold; font-size: 13px;">
+                                            XAUUSD 
+                                            <span style="color: var(--loss-red); font-size: 11px; margin-left: 6px;">SELL 0.50</span>
+                                        </div>
+                                        <div style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">Closed: 2335.80</div>
+                                    </div>
+                                    <div style="color: var(--loss-red); font-weight: bold; font-size: 15px;">-$150.00</div>
+                                </div>
+                                <div style="background: #000000; border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-weight: bold; font-size: 13px;">
+                                            XAUUSD 
+                                            <span style="color: var(--profit-green); font-size: 11px; margin-left: 6px;">BUY 2.00</span>
+                                        </div>
+                                        <div style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">Closed: 2340.00</div>
+                                    </div>
+                                    <div style="color: var(--profit-green); font-weight: bold; font-size: 15px;">+$850.00</div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -689,11 +971,25 @@
         <div id="risk" class="page">
             <div class="boundary-box" style="max-width: 700px;">
                 <div class="header-label">Institutional Position Size Calculator</div>
+                
                 <div class="calculator-grid">
-                    <div class="input-group"><label>Account Balance (USD)</label><input type="number" id="calc-balance" class="input-field" value="25000"></div>
-                    <div class="input-group"><label>Risk Percentage (%)</label><input type="number" id="calc-risk" class="input-field" value="1" step="0.1"></div>
-                    <div class="input-group"><label>Entry Price</label><input type="number" id="calc-entry" class="input-field" value="2320.50" step="0.01"></div>
-                    <div class="input-group"><label>Stop Loss (SL) Price</label><input type="number" id="calc-sl" class="input-field" value="2315.00" step="0.01"></div>
+                    <div class="input-group">
+                        <label>Account Capital (USD)</label>
+                        <input type="number" id="calc-balance" class="input-field" value="25000">
+                    </div>
+                    <div class="input-group">
+                        <label>Risk Percentage (%)</label>
+                        <input type="number" id="calc-risk" class="input-field" value="1" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Entry Price</label>
+                        <input type="number" id="calc-entry" class="input-field" value="2320.50" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label>Stop Loss (SL) Price</label>
+                        <input type="number" id="calc-sl" class="input-field" value="2315.00" step="0.01">
+                    </div>
+                    
                     <button class="action-btn" onclick="window.calculateRiskMetrics()">Process Lot Allocation</button>
                     
                     <div id="risk-result" class="calc-result-box">
@@ -708,384 +1004,5 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div id="hist" class="page">
-            <div class="boundary-box">
-                <div class="header-label">Execution Ledger</div>
-                <table>
-                    <thead>
-                        <tr><th>Execution Date</th><th>Asset Pair</th><th>Order Type</th><th>Volume</th><th>Execution Level</th><th>Exit Level</th><th>Net Profit / Loss</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>2026-06-02 18:24</td><td style="font-weight: bold;">XAUUSD</td><td style="color: var(--profit-green); font-weight: bold;">BUY</td><td>0.50</td><td>2312.40</td><td>2320.80</td><td style="color: var(--profit-green); font-weight: bold;">+$420.00</td></tr>
-                        <tr><td>2026-06-01 14:10</td><td style="font-weight: bold;">XAUUSD</td><td style="color: var(--loss-red); font-weight: bold;">SELL</td><td>1.20</td><td>2331.00</td><td>2332.25</td><td style="color: var(--loss-red); font-weight: bold;">-$150.00</td></tr>
-                        <tr><td>2026-05-30 09:15</td><td style="font-weight: bold;">XAUUSD</td><td style="color: var(--profit-green); font-weight: bold;">BUY</td><td>0.80</td><td>2305.10</td><td>2318.50</td><td style="color: var(--profit-green); font-weight: bold;">+$1072.00</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="ai" class="page">
-            <div class="boundary-box">
-                <div class="header-label">Jarvis AI - SMC Scanner</div>
-                <div class="cli-window">
-                    > Initializing Jarvis AI Module (Solo Mode)...<br>
-                    > Booting GitHub/Vercel backend links... [OK]<br>
-                    > Scanning XAUUSD Market Structure on 15M Timeframe...<br>
-                    > [ALERT] Inducement (IDM) Sweep detected at 2320.00 liquidity zone.<br>
-                    > Analyzing Order Blocks... Valid unmitigated OB found at 2318.50.<br>
-                    > SYSTEM STATUS: AWAITING Change of Character (ChoCh) on 1M timeframe for valid entry confirmation.<br>
-                    <span style="animation: blink 1s infinite;">_</span>
-                </div>
-            </div>
-        </div>
-
-        <div id="mtj" class="page">
-            <div class="boundary-box" style="max-width: 650px; margin: 0 auto;">
-                <div class="header-label">MTJ Performance Radar Visualization</div>
-                <div style="height: 400px; width: 100%;">
-                    <canvas id="mtjRadarChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div id="calendar" class="page">
-            <div class="boundary-box">
-                <div class="header-label">Economic Macro Calendar</div>
-                <table>
-                    <thead><tr><th>Time (IST)</th><th>Currency</th><th>Event Status</th><th>Impact Level</th></tr></thead>
-                    <tbody>
-                        <tr><td>18:00</td><td>USD</td><td>Core CPI m/m</td><td style="color:var(--loss-red);">HIGH (Red Folder)</td></tr>
-                        <tr><td>19:30</td><td>USD</td><td>Unemployment Claims</td><td style="color:var(--gold-accent);">MEDIUM (Orange Folder)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="acc" class="page">
-            <div class="boundary-box" style="max-width: 550px;">
-                <div class="header-label">Broker / Capital API Gateway</div>
-                <div class="calculator-grid" style="margin-top: 15px;">
-                    <div class="input-group" style="margin-bottom: 20px;">
-                        <label>Broker Name</label>
-                        <input type="text" id="broker-name" class="input-field" placeholder="Enter Broker Name">
-                    </div>
-                    <div class="input-group" style="margin-bottom: 20px;">
-                        <label>Server Name</label>
-                        <input type="text" id="broker-server" class="input-field" placeholder="Enter MT5 Server Name">
-                    </div>
-                    <div class="input-group" style="margin-bottom: 20px;">
-                        <label>Account Login ID</label>
-                        <input type="number" id="broker-id" class="input-field" placeholder="Enter Login ID">
-                    </div>
-                    <div class="input-group" style="margin-bottom: 20px;">
-                        <label>Master Password</label>
-                        <input type="password" id="broker-pass" class="input-field" placeholder="••••••••">
-                    </div>
-                    <button class="action-btn" id="connect-broker-btn" onclick="window.simulateBrokerConnection()">Initialize Terminal Bridge</button>
-                </div>
-                
-                <div id="broker-log-box" style="display: none; margin-top: 25px; background: #000; border: 1px solid #222; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 12px; color: var(--profit-green); line-height: 1.6;">
-                </div>
-            </div>
-        </div>
-
-        <div id="peoples" class="page">
-            <div class="boundary-box" style="border-color: var(--loss-red); background: rgba(255,68,68,0.02);">
-                <div class="header-label" style="color: var(--loss-red);">RESTRICTED AREA: MANAGEMENT DASHBOARD</div>
-                <p style="color: var(--text-dim); margin-bottom: 30px; font-size: 14px;">Viewing Booming Bulls applicant database and associated institutional traders.</p>
-                <table>
-                    <thead><tr><th>Trader Account</th><th>Registered Email</th><th>Status Profile</th><th>Risk Exposure</th></tr></thead>
-                    <tbody id="traders-table-body">
-                        </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
-
-    <script>
-        // Tab Navigation
-        window.switchTab = function(btn, pageId) {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            
-            btn.classList.add('active');
-            let targetPage = document.getElementById(pageId);
-            if (targetPage) { targetPage.classList.add('active'); }
-
-            if (pageId === 'live-market') { initTradingViewWidget(); }
-            if (pageId === 'mtj') { initMTJChart(); }
-            if (pageId === 'peoples') { window.loadTradersTable(); }
-        };
-
-        // Targeted Full Screen Engine (Live Market Only)
-        window.toggleLiveMarketFullScreen = function() {
-            const liveMarketWrapper = document.getElementById('live-market-wrapper');
-            if (!document.fullscreenElement) {
-                liveMarketWrapper.requestFullscreen().catch((err) => {
-                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
-        };
-
-        // TradingView Initialization
-        function initTradingViewWidget() {
-            const container = document.getElementById('tv-live-market-container');
-            if (container && !container.hasChildNodes()) {
-                new TradingView.widget({
-                    "container_id": "tv-live-market-container",
-                    "autosize": true,
-                    "symbol": "OANDA:XAUUSD",
-                    "interval": "15",
-                    "timezone": "Asia/Kolkata",
-                    "theme": "dark",
-                    "style": "1",
-                    "locale": "en",
-                    "backgroundColor": "#000000",
-                    "gridColor": "#1a1a1a",
-                    "toolbar_bg": "#050505",
-                    "enable_publishing": false,
-                    "allow_symbol_change": true,
-                    "hide_side_toolbar": false,
-                    "details": true,
-                    "hotlist": true,
-                    "calendar": true,
-                    "studies": [
-                        "MACD@tv-basicstudies",
-                        "MASimple@tv-basicstudies"
-                    ]
-                });
-            }
-        }
-
-        // Radar Chart Initialization (MTJ)
-        function initMTJChart() {
-            const canvasElement = document.getElementById('mtjRadarChart');
-            if (canvasElement && !window.mtjChartCreated) {
-                const ctx = canvasElement.getContext('2d');
-                new Chart(ctx, {
-                    type: 'radar',
-                    data: {
-                        labels: ['Win Rate %', 'Risk to Reward', 'Execution Consistency', 'Psychology', 'SMC Discipline'],
-                        datasets: [{
-                            label: 'Arjun - MTJ Profile Analytics',
-                            data: [78, 85, 92, 70, 96],
-                            backgroundColor: 'rgba(212, 175, 55, 0.25)',
-                            borderColor: '#d4af37',
-                            borderWidth: 2,
-                            pointBackgroundColor: '#ffffff',
-                            pointBorderColor: '#d4af37'
-                        }]
-                    },
-                    options: { 
-                        responsive: true, maintainAspectRatio: false,
-                        plugins: { legend: { labels: { color: '#ffffff', font: { family: "'Inter', sans-serif" } } } },
-                        scales: { r: { angleLines: { color: 'rgba(255, 255, 255, 0.1)' }, grid: { color: 'rgba(255, 255, 255, 0.1)' }, pointLabels: { color: '#777777', font: { size: 12, family: "'Inter', sans-serif" } }, ticks: { display: false, min: 0, max: 100 } } } 
-                    }
-                });
-                window.mtjChartCreated = true;
-            }
-        }
-
-        // Risk Calculator Logic
-        window.calculateRiskMetrics = function() {
-            const capital = parseFloat(document.getElementById('calc-balance').value);
-            const riskPct = parseFloat(document.getElementById('calc-risk').value);
-            const entry = parseFloat(document.getElementById('calc-entry').value);
-            const sl = parseFloat(document.getElementById('calc-sl').value);
-            
-            if (isNaN(capital) || isNaN(riskPct) || isNaN(entry) || isNaN(sl) || entry === sl) {
-                alert("Please enter valid numerical parameters."); 
-                return;
-            }
-            
-            const cashRisk = capital * (riskPct / 100);
-            const pipsRisk = Math.abs(entry - sl);
-            const standardLots = cashRisk / (pipsRisk * 100);
-            
-            document.getElementById('res-cash').innerText = "$" + cashRisk.toFixed(2);
-            document.getElementById('res-lots').innerText = standardLots.toFixed(2) + " Standard Lots";
-            document.getElementById('risk-result').style.display = "block";
-        };
-
-        // NEW UPGRADED: "Success" Broker Connection Simulation
-        window.simulateBrokerConnection = function() {
-            const btn = document.getElementById('connect-broker-btn');
-            const logBox = document.getElementById('broker-log-box');
-            const brokerName = document.getElementById('broker-name').value || 'Server';
-            
-            btn.innerText = "CONNECTING...";
-            btn.style.opacity = "0.5";
-            btn.disabled = true;
-            
-            logBox.style.display = "block";
-            // Reset colors for new run
-            logBox.style.color = "var(--profit-green)";
-            logBox.innerHTML = `> Initializing secure bridge to ${brokerName} API...<br>`;
-            
-            setTimeout(() => { 
-                logBox.innerHTML += `> Resolving MetaTrader 5 server DNS... [OK]<br>`; 
-            }, 1200);
-            
-            setTimeout(() => { 
-                logBox.innerHTML += `> Authenticating trader credentials...<br>`; 
-            }, 2500);
-            
-            setTimeout(() => { 
-                logBox.innerHTML += `<br>> <span style="color: var(--profit-green); font-weight: bold;">[SUCCESS] Connection Established to ${brokerName}.</span><br>`; 
-                logBox.innerHTML += `> <span style="color: var(--text-dim);">Live data stream active. Awaiting execution commands.</span>`;
-                
-                btn.innerText = "CONNECTED SECURELY";
-                btn.style.background = "var(--profit-green)";
-                btn.style.color = "#000";
-                btn.style.opacity = "1";
-                btn.disabled = false; // Optional: Keep it disabled to show it's already connected
-            }, 4000);
-        };
-
-        // Profile Handling
-        window.handleProfileClick = function() {
-            if (window.isLoggedIn) {
-                document.getElementById('profile-page').style.display = 'block';
-            } else {
-                alert("Please Sign In with Google first.");
-            }
-        };
-
-        window.closeProfilePage = function() {
-            document.getElementById('profile-page').style.display = 'none';
-        };
-
-        // Traders Dynamic Table Update Function
-        window.loadTradersTable = function() {
-            const tbody = document.getElementById('traders-table-body');
-            if (!tbody) return;
-            
-            let html = `
-                <tr>
-                    <td style="font-weight: bold; color: var(--gold-accent);">Fx_arjun (Admin)</td>
-                    <td>tradingjournalmanagement@gmail.com</td>
-                    <td><span class="badge-active">MANAGEMENT</span></td>
-                    <td>0.00%</td>
-                </tr>
-            `;
-            
-            let traders = JSON.parse(localStorage.getItem('fx_traders')) || [];
-            traders.forEach(t => {
-                html += `
-                    <tr>
-                        <td style="font-weight: bold;">${t.name}</td>
-                        <td>${t.email}</td>
-                        <td><span class="badge-med">${t.status}</span></td>
-                        <td>${t.risk}</td>
-                    </tr>
-                `;
-            });
-            tbody.innerHTML = html;
-        };
-
-        // Call on boot to populate existing local traders
-        window.loadTradersTable();
-
-    </script>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-        try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyBTwak_MdTo_Op0NCcCBCMB8hOxLf0f1RE",
-                authDomain: "fxarjun-terminal-c5ba8.firebaseapp.com",
-                projectId: "fxarjun-terminal-c5ba8",
-                storageBucket: "fxarjun-terminal-c5ba8.firebasestorage.app",
-                messagingSenderId: "876627003815",
-                appId: "1:876627003815:web:3f5f4578d861c9318fce82",
-                measurementId: "G-WPMDTLEYF2"
-            };
-
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-            const provider = new GoogleAuthProvider();
-
-            window.isLoggedIn = false;
-            window.currentUser = null;
-
-            // Updated Google Login with Security Check
-            window.triggerGoogleLogin = function(isMgmtRequest = false) {
-                signInWithPopup(auth, provider)
-                    .then((result) => {
-                        const user = result.user;
-                        const userEmail = user.email.toLowerCase();
-                        const isAdmin = (userEmail === "tradingjournalmanagement@gmail.com");
-
-                        // Security Check: Block non-admins from Management Access
-                        if (isMgmtRequest && !isAdmin) {
-                            alert("ACCESS DENIED: You are not authorized. This is not the registered Management Account.");
-                            signOut(auth);
-                            return;
-                        }
-
-                        window.isLoggedIn = true;
-                        window.currentUser = user;
-
-                        // Hide the Login Gate
-                        document.getElementById('auth-gate').style.display = 'none';
-                        const loginBtn = document.getElementById('google-login-btn');
-                        if (loginBtn) loginBtn.style.display = 'none';
-
-                        // Update Top Bar UI
-                        document.getElementById('user-name-display').innerText = user.displayName.toUpperCase();
-                        document.getElementById('user-avatar-display').innerHTML = `<img src="${user.photoURL}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-                        document.getElementById('user-status-dot').classList.add('online');
-                        document.getElementById('user-status-text').innerText = 'ONLINE';
-
-                        // Update Profile Page UI
-                        document.getElementById('prof-name-tag').innerText = user.displayName.toUpperCase();
-                        document.getElementById('prof-email-tag').innerText = user.email;
-                        document.getElementById('prof-img-placeholder').style.display = 'none';
-                        document.getElementById('prof-img-tag').src = user.photoURL;
-                        document.getElementById('prof-img-tag').style.display = 'block';
-
-                        // Route Logic
-                        if (isAdmin) {
-                            document.getElementById('mgmt-nav-btn').style.display = 'block';
-                            if (isMgmtRequest) {
-                                alert("Admin Access Granted: Welcome FX_ARJUN Management.");
-                            }
-                        } else {
-                            document.getElementById('mgmt-nav-btn').style.display = 'none';
-                            alert("Trader Connected: " + user.displayName);
-                            
-                            // Save Trader to Database (Local Storage)
-                            let traders = JSON.parse(localStorage.getItem('fx_traders')) || [];
-                            if (!traders.find(t => t.email === userEmail)) {
-                                traders.push({ 
-                                    name: user.displayName, 
-                                    email: user.email, 
-                                    status: 'ACTIVE USER', 
-                                    risk: (Math.random() * 2).toFixed(2) + '%' 
-                                });
-                                localStorage.setItem('fx_traders', JSON.stringify(traders));
-                            }
-                        }
-                        
-                        window.loadTradersTable(); // Refresh the Management Table
-                        setTimeout(() => { initMTJChart(); }, 200);
-                    })
-                    .catch((error) => {
-                        console.error("Firebase Auth Error:", error);
-                        alert("Login Failed: " + error.message);
-                    });
-            };
-            
-        } catch (e) {
-            console.error("Firebase failed to load:", e);
-        }
-    </script>
-</body>
-</html>
+    
