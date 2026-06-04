@@ -7,6 +7,8 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
     <style>
         /* Pro-Trader Color Palette & CSS Variables */
         :root {
@@ -323,6 +325,7 @@
             color: var(--text-dim); 
             text-transform: uppercase; 
             letter-spacing: 1px; 
+            font-weight: 700; 
         }
         
         .input-field { 
@@ -358,7 +361,7 @@
         
         .action-btn:hover { 
             opacity: 0.9; 
-            transform: translateY(-2px);
+            transform: translateY(-2px); 
         }
         
         .calc-result-box { 
@@ -379,6 +382,7 @@
         /* Dashboard Split Layout */
         .dashboard-split { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
         .flex-col { display: flex; flex-direction: column; gap: 24px; }
+
     </style>
 </head>
 <body>
@@ -390,6 +394,9 @@
         
         <div class="nav-group">
             <button class="nav-btn active" onclick="window.switchTab(this, 'dash')">Dashboard</button>
+            
+            <button class="nav-btn" onclick="window.switchTab(this, 'live-market')" style="color: var(--profit-green); border-color: rgba(0,255,136,0.2);">Live Market</button>
+            
             <button class="nav-btn" onclick="window.switchTab(this, 'risk')">Risk Manager</button>
             <button class="nav-btn" onclick="window.switchTab(this, 'hist')">Trade History</button>
             <button class="nav-btn" onclick="window.switchTab(this, 'ai')">Jarvis AI Analysis</button>
@@ -475,6 +482,36 @@
                                 <div style="font-size: 16px; font-weight: bold; font-family: monospace;">XAUUSD @ 2345.50</div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="live-market" class="page">
+            <div class="boundary-box">
+                <div class="header-label">LIVE MARKET: XAUUSD SMC EXECUTION PANEL</div>
+                <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 20px;">
+                    <div id="custom-lw-chart" style="height: 500px; background: #000; border: 1px solid var(--border-color); border-radius: 8px; position: relative;"></div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        
+                        <div style="background: #050505; border: 1px solid var(--border-color); padding: 20px; border-radius: 8px;">
+                            <h3 style="color: var(--gold-accent); font-size: 12px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Market Execution</h3>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <button class="action-btn" style="margin-top: 0; background: var(--loss-red); color: white;" onclick="window.executeTrade('SELL')">SELL MARKET</button>
+                                <button class="action-btn" style="margin-top: 0; background: var(--profit-green); color: black;" onclick="window.executeTrade('BUY')">BUY MARKET</button>
+                            </div>
+                        </div>
+
+                        <div style="background: #050505; border: 1px solid var(--border-color); padding: 20px; border-radius: 8px;">
+                            <h3 style="color: var(--gold-accent); font-size: 12px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">SMC Bar Replay</h3>
+                            <p style="color: var(--text-dim); font-size: 12px; margin-bottom: 15px;">Simulate forward price action for backtesting.</p>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <button class="action-btn" style="margin-top: 0; background: #222; color: white; border: 1px solid #444;" onclick="window.nextReplayCandle()">Step Forward (1 Bar)</button>
+                                <button class="action-btn" id="autoplay-btn" style="margin-top: 0; background: transparent; color: var(--gold-accent); border: 1px dashed var(--gold-accent);" onclick="window.toggleAutoPlay()">Start Auto-Play</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -672,7 +709,15 @@
     </div>
 
     <script>
-        // Tab Switcher Logic
+        // ADDED: Global Variables for the Live Market Chart and Replay Logic
+        let lwChart = null;
+        let lwSeries = null;
+        let tradeMarkers = [];
+        let autoPlayTimer = null;
+        let lastCandleTime = 1717372800; // Base UNIX time for replay logic
+        let lastCandleClose = 2340.20;
+
+        // UPDATED: Tab Switcher Logic to initialize the Live Market Chart when opened
         window.switchTab = function(btn, tabId) {
             var buttons = document.querySelectorAll('.nav-btn');
             for (var i = 0; i < buttons.length; i++) {
@@ -688,6 +733,90 @@
             var targetPage = document.getElementById(tabId);
             if (targetPage) {
                 targetPage.classList.add('active');
+            }
+
+            // Init custom chart only when opening Live Market tab
+            if (tabId === 'live-market') {
+                setTimeout(window.initLiveMarketChart, 100);
+            }
+        };
+
+        // ADDED: Initialize the custom Lightweight Chart
+        window.initLiveMarketChart = function() {
+            const chartDiv = document.getElementById('custom-lw-chart');
+            if (chartDiv.innerHTML !== "") return; // Prevent creating multiple charts if clicked twice
+
+            lwChart = LightweightCharts.createChart(chartDiv, {
+                layout: { backgroundColor: '#000000', textColor: '#d1d4dc', },
+                grid: { vertLines: { color: '#1a1a1a' }, horzLines: { color: '#1a1a1a' } },
+                timeScale: { timeVisible: true, secondsVisible: false },
+                crosshair: { mode: LightweightCharts.CrosshairMode.Normal }
+            });
+
+            lwSeries = lwChart.addCandlestickSeries({
+                upColor: '#00ff88', downColor: '#ff4444', 
+                borderVisible: false, wickUpColor: '#00ff88', wickDownColor: '#ff4444',
+            });
+
+            // Set Initial Base Data (XAUUSD Example)
+            const initialData = [
+                { time: 1717113600, open: 2310.20, high: 2325.50, low: 2305.00, close: 2320.10 },
+                { time: 1717200000, open: 2320.10, high: 2330.00, low: 2315.20, close: 2328.40 },
+                { time: 1717286400, open: 2328.40, high: 2345.50, low: 2325.00, close: 2340.20 },
+            ];
+            lwSeries.setData(initialData);
+        };
+
+        // ADDED: Execute Trade & Plot on Chart
+        window.executeTrade = function(type) {
+            if (!lwSeries) { alert("Please open the Live Market tab to initialize chart first."); return; }
+            
+            const color = type === 'BUY' ? '#00ff88' : '#ff4444';
+            const position = type === 'BUY' ? 'belowBar' : 'aboveBar';
+            const shape = type === 'BUY' ? 'arrowUp' : 'arrowDown';
+            
+            tradeMarkers.push({
+                time: lastCandleTime,
+                position: position,
+                color: color,
+                shape: shape,
+                text: type + " @ " + lastCandleClose.toFixed(2),
+                size: 2
+            });
+            
+            // Apply marker to chart
+            lwSeries.setMarkers(tradeMarkers);
+        };
+
+        // ADDED: Replay Logic (Next Candle)
+        window.nextReplayCandle = function() {
+            if (!lwSeries) return;
+            
+            lastCandleTime += 86400; // Add 1 day
+            let volatility = (Math.random() - 0.5) * 20; // Random movement
+            let open = lastCandleClose;
+            let close = open + volatility;
+            let high = Math.max(open, close) + Math.random() * 10;
+            let low = Math.min(open, close) - Math.random() * 10;
+            
+            lwSeries.update({ time: lastCandleTime, open: open, high: high, low: low, close: close });
+            lastCandleClose = close;
+        };
+
+        // ADDED: Auto-Play Logic
+        window.toggleAutoPlay = function() {
+            const btn = document.getElementById('autoplay-btn');
+            if (autoPlayTimer) {
+                clearInterval(autoPlayTimer);
+                autoPlayTimer = null;
+                btn.innerHTML = "Start Auto-Play";
+                btn.style.background = "transparent";
+                btn.style.color = "var(--gold-accent)";
+            } else {
+                autoPlayTimer = setInterval(window.nextReplayCandle, 1000);
+                btn.innerHTML = "Stop Auto-Play";
+                btn.style.background = "#222";
+                btn.style.color = "#fff";
             }
         };
 
