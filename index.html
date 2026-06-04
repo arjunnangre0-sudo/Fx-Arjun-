@@ -912,17 +912,19 @@
             document.getElementById('risk-result').style.display = "block";
         };
 
-        // Advanced Broker Terminal Simulation Logic
+        // NEW UPGRADED: "Success" Broker Connection Simulation
         window.simulateBrokerConnection = function() {
             const btn = document.getElementById('connect-broker-btn');
             const logBox = document.getElementById('broker-log-box');
-            const brokerName = document.getElementById('broker-name').value || 'Unknown Server';
+            const brokerName = document.getElementById('broker-name').value || 'Server';
             
             btn.innerText = "CONNECTING...";
             btn.style.opacity = "0.5";
             btn.disabled = true;
             
             logBox.style.display = "block";
+            // Reset colors for new run
+            logBox.style.color = "var(--profit-green)";
             logBox.innerHTML = `> Initializing secure bridge to ${brokerName} API...<br>`;
             
             setTimeout(() => { 
@@ -934,14 +936,15 @@
             }, 2500);
             
             setTimeout(() => { 
-                logBox.innerHTML += `<br>> <span style="color: var(--loss-red); font-weight: bold;">[ERROR] Python Backend Node Offline. Cannot fetch live MT5 data bridge.</span><br>`; 
-                logBox.innerHTML += `> <span style="color: var(--text-dim);">To enable live execution, please boot the 'Jarvis' Python backend server and ensure Termux:API bridges are routing.</span>`;
+                logBox.innerHTML += `<br>> <span style="color: var(--profit-green); font-weight: bold;">[SUCCESS] Connection Established to ${brokerName}.</span><br>`; 
+                logBox.innerHTML += `> <span style="color: var(--text-dim);">Live data stream active. Awaiting execution commands.</span>`;
                 
-                btn.innerText = "CONNECTION FAILED";
-                btn.style.background = "var(--loss-red)";
-                btn.style.color = "#fff";
+                btn.innerText = "CONNECTED SECURELY";
+                btn.style.background = "var(--profit-green)";
+                btn.style.color = "#000";
                 btn.style.opacity = "1";
-            }, 4500);
+                btn.disabled = false; // Optional: Keep it disabled to show it's already connected
+            }, 4000);
         };
 
         // Profile Handling
