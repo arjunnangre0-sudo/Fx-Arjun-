@@ -3,1802 +3,414 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | INSTITUTIONAL ALGO TERMINAL V8.0</title>
+    <title>FX_ARJUN | INSTITUTIONAL TERMINAL V8.5</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 
     <style>
         /* ==========================================================================
-           1. CORE ARCHITECTURE & THEME VARIABLES (DEEP INSTITUTIONAL BLACK)
+           1. CORE VARIABLES (EXNESS / BINANCE STYLE DARK MODE)
            ========================================================================== */
         :root {
-            /* Background Colors */
-            --bg-master: #000000;          
-            --bg-primary: #050507;         
-            --bg-panel: #0a0a0e;           
-            --bg-hover: #14141a;           
+            --bg-base: #0b0e11;
+            --bg-panel: #181a20;
+            --bg-hover: #2b3139;
+            --border-line: #2b3139;
             
-            /* Border Colors */
-            --border-color: #1c1c26;       
+            --gold: #fcd535;
+            --gold-hover: #f0c822;
             
-            /* Accents */
-            --gold-accent: #e5b85c;        
-            --gold-hover: #ffcf66;
-            --gold-dim: rgba(229, 184, 92, 0.1);
+            --buy-green: #0ecb81;
+            --buy-green-dim: rgba(14, 203, 129, 0.1);
             
-            /* Text Colors */
-            --text-main: #f8f8f8;          
-            --text-dim: #8b8b99;           
+            --sell-red: #f6465d;
+            --sell-red-dim: rgba(246, 70, 93, 0.1);
             
-            /* Profit / Loss Colors */
-            --profit-green: #00ff73;       
-            --profit-green-dim: rgba(0, 255, 115, 0.1);
-            --profit-glow: 0 0 20px rgba(0, 255, 115, 0.3);
+            --text-main: #eaecef;
+            --text-muted: #848e9c;
             
-            --loss-red: #ff1a4a;           
-            --loss-red-dim: rgba(255, 26, 74, 0.1);
-            --loss-glow: 0 0 20px rgba(255, 26, 74, 0.3);
-            
-            /* Typography */
-            --font-main: 'Inter', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            
-            /* Effects */
-            --shadow-heavy: 0 15px 35px rgba(0,0,0,0.9);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --font-ui: 'Inter', sans-serif;
+            --font-num: 'JetBrains Mono', monospace;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-base); color: var(--text-main); font-family: var(--font-ui); height: 100vh; display: flex; overflow: hidden; }
+        
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-hover); }
 
         /* ==========================================================================
-           2. GLOBAL RESETS & CUSTOM SCROLLBARS
+           2. SIDEBAR NAVIGATION
            ========================================================================== */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
+        .sidebar { width: 260px; background: var(--bg-panel); border-right: 1px solid var(--border-line); display: flex; flex-direction: column; z-index: 100; }
         
-        html, body { 
-            height: 100%; 
-            width: 100%; 
-            background: var(--bg-master); 
-            color: var(--text-main); 
-            font-family: var(--font-main); 
-            overflow: hidden; 
-        }
+        .brand { padding: 30px 20px; border-bottom: 1px solid var(--border-line); text-align: center; }
+        .brand h1 { color: var(--gold); font-size: 24px; font-weight: 900; letter-spacing: 2px; }
+        .brand p { color: var(--text-muted); font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; margin-top: 5px; }
         
-        ::-webkit-scrollbar { 
-            width: 5px; 
-            height: 5px; 
-        }
+        .nav-links { padding: 20px 15px; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+        .nav-item { padding: 15px 20px; color: var(--text-muted); font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 6px; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .nav-item:hover { background: var(--bg-hover); color: var(--text-main); }
+        .nav-item.active { background: var(--bg-hover); color: var(--gold); }
         
-        ::-webkit-scrollbar-track { 
-            background: var(--bg-master); 
-        }
-        
-        ::-webkit-scrollbar-thumb { 
-            background: #2a2a35; 
-            border-radius: 10px; 
-        }
-        
-        ::-webkit-scrollbar-thumb:hover { 
-            background: var(--gold-accent); 
-        }
+        .system-status { padding: 20px; font-family: var(--font-num); font-size: 11px; font-weight: bold; color: var(--buy-green); display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--border-line); background: var(--bg-base); }
+        .dot { width: 8px; height: 8px; background: var(--buy-green); border-radius: 50%; box-shadow: 0 0 10px var(--buy-green); }
 
         /* ==========================================================================
-           3. TOAST NOTIFICATION SYSTEM (CUSTOM BUILT)
+           3. WORKSPACE & HEADER
            ========================================================================== */
-        #toast-container { 
-            position: fixed; 
-            bottom: 30px; 
-            right: 30px; 
-            z-index: 9999; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-        }
+        .workspace { flex: 1; display: flex; flex-direction: column; }
         
-        .toast { 
-            background: var(--bg-panel); 
-            border-left: 4px solid var(--gold-accent); 
-            padding: 15px 25px; 
-            border-radius: 6px; 
-            box-shadow: var(--shadow-heavy); 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            font-weight: 600; 
-            font-size: 13px; 
-            transform: translateX(120%); 
-            animation: slideInRight 0.4s forwards; 
-        }
+        .header { height: 70px; padding: 0 30px; border-bottom: 1px solid var(--border-line); display: flex; align-items: center; justify-content: space-between; background: var(--bg-panel); }
         
-        .toast.success { 
-            border-color: var(--profit-green); 
-        }
+        .ticker { display: flex; gap: 20px; font-family: var(--font-num); font-size: 14px; font-weight: bold; }
+        .ticker span { color: var(--text-muted); margin-right: 8px; }
+        .up { color: var(--buy-green); }
+        .down { color: var(--sell-red); }
         
-        .toast.error { 
-            border-color: var(--loss-red); 
-        }
-        
-        .toast.fade-out { 
-            animation: fadeOutRight 0.4s forwards; 
-        }
-        
-        @keyframes slideInRight { 
-            to { transform: translateX(0); } 
-        }
-        
-        @keyframes fadeOutRight { 
-            to { transform: translateX(120%); opacity: 0; } 
-        }
+        .auth-widget { display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 8px 15px; border-radius: 6px; background: var(--bg-base); border: 1px solid var(--border-line); transition: 0.2s; }
+        .auth-widget:hover { border-color: var(--gold); }
+        .auth-info { text-align: right; }
+        .auth-name { font-size: 13px; font-weight: bold; color: var(--text-main); }
+        .auth-status { font-size: 10px; color: var(--text-muted); display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 3px; }
+        .auth-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-hover); color: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; overflow: hidden; }
+        .auth-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
         /* ==========================================================================
-           4. LAYOUT STRUCTURE
+           4. PAGE CONTENT AREA
            ========================================================================== */
-        .app-layout { 
-            display: flex; 
-            height: 100%; 
-            width: 100%; 
-        }
-        
-        /* --------------------------------------------------------------------------
-           SIDEBAR STYLING
-           -------------------------------------------------------------------------- */
-        .sidebar { 
-            width: 300px; 
-            background: var(--bg-primary); 
-            border-right: 1px solid var(--border-color); 
-            display: flex; 
-            flex-direction: column; 
-            position: relative; 
-            z-index: 100; 
-            box-shadow: 10px 0 30px rgba(0,0,0,0.5); 
-        }
-        
-        .brand-header { 
-            padding: 40px 20px; 
-            text-align: center; 
-            border-bottom: 1px solid var(--border-color); 
-            background: radial-gradient(ellipse at top, rgba(229,184,92,0.05) 0%, transparent 70%); 
-        }
-        
-        .brand-header h1 { 
-            color: var(--gold-accent); 
-            font-size: 32px; 
-            font-weight: 900; 
-            letter-spacing: 4px; 
-            text-shadow: 0 0 15px rgba(229,184,92,0.3); 
-            margin-bottom: 5px; 
-        }
-        
-        .brand-header span { 
-            color: var(--text-dim); 
-            font-size: 10px; 
-            font-weight: 800; 
-            letter-spacing: 6px; 
-            text-transform: uppercase; 
-        }
-        
-        .nav-menu { 
-            padding: 25px 20px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 8px; 
-            flex: 1; 
-            overflow-y: auto; 
-        }
-        
-        .nav-item { 
-            padding: 18px 20px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            color: var(--text-dim); 
-            text-transform: uppercase; 
-            font-size: 12px; 
-            font-weight: 800; 
-            letter-spacing: 2px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            transition: var(--transition); 
-            border: 1px solid transparent; 
-        }
-        
-        .nav-item:hover { 
-            background: var(--bg-hover); 
-            color: var(--text-main); 
-            transform: translateX(5px); 
-        }
-        
-        .nav-item.active { 
-            background: linear-gradient(90deg, var(--gold-dim) 0%, transparent 100%); 
-            color: var(--text-main); 
-            border-color: var(--border-color); 
-            border-left: 3px solid var(--gold-accent); 
-        }
-        
-        .sidebar-footer { 
-            padding: 20px; 
-            background: var(--bg-panel); 
-            border-top: 1px solid var(--border-color); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 10px; 
-        }
-        
-        .status-badge { 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            font-family: var(--font-mono); 
-            font-size: 11px; 
-            font-weight: bold; 
-            color: var(--profit-green); 
-        }
-        
-        .status-dot { 
-            width: 8px; 
-            height: 8px; 
-            background: var(--profit-green); 
-            border-radius: 50%; 
-            box-shadow: var(--profit-glow); 
-            animation: pulse 2s infinite; 
-        }
-        
-        @keyframes pulse { 
-            0% { opacity: 1; transform: scale(1); } 
-            50% { opacity: 0.5; transform: scale(1.5); } 
-            100% { opacity: 1; transform: scale(1); } 
-        }
-
-        /* --------------------------------------------------------------------------
-           MAIN WORKSPACE
-           -------------------------------------------------------------------------- */
-        .workspace { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            background: var(--bg-master); 
-        }
-        
-        /* --------------------------------------------------------------------------
-           TOP HEADER & TICKER
-           -------------------------------------------------------------------------- */
-        .top-header { 
-            height: 80px; 
-            padding: 0 40px; 
-            border-bottom: 1px solid var(--border-color); 
-            background: var(--bg-primary); 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            z-index: 50; 
-        }
-        
-        .ticker-tape { 
-            display: flex; 
-            gap: 25px; 
-            font-family: var(--font-mono); 
-            font-size: 13px; 
-            font-weight: 800; 
-        }
-        
-        .ticker-item { 
-            display: flex; 
-            gap: 10px; 
-            align-items: center; 
-            background: var(--bg-panel); 
-            padding: 8px 16px; 
-            border-radius: 6px; 
-            border: 1px solid var(--border-color); 
-        }
-        
-        .tick-sym { 
-            color: var(--text-main); 
-        }
-        
-        .tick-val.up { 
-            color: var(--profit-green); 
-            text-shadow: var(--profit-glow); 
-        }
-        
-        .tick-val.down { 
-            color: var(--loss-red); 
-            text-shadow: var(--loss-glow); 
-        }
-
-        /* --------------------------------------------------------------------------
-           PROFILE LOGIN WIDGET
-           -------------------------------------------------------------------------- */
-        .profile-widget { 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            padding: 8px 16px; 
-            background: var(--bg-panel); 
-            border: 1px solid var(--border-color); 
-            border-radius: 8px; 
-            cursor: pointer; 
-            transition: var(--transition); 
-            position: relative; 
-        }
-        
-        .profile-widget:hover { 
-            border-color: var(--gold-accent); 
-            box-shadow: 0 0 15px rgba(229,184,92,0.1); 
-        }
-        
-        .profile-details { 
-            text-align: right; 
-            display: flex; 
-            flex-direction: column; 
-        }
-        
-        .profile-name { 
-            font-size: 13px; 
-            font-weight: 900; 
-            letter-spacing: 1px; 
-            color: var(--text-main); 
-            text-transform: uppercase; 
-        }
-        
-        .profile-state { 
-            font-size: 10px; 
-            font-weight: 700; 
-            color: var(--text-dim); 
-            display: flex; 
-            align-items: center; 
-            justify-content: flex-end; 
-            gap: 5px; 
-            margin-top: 3px; 
-        }
-        
-        .auth-dot { 
-            width: 6px; 
-            height: 6px; 
-            border-radius: 50%; 
-            background: var(--loss-red); 
-            box-shadow: var(--loss-glow); 
-        }
-        
-        .auth-dot.auth-ok { 
-            background: var(--profit-green); 
-            box-shadow: var(--profit-glow); 
-        }
-        
-        .profile-pic { 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            background: var(--bg-primary); 
-            border: 2px solid var(--border-color); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            overflow: hidden; 
-            font-weight: bold; 
-            color: var(--gold-accent); 
-        }
-        
-        .profile-pic img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-        }
-        
-        .loader-ring { 
-            display: none; 
-            width: 16px; 
-            height: 16px; 
-            border: 2px solid var(--text-dim); 
-            border-top-color: var(--gold-accent); 
-            border-radius: 50%; 
-            animation: spin 1s linear infinite; 
-            position: absolute; 
-            left: -25px; 
-        }
-        
-        @keyframes spin { 
-            to { transform: rotate(360deg); } 
-        }
-
-        /* --------------------------------------------------------------------------
-           PAGE CONTENT AREA
-           -------------------------------------------------------------------------- */
-        .content-area { 
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 40px 50px; 
-            scroll-behavior: smooth; 
-        }
-        
-        .page-view { 
-            display: none; 
-            animation: fadeUp 0.4s ease forwards; 
-        }
-        
-        .page-view.active { 
-            display: block; 
-        }
-        
-        @keyframes fadeUp { 
-            from { opacity: 0; transform: translateY(15px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        .content { flex: 1; overflow-y: auto; padding: 30px; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* ==========================================================================
-           5. UI COMPONENTS (CARDS, BUTTONS, INPUTS)
+           5. DASHBOARD: LIVE MARKET SECTION (THE EXNESS LOOK)
            ========================================================================== */
-        .panel-box { 
-            background: var(--bg-panel); 
-            border: 1px solid var(--border-color); 
-            border-radius: 12px; 
-            padding: 35px; 
-            margin-bottom: 35px; 
-            box-shadow: var(--shadow-heavy); 
-        }
+        .live-market-container { display: flex; height: calc(100vh - 130px); border: 1px solid var(--border-line); border-radius: 8px; overflow: hidden; background: var(--bg-panel); }
         
-        .panel-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 25px; 
-            padding-bottom: 15px; 
-            border-bottom: 1px solid var(--border-color); 
-        }
+        /* Left: Chart Area */
+        .chart-area { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border-line); position: relative; }
+        .chart-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); }
+        .chart-title { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .live-badge { background: var(--sell-red-dim); color: var(--sell-red); padding: 4px 8px; font-size: 10px; border-radius: 4px; font-weight: bold; font-family: var(--font-num); animation: blink 1.5s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         
-        .panel-title { 
-            font-size: 16px; 
-            font-weight: 900; 
-            letter-spacing: 3px; 
-            color: var(--text-main); 
-            text-transform: uppercase; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-        }
+        .canvas-container { flex: 1; width: 100%; background: #0b0e11; position: relative; }
+        #canvas-chart { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
         
-        .panel-title::before { 
-            content: ''; 
-            display: block; 
-            width: 4px; 
-            height: 18px; 
-            background: var(--gold-accent); 
-            border-radius: 2px; 
-        }
+        .replay-tools { display: flex; gap: 10px; }
+        .btn-tool { background: var(--bg-base); border: 1px solid var(--border-line); color: var(--text-main); padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer; border-radius: 4px; }
+        .btn-tool:hover { border-color: var(--gold); color: var(--gold); }
 
-        /* --------------------------------------------------------------------------
-           METRICS GRID
-           -------------------------------------------------------------------------- */
-        .metric-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 25px; 
-            margin-bottom: 35px; 
-        }
-        
-        .metric-card { 
-            background: var(--bg-primary); 
-            border: 1px solid var(--border-color); 
-            padding: 25px; 
-            border-radius: 10px; 
-            transition: var(--transition); 
-            position: relative; 
-            overflow: hidden; 
-        }
-        
-        .metric-card:hover { 
-            transform: translateY(-5px); 
-            border-color: var(--gold-dim); 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
-        }
-        
-        .metric-card::before { 
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 2px; 
-            background: linear-gradient(90deg, var(--gold-accent), transparent); 
-            opacity: 0.5; 
-        }
-        
-        .mc-title { 
-            font-size: 11px; 
-            font-weight: 800; 
-            color: var(--text-dim); 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-        }
-        
-        .mc-val { 
-            font-size: 32px; 
-            font-weight: 900; 
-            font-family: var(--font-mono); 
-            margin: 15px 0 8px 0; 
-            letter-spacing: -1px; 
-        }
-        
-        .mc-sub { 
-            font-size: 11px; 
-            font-weight: 700; 
-            color: var(--gold-accent); 
-            letter-spacing: 1px; 
-        }
+        /* Right: Execution Area */
+        .execution-area { width: 320px; background: var(--bg-panel); padding: 25px 20px; display: flex; flex-direction: column; }
+        .exec-tabs { display: flex; margin-bottom: 25px; border-bottom: 2px solid var(--border-line); }
+        .exec-tab { flex: 1; text-align: center; padding: 10px 0; font-size: 14px; font-weight: bold; color: var(--text-muted); cursor: pointer; }
+        .exec-tab.active { color: var(--gold); border-bottom: 2px solid var(--gold); margin-bottom: -2px; }
 
-        /* --------------------------------------------------------------------------
-           BUTTONS & INPUTS
-           -------------------------------------------------------------------------- */
-        .btn { 
-            padding: 14px 24px; 
-            border: none; 
-            border-radius: 8px; 
-            font-family: var(--font-main); 
-            font-weight: 900; 
-            font-size: 13px; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            cursor: pointer; 
-            transition: var(--transition); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 10px; 
-        }
-        
-        .btn-gold { 
-            background: var(--gold-accent); 
-            color: #000; 
-        }
-        
-        .btn-gold:hover { 
-            background: var(--gold-hover); 
-            box-shadow: 0 0 20px rgba(229,184,92,0.3); 
-            transform: translateY(-2px); 
-        }
-        
-        .btn-outline { 
-            background: transparent; 
-            border: 1px solid var(--border-color); 
-            color: var(--text-main); 
-        }
-        
-        .btn-outline:hover { 
-            border-color: var(--gold-accent); 
-            color: var(--gold-accent); 
-        }
-        
-        .btn-danger { 
-            background: var(--loss-red-dim); 
-            border: 1px solid var(--loss-red); 
-            color: var(--loss-red); 
-        }
-        
-        .btn-danger:hover { 
-            background: var(--loss-red); 
-            color: #fff; 
-            box-shadow: var(--loss-glow); 
-        }
+        .input-box { margin-bottom: 20px; }
+        .input-box label { display: block; font-size: 11px; font-weight: bold; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
+        .input-wrapper { display: flex; align-items: center; background: var(--bg-base); border: 1px solid var(--border-line); border-radius: 6px; padding: 0 15px; }
+        .input-wrapper input { flex: 1; background: transparent; border: none; color: var(--text-main); font-family: var(--font-num); font-size: 18px; font-weight: bold; padding: 15px 0; outline: none; }
+        .input-wrapper span { color: var(--text-muted); font-size: 12px; font-weight: bold; }
+        .input-wrapper:focus-within { border-color: var(--gold); }
 
-        .input-group { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-        }
+        .trade-buttons { display: flex; gap: 15px; margin-top: auto; }
+        .btn-trade { flex: 1; padding: 20px 0; border: none; border-radius: 6px; font-size: 16px; font-weight: 900; cursor: pointer; color: #fff; transition: 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .btn-trade span { font-size: 10px; font-family: var(--font-num); margin-top: 5px; opacity: 0.8; }
         
-        .input-label { 
-            font-size: 11px; 
-            font-weight: 800; 
-            color: var(--text-dim); 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-        }
-        
-        .input-control { 
-            background: var(--bg-primary); 
-            border: 1px solid var(--border-color); 
-            padding: 18px 20px; 
-            border-radius: 8px; 
-            color: var(--text-main); 
-            font-family: var(--font-mono); 
-            font-size: 16px; 
-            font-weight: bold; 
-            outline: none; 
-            transition: var(--transition); 
-        }
-        
-        .input-control:focus { 
-            border-color: var(--gold-accent); 
-            box-shadow: inset 0 0 10px rgba(229,184,92,0.05); 
-        }
+        .btn-sell { background: var(--sell-red); }
+        .btn-sell:hover { background: #ff3355; transform: translateY(-2px); }
+        .btn-buy { background: var(--buy-green); }
+        .btn-buy:hover { background: #13de8f; transform: translateY(-2px); }
 
         /* ==========================================================================
-           6. DASHBOARD DIRECT TRADE & REPLAY LAYOUT (MASSIVE)
+           6. OTHER PAGES (NODE SETUP & HISTORY)
            ========================================================================== */
-        .dashboard-split { 
-            display: grid; 
-            grid-template-columns: 2.5fr 1fr; 
-            gap: 30px; 
-            height: 650px; 
-        }
-        
-        /* --------------------------------------------------------------------------
-           CHART AREA
-           -------------------------------------------------------------------------- */
-        .chart-panel { 
-            background: var(--bg-panel); 
-            border: 1px solid var(--border-color); 
-            border-radius: 12px; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
-            box-shadow: var(--shadow-heavy); 
-        }
-        
-        .chart-header { 
-            padding: 15px 25px; 
-            border-bottom: 1px solid var(--border-color); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background: #07070a; 
-        }
-        
-        .chart-title { 
-            font-weight: 900; 
-            font-size: 14px; 
-            letter-spacing: 2px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-        }
-        
-        .live-pulse { 
-            width: 8px; 
-            height: 8px; 
-            background: var(--loss-red); 
-            border-radius: 50%; 
-            box-shadow: var(--loss-glow); 
-            animation: pulse 1s infinite; 
-        }
-        
-        .chart-container { 
-            flex: 1; 
-            background: #000; 
-            position: relative; 
-        }
-        
-        #tv_chart_main, #lw_chart_replay { 
-            width: 100%; 
-            height: 100%; 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-        }
-        
-        #lw_chart_replay { 
-            display: none; 
-            z-index: 10; 
-            background: #000; 
-        }
+        .setup-card { background: var(--bg-panel); border: 1px solid var(--border-line); border-radius: 8px; padding: 40px; max-width: 600px; margin: 0 auto; }
+        .setup-title { font-size: 20px; font-weight: 800; margin-bottom: 30px; text-align: center; color: var(--gold); }
+        .auth-overlay { text-align: center; padding: 40px 0; }
+        .btn-main { background: var(--gold); color: #000; font-weight: 800; font-size: 14px; padding: 15px 30px; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; width: 100%; transition: 0.2s; }
+        .btn-main:hover { background: var(--gold-hover); }
 
-        /* --------------------------------------------------------------------------
-           REPLAY CONTROLS
-           -------------------------------------------------------------------------- */
-        .replay-controls { 
-            position: absolute; 
-            bottom: 20px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            background: rgba(10,10,14,0.9); 
-            backdrop-filter: blur(5px); 
-            border: 1px solid var(--border-color); 
-            padding: 10px 20px; 
-            border-radius: 50px; 
-            display: none; 
-            gap: 15px; 
-            z-index: 20; 
-            align-items: center; 
-        }
-        
-        .rc-btn { 
-            background: transparent; 
-            border: none; 
-            color: var(--text-main); 
-            font-size: 18px; 
-            cursor: pointer; 
-            transition: 0.2s; 
-        }
-        
-        .rc-btn:hover { 
-            color: var(--gold-accent); 
-            transform: scale(1.2); 
-        }
-        
-        .rc-speed { 
-            font-family: var(--font-mono); 
-            font-size: 12px; 
-            font-weight: bold; 
-            color: var(--gold-accent); 
-        }
-
-        /* --------------------------------------------------------------------------
-           DIRECT EXECUTION PANEL (MASSIVE)
-           -------------------------------------------------------------------------- */
-        .execution-panel { 
-            background: var(--bg-panel); 
-            border: 1px solid var(--border-color); 
-            border-radius: 12px; 
-            padding: 30px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            box-shadow: var(--shadow-heavy); 
-        }
-        
-        .exec-title { 
-            font-size: 18px; 
-            font-weight: 900; 
-            letter-spacing: 3px; 
-            margin-bottom: 25px; 
-            text-align: center; 
-            color: var(--text-main); 
-            border-bottom: 1px dashed var(--border-color); 
-            padding-bottom: 15px; 
-        }
-        
-        .huge-input { 
-            text-align: center; 
-            font-size: 32px !important; 
-            color: var(--gold-accent) !important; 
-            padding: 25px !important; 
-            background: #000 !important; 
-            border-width: 2px !important; 
-        }
-        
-        .action-buttons { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            margin-top: 30px; 
-        }
-        
-        .btn-huge { 
-            width: 100%; 
-            padding: 25px; 
-            border-radius: 10px; 
-            border: none; 
-            font-size: 22px; 
-            font-weight: 900; 
-            letter-spacing: 4px; 
-            color: #fff; 
-            cursor: pointer; 
-            transition: var(--transition); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        
-        .btn-huge span { 
-            font-size: 12px; 
-            font-family: var(--font-mono); 
-            opacity: 0.8; 
-            letter-spacing: 1px; 
-        }
-        
-        .btn-huge.sell { 
-            background: linear-gradient(135deg, #cc0033 0%, #ff1a4a 100%); 
-            box-shadow: 0 10px 20px rgba(255,26,74,0.2); 
-        }
-        
-        .btn-huge.sell:hover { 
-            transform: scale(1.02); 
-            box-shadow: var(--loss-glow); 
-        }
-        
-        .btn-huge.buy { 
-            background: linear-gradient(135deg, #00cc5c 0%, #00ff73 100%); 
-            color: #000; 
-            box-shadow: 0 10px 20px rgba(0,255,115,0.2); 
-        }
-        
-        .btn-huge.buy:hover { 
-            transform: scale(1.02); 
-            box-shadow: var(--profit-glow); 
-        }
-
-        /* ==========================================================================
-           7. TABLES, LOGS & AUTH GUARD
-           ========================================================================== */
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            font-family: var(--font-mono); 
-        }
-        
-        th { 
-            padding: 20px; 
-            text-align: left; 
-            font-size: 11px; 
-            font-family: var(--font-main); 
-            font-weight: 900; 
-            color: var(--text-dim); 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            border-bottom: 2px solid var(--border-color); 
-        }
-        
-        td { 
-            padding: 18px 20px; 
-            font-size: 13px; 
-            font-weight: 500; 
-            border-bottom: 1px solid var(--border-color); 
-            transition: 0.2s; 
-        }
-        
-        tr:hover td { 
-            background: var(--bg-hover); 
-        }
-        
-        .badge { 
-            padding: 6px 12px; 
-            border-radius: 4px; 
-            font-size: 10px; 
-            font-weight: 900; 
-            font-family: var(--font-main); 
-            letter-spacing: 1px; 
-        }
-        
-        .badge-b { 
-            background: var(--profit-green-dim); 
-            color: var(--profit-green); 
-            border: 1px solid rgba(0,255,115,0.3); 
-        }
-        
-        .badge-s { 
-            background: var(--loss-red-dim); 
-            color: var(--loss-red); 
-            border: 1px solid rgba(255,26,74,0.3); 
-        }
-
-        .terminal-box { 
-            background: #000; 
-            border: 1px solid #1a1a1a; 
-            border-radius: 8px; 
-            padding: 25px; 
-            height: 500px; 
-            overflow-y: auto; 
-            font-family: var(--font-mono); 
-            font-size: 13px; 
-            line-height: 1.8; 
-            color: #00ff73; 
-            box-shadow: inset 0 0 30px rgba(0,255,115,0.05); 
-        }
-        
-        .t-line { 
-            margin-bottom: 10px; 
-            opacity: 0.9; 
-        }
-        
-        .t-time { 
-            color: #666; 
-            margin-right: 15px; 
-        }
-        
-        .t-warn { 
-            color: var(--gold-accent); 
-        }
-        
-        /* Auth Lock Display */
-        .auth-guard { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 80px 20px; 
-            text-align: center; 
-            background: #030303; 
-            border: 2px dashed var(--loss-red); 
-            border-radius: 12px; 
-        }
-        
-        .auth-guard h2 { 
-            color: var(--loss-red); 
-            font-size: 28px; 
-            font-weight: 900; 
-            letter-spacing: 5px; 
-            margin: 20px 0; 
-            text-shadow: var(--loss-glow); 
-        }
-        
-        .auth-guard p { 
-            color: var(--text-dim); 
-            max-width: 500px; 
-            line-height: 1.6; 
-            margin-bottom: 30px; 
-        }
+        /* Toast */
+        #toast { position: fixed; top: 20px; right: 20px; background: var(--bg-hover); border-left: 4px solid var(--buy-green); padding: 15px 25px; color: #fff; font-weight: bold; font-size: 13px; border-radius: 4px; z-index: 9999; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
-    <div id="toast-container"></div>
+    <div id="toast">✅ Action Successful</div>
 
-    <div class="app-layout">
-        <nav class="sidebar">
-            <div class="brand-header">
-                <h1>FX_ARJUN</h1>
-                <span>Institutional Node</span>
-            </div>
-            <div class="nav-menu">
-                <div class="nav-item active" onclick="switchView(this, 'view-dash')">
-                    Dashboard <span>01</span>
-                </div>
-                <div class="nav-item" onclick="switchView(this, 'view-risk')">
-                    Risk Matrix <span>02</span>
-                </div>
-                <div class="nav-item" onclick="switchView(this, 'view-history')">
-                    Audit Ledger <span>03</span>
-                </div>
-                <div class="nav-item" onclick="switchView(this, 'view-jarvis')">
-                    Jarvis Core <span>04</span>
-                </div>
-                <div class="nav-item" onclick="switchView(this, 'view-macro')">
-                    Macro Data <span>05</span>
-                </div>
-                <div class="nav-item" onclick="switchView(this, 'view-node')">
-                    Sync Node <span>06</span>
-                </div>
-                <div class="nav-item" id="admin-tab" onclick="switchView(this, 'view-admin')" style="display:none; color:var(--gold-accent); border:1px dashed var(--gold-accent);">
-                    Root Panel <span>A</span>
-                </div>
-            </div>
-            <div class="sidebar-footer">
-                <span style="color:#666; font-weight:bold; letter-spacing:1px;">VERSION 8.0 MASTER</span>
-                <div class="status-badge">
-                    <div class="status-dot"></div> ENGINE ONLINE
-                </div>
-            </div>
-        </nav>
+    <nav class="sidebar">
+        <div class="brand">
+            <h1>FX_ARJUN</h1>
+            <p>HFT Terminal Engine</p>
+        </div>
+        <div class="nav-links">
+            <div class="nav-item active" onclick="switchView('page-market', this)">Live Market <span>01</span></div>
+            <div class="nav-item" onclick="switchView('page-history', this)">Audit Ledger <span>02</span></div>
+            <div class="nav-item" onclick="switchView('page-jarvis', this)">Jarvis AI <span>03</span></div>
+            <div class="nav-item" onclick="switchView('page-node', this)">Sync Node <span>04</span></div>
+        </div>
+        <div class="system-status"><div class="dot"></div> ENGINE ACTIVE</div>
+    </nav>
 
-        <main class="workspace">
-            <header class="top-header">
-                <div class="ticker-tape">
-                    <div class="ticker-item">
-                        <span class="tick-sym">XAUUSD</span>
-                        <span class="tick-val up" id="tck-gold">2324.50 ▲</span>
-                    </div>
-                    <div class="ticker-item">
-                        <span class="tick-sym">EURUSD</span>
-                        <span class="tick-val down">1.0845 ▼</span>
-                    </div>
-                    <div class="ticker-item">
-                        <span class="tick-sym">US30</span>
-                        <span class="tick-val up">38950.00 ▲</span>
-                    </div>
-                    <div class="ticker-item">
-                        <span class="tick-sym">BTCUSD</span>
-                        <span class="tick-val up">68420.00 ▲</span>
-                    </div>
+    <main class="workspace">
+        <header class="header">
+            <div class="ticker">
+                <div><span>XAUUSD</span> <strong id="t-gold" class="up">2324.50</strong></div>
+                <div><span>EURUSD</span> <strong class="down">1.0845</strong></div>
+                <div><span>US30</span> <strong class="up">38950.0</strong></div>
+            </div>
+            
+            <div class="auth-widget" id="auth-btn">
+                <div class="auth-info">
+                    <div class="auth-name" id="ui-name">GUEST</div>
+                    <div class="auth-status"><div class="dot" id="ui-dot" style="background:var(--sell-red)"></div> <span id="ui-stat">NOT VERIFIED</span></div>
                 </div>
-                
-                <div class="profile-widget" id="btn-auth">
-                    <div class="loader-ring" id="auth-loader"></div>
-                    <div class="profile-details">
-                        <span class="profile-name" id="ui-user-name">GUEST USER</span>
-                        <span class="profile-state">
-                            <span id="ui-user-status">NOT VERIFIED</span> 
-                            <div class="auth-dot" id="ui-auth-dot"></div>
-                        </span>
-                    </div>
-                    <div class="profile-pic" id="ui-avatar">FA</div>
-                </div>
-            </header>
+                <div class="auth-avatar" id="ui-pic">FA</div>
+            </div>
+        </header>
 
-            <section class="content-area">
-                
-                <div id="view-dash" class="page-view active">
+        <section class="content">
+            
+            <div id="page-market" class="page active">
+                <div class="live-market-container">
                     
-                    <div class="metric-grid">
-                        <div class="metric-card">
-                            <div class="mc-title">Equity Balance</div>
-                            <div class="mc-val">$24,500.00</div>
-                            <div class="mc-sub">Prop Firm Capital</div>
+                    <div class="chart-area">
+                        <div class="chart-header">
+                            <div class="chart-title">XAUUSD <span class="live-badge" id="chart-badge">LIVE</span></div>
+                            <div class="replay-tools">
+                                <button class="btn-tool" onclick="toggleReplay()">▶ REPLAY</button>
+                                <button class="btn-tool" onclick="chartStep()" id="btn-step" style="display:none;">⏭ STEP</button>
+                            </div>
                         </div>
-                        <div class="metric-card">
-                            <div class="mc-title">Floating P&L</div>
-                            <div class="mc-val" style="color:var(--profit-green)">+$1,240.50</div>
-                            <div class="mc-sub">Active Positions</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="mc-title">Algo Win Rate</div>
-                            <div class="mc-val">78.4%</div>
-                            <div class="mc-sub">SMC Strategy</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="mc-title">Max Drawdown</div>
-                            <div class="mc-val" style="color:var(--gold-accent)">-2.10%</div>
-                            <div class="mc-sub">Limit: 5.00%</div>
-                        </div>
+                        <div class="canvas-container" id="canvas-chart"></div>
                     </div>
 
-                    <div class="dashboard-split">
-                        <div class="chart-panel">
-                            <div class="chart-header">
-                                <div class="chart-title">
-                                    <div class="live-pulse" id="chart-pulse"></div> 
-                                    <span id="chart-label">XAUUSD | LIVE FEED</span>
-                                </div>
-                                <div style="display:flex; gap:15px;">
-                                    <button class="btn btn-outline" id="btn-toggle-replay" onclick="toggleReplayMode()">▶ START REPLAY API</button>
-                                    <button class="btn btn-danger" onclick="fireAlarm()">🚨 ALARM</button>
-                                </div>
-                            </div>
-                            <div class="chart-container">
-                                <div id="tv_chart_main"></div>
-                                
-                                <div id="lw_chart_replay"></div>
-                                
-                                <div class="replay-controls" id="replay-ui">
-                                    <button class="rc-btn" onclick="pauseReplay()">⏸</button>
-                                    <button class="rc-btn" onclick="stepReplay()">⏭</button>
-                                    <span class="rc-speed">1x SPEED</span>
-                                    <button class="rc-btn" style="color:var(--loss-red); margin-left:10px;" onclick="toggleReplayMode()">❌ EXIT</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="execution-panel">
-                            <div>
-                                <div class="exec-title">DIRECT EXECUTION</div>
-                                <div class="input-group" style="margin-bottom: 25px;">
-                                    <label class="input-label">Lot Size Volume</label>
-                                    <input type="number" id="trade-lot" class="input-control huge-input" value="1.00" step="0.1">
-                                </div>
-                                <div class="input-group" style="margin-bottom: 15px;">
-                                    <label class="input-label">Stop Loss Level</label>
-                                    <input type="number" id="trade-sl" class="input-control" placeholder="0.000">
-                                </div>
-                                <div class="input-group">
-                                    <label class="input-label">Take Profit Level</label>
-                                    <input type="number" id="trade-tp" class="input-control" placeholder="0.000">
-                                </div>
-                            </div>
-                            <div class="action-buttons">
-                                <button class="btn-huge sell" onclick="executeDirectTrade('SELL')">
-                                    SELL <span>MARKET</span>
-                                </button>
-                                <button class="btn-huge buy" onclick="executeDirectTrade('BUY')">
-                                    BUY <span>MARKET</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="view-risk" class="page-view">
-                    <div class="panel-box">
-                        <div class="panel-header">
-                            <div class="panel-title">Strict Risk Matrix Engine</div>
-                        </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                            <div class="input-group">
-                                <label class="input-label">Account Balance ($)</label>
-                                <input type="number" id="r-bal" class="input-control" value="24500">
-                            </div>
-                            <div class="input-group">
-                                <label class="input-label">Risk % Per Trade</label>
-                                <input type="number" id="r-pct" class="input-control" value="1.0" step="0.1">
-                            </div>
-                            <div class="input-group">
-                                <label class="input-label">Entry Price</label>
-                                <input type="number" id="r-ent" class="input-control" value="2320.00">
-                            </div>
-                            <div class="input-group">
-                                <label class="input-label">Stop Loss Price</label>
-                                <input type="number" id="r-sl" class="input-control" value="2315.00">
-                            </div>
-                            <button class="btn btn-gold" style="grid-column: span 2; padding: 20px; font-size: 16px;" onclick="calcRisk()">
-                                COMPUTE LOT SIZE MATRIX
-                            </button>
+                    <div class="execution-area">
+                        <div class="exec-tabs">
+                            <div class="exec-tab active">MARKET</div>
+                            <div class="exec-tab">LIMIT</div>
                         </div>
                         
-                        <div id="risk-output" style="display:none; margin-top: 30px; padding: 25px; background: #000; border: 1px dashed var(--gold-accent); border-radius: 8px;">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:bold; font-family:var(--font-mono);">
-                                <span style="color:var(--text-dim)">Capital at Risk:</span>
-                                <span id="ro-cash" style="color:var(--loss-red); font-size:18px;"></span>
+                        <div class="input-box">
+                            <label>Lot Volume</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="lot-size" value="1.00" step="0.01">
+                                <span>LOTS</span>
                             </div>
-                            <div style="display:flex; justify-content:space-between; padding-top:15px; border-top:1px solid #222; font-weight:bold; font-family:var(--font-mono);">
-                                <span style="color:var(--gold-accent); font-size:16px;">Recommended Lot:</span>
-                                <span id="ro-lot" style="color:var(--profit-green); font-size:26px; text-shadow:var(--profit-glow);"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="view-history" class="page-view">
-                    <div class="panel-box">
-                        <div class="panel-header">
-                            <div class="panel-title">Algorithmic Ledger Audit</div>
-                            <button class="btn btn-outline" onclick="showToast('Exporting secure CSV ledger...', 'success')">EXPORT CSV DATA</button>
-                        </div>
-                        <div style="overflow-x:auto; background:#000; border:1px solid var(--border-color); border-radius:8px;">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Date UTC</th>
-                                        <th>Asset</th>
-                                        <th>Type</th>
-                                        <th>Lot</th>
-                                        <th>Entry</th>
-                                        <th>Exit</th>
-                                        <th>P&L</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="history-data">
-                                    </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="view-jarvis" class="page-view">
-                    <div class="panel-box">
-                        <div class="panel-header">
-                            <div class="panel-title">Jarvis AI Neural Tracker</div>
-                        </div>
-                        <div style="display:grid; grid-template-columns: 1fr 2fr; gap:30px;">
-                            <div>
-                                <p style="color:var(--text-dim); font-size:13px; line-height:1.8; margin-bottom:20px;">
-                                    Jarvis is actively tracking MT5 sockets for Liquidity Sweeps, CHoCH, and Order Blocks on the 15m timeframe. Data pipeline is secure.
-                                </p>
-                                <button class="btn btn-outline" style="width:100%" onclick="showToast('Force deep scan initiated across H4 and M15.', 'success')">FORCE RESCAN</button>
-                            </div>
-                            <div class="terminal-box" id="jarvis-term">
-                                <div class="t-line"><span class="t-time">[SYS]</span> Jarvis Node Authenticated.</div>
-                                <div class="t-line" style="color:var(--profit-green)"><span class="t-time">[OK]</span> Socket stream listening to XAUUSD ticks...</div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="view-macro" class="page-view">
-                    <div class="panel-box">
-                        <div class="panel-header">
-                            <div class="panel-title">High-Impact Event Matrix</div>
-                        </div>
-                        <div style="background:#000; border:1px solid var(--border-color); border-radius:8px;">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Time (IST)</th>
-                                        <th>Pair</th>
-                                        <th>Event Name</th>
-                                        <th>Impact Prediction</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>18:00 Today</td>
-                                        <td style="color:var(--gold-accent); font-weight:bold;">USD</td>
-                                        <td>Core CPI (MoM)</td>
-                                        <td><span class="badge badge-s">HIGH IMPACT</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>23:30 Tmrw</td>
-                                        <td style="color:var(--gold-accent); font-weight:bold;">USD</td>
-                                        <td>FOMC Projections</td>
-                                        <td><span class="badge badge-s" style="background:red; color:#fff;">EXTREME RISK</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>00:00 Tmrw</td>
-                                        <td style="color:var(--gold-accent); font-weight:bold;">USD</td>
-                                        <td>Fed Chair Speaks</td>
-                                        <td><span class="badge badge-s">HIGH IMPACT</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="view-node" class="page-view">
-                    <div class="panel-box">
-                        <div class="panel-header">
-                            <div class="panel-title">Cloud Synchronization Node</div>
                         </div>
                         
-                        <div id="node-lock" class="auth-guard">
-                            <div class="lock-icon">🔒</div>
-                            <h2>ACCESS DENIED</h2>
-                            <p>You must authenticate your session via Google Security Profile (Top Right) to inject MT5 credentials into the Firebase Cloud Database.</p>
-                            <button class="btn btn-danger" onclick="triggerGoogleAuth()" style="padding:15px 30px;">AUTHORIZE SESSION VIA GOOGLE</button>
+                        <div class="input-box">
+                            <label>Stop Loss</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="sl-price" placeholder="0.00">
+                                <span>PRICE</span>
+                            </div>
                         </div>
 
-                        <div id="node-form" style="display:none;">
-                            <div style="padding:20px; background:var(--profit-green-dim); border-left:4px solid var(--profit-green); font-family:var(--font-mono); color:var(--profit-green); font-weight:bold; margin-bottom:30px;">
-                                [VERIFIED] Root signature accepted. Pipeline encrypted.
-                            </div>
-                            
-                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:25px;">
-                                <div class="input-group">
-                                    <label class="input-label">Broker Name</label>
-                                    <input type="text" id="n-brk" class="input-control" placeholder="e.g. OANDA">
-                                </div>
-                                <div class="input-group">
-                                    <label class="input-label">Server ID</label>
-                                    <input type="text" id="n-srv" class="input-control" placeholder="Server Route">
-                                </div>
-                                <div class="input-group">
-                                    <label class="input-label">Account Login ID</label>
-                                    <input type="number" id="n-acc" class="input-control" placeholder="Numeric ID">
-                                </div>
-                                <div class="input-group">
-                                    <label class="input-label">Master Password</label>
-                                    <input type="password" id="n-pwd" class="input-control" placeholder="********">
-                                </div>
-                                <button class="btn btn-gold" style="grid-column: span 2; padding:20px; font-size:16px;" id="btn-save-node">
-                                    DEPLOY SECURE NODE TO CLOUD FIREBASE
-                                </button>
-                            </div>
+                        <div class="trade-buttons">
+                            <button class="btn-trade btn-sell" onclick="executeTrade('SELL')">SELL <span>MARKET</span></button>
+                            <button class="btn-trade btn-buy" onclick="executeTrade('BUY')">BUY <span>MARKET</span></button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div id="view-admin" class="page-view">
-                    <div class="panel-box">
-                        <div class="panel-header">
-                            <div class="panel-title">Administrative Root Shell</div>
-                        </div>
-                        <div style="background:#000; padding:25px; border:1px solid #222; font-family:var(--font-mono); font-size:13px; color:var(--text-main); line-height:2;">
-                            <span style="color:var(--profit-green); font-weight:bold;">[ROOT] Authentication Successful</span><br><br>
-                            Current Profile: Fx_arjun<br>
-                            System Experience Level: 3 Years Data Processed<br>
-                            Database Config: Standard Edition (asia-south1)<br>
-                            Telegram API Link: Authorized & Active<br>
-                            System Security Guard: Operational
-                        </div>
+            <div id="page-node" class="page">
+                <div class="setup-card">
+                    <div class="setup-title">MT5 CLOUD SYNCHRONIZATION</div>
+                    
+                    <div id="lock-screen" class="auth-overlay">
+                        <h2 style="color:var(--sell-red); margin-bottom:15px;">AUTHENTICATION REQUIRED</h2>
+                        <p style="color:var(--text-muted); font-size:13px; margin-bottom:30px;">Login via Google to unlock Firebase database connection.</p>
+                        <button class="btn-main" onclick="triggerLogin()">LOGIN VIA GOOGLE</button>
+                    </div>
+
+                    <div id="node-form" style="display:none;">
+                        <div class="input-box"><label>Broker</label><div class="input-wrapper"><input type="text" id="n-brk" placeholder="e.g. Exness"></div></div>
+                        <div class="input-box"><label>Server</label><div class="input-wrapper"><input type="text" id="n-srv" placeholder="Exness-Real10"></div></div>
+                        <div class="input-box"><label>Login ID</label><div class="input-wrapper"><input type="number" id="n-acc" placeholder="12345678"></div></div>
+                        <div class="input-box"><label>Password</label><div class="input-wrapper"><input type="password" id="n-pwd" placeholder="********"></div></div>
+                        <button class="btn-main" id="btn-save" style="margin-top:20px;">CONNECT TO CLOUD DB</button>
                     </div>
                 </div>
+            </div>
 
-            </section>
-        </main>
-    </div>
+            <div id="page-history" class="page">
+                <h2 style="color:var(--text-muted);">Trade History & Jarvis AI Modules Active in Backend.</h2>
+            </div>
+            <div id="page-jarvis" class="page">
+                <h2 style="color:var(--text-muted);">Jarvis AI Data Stream Active.</h2>
+            </div>
+
+        </section>
+    </main>
 
     <script>
-        /**
-         * 1. CUSTOM TOAST NOTIFICATION SYSTEM
-         * Generates temporary popup alerts that animate in and out of the UI.
-         */
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            
-            toast.className = `toast ${type}`;
-            toast.innerHTML = type === 'success' ? `✅ ${message}` : `❌ ${message}`;
-            
-            container.appendChild(toast);
-            
-            // Auto remove logic
-            setTimeout(() => { 
-                toast.classList.add('fade-out'); 
-            }, 3000);
-            
-            setTimeout(() => { 
-                toast.remove(); 
-            }, 3500);
+        function showToast(msg, color="var(--buy-green)") {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.borderLeftColor = color;
+            t.style.display = 'block';
+            setTimeout(()=> t.style.display='none', 3000);
         }
 
-        /**
-         * 2. VIEW ROUTER
-         * Handles the single-page application navigation logic.
-         */
-        function switchView(element, viewId) {
-            // Remove active state from all nav buttons
-            document.querySelectorAll('.nav-item').forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            // Add active state to clicked button
-            element.classList.add('active');
-            
-            // Hide all pages
-            document.querySelectorAll('.page-view').forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            // Show target page
-            document.getElementById(viewId).classList.add('active');
+        function switchView(pageId, btn) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
         }
 
-        /**
-         * 3. TELEGRAM INTEGRATION
-         * Connects UI to the Telegram Bot via Web Fetch API (POST).
-         */
-        const TELEGRAM_BOT_TOKEN = "8734599856:AAHu1uASF6VrpDk8Vxh_lSJh-txujrPu8Fc"; 
-        const TELEGRAM_CHAT_ID = "93372553";   
-
-        async function triggerTelegram(msg) {
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        chat_id: TELEGRAM_CHAT_ID, 
-                        text: msg 
-                    })
-                });
-                
-                if(!response.ok) {
-                    throw new Error("Network response was not ok.");
-                }
-            } catch(e) { 
-                console.error("Telegram Transmission Failure:", e); 
-                showToast("Telegram Transmission Failed", "error");
-            }
-        }
-
-        /**
-         * 4. DIRECT TRADE EXECUTION ENGINE
-         * Handles the processing of trades from the Dashboard panel.
-         */
-        function executeDirectTrade(type) {
-            const lotInput = document.getElementById('trade-lot');
-            const slInput = document.getElementById('trade-sl');
-            const tpInput = document.getElementById('trade-tp');
-            
-            const lot = lotInput.value;
-            const sl = slInput.value || "Not Set";
-            const tp = tpInput.value || "Not Set";
-            
-            // Validation
-            if(!lot || lot <= 0) { 
-                showToast("Execution Halted: Invalid Volume.", "error"); 
-                return; 
-            }
-            
-            // Payload creation
-            const msg = `🔥 WALL STREET HFT EXECUTED 🔥\n\nAsset: XAUUSD\nOrder Matrix: ${type} MARKET\nDeployment: ${lot} Standard Lots\nStop Loss: ${sl}\nTake Profit: ${tp}\n\n[Terminal V8.0 Active]`;
-            
-            // Action
-            showToast(`Processing ${type} vector for ${lot} Lots...`, "success");
-            triggerTelegram(msg);
-        }
-
-        /**
-         * 5. RISK CALCULATOR
-         * Standard risk model based on 1% rule or user defined value.
-         */
-        function calcRisk() {
-            const bal = parseFloat(document.getElementById('r-bal').value);
-            const pct = parseFloat(document.getElementById('r-pct').value);
-            const ent = parseFloat(document.getElementById('r-ent').value);
-            const sl = parseFloat(document.getElementById('r-sl').value);
-            
-            // Validation
-            if(isNaN(bal) || isNaN(pct) || isNaN(ent) || isNaN(sl) || ent === sl) { 
-                showToast("Mathematical Fault: Check input arrays.", "error"); 
-                return; 
-            }
-            
-            // Logic (assuming 1 pip = 10 units for XAUUSD math simplification here)
-            const cash = bal * (pct / 100);
-            const pips = Math.abs(ent - sl);
-            const lots = cash / (pips * 100); 
-            
-            // Output injection
-            document.getElementById('ro-cash').innerText = `$${cash.toFixed(2)}`;
-            document.getElementById('ro-lot').innerText = `${lots.toFixed(2)} LOTS`;
-            document.getElementById('risk-output').style.display = "block";
-            
-            // Sync to dashboard
-            const dashboardLot = document.getElementById('trade-lot');
-            if(dashboardLot) {
-                dashboardLot.value = lots.toFixed(2);
-            }
-            
-            showToast("Risk Processed. Lot size synchronized.", "success");
-        }
-
-        /**
-         * 6. AUDIO ALARM SYSTEM
-         * Synthetic emergency tone generation using Web Audio API.
-         */
-        function fireAlarm() {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            
-            // Loop for multiple harsh rings
-            for(let i=0; i<4; i++) {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(1000 + (i * 100), ctx.currentTime + (i * 0.2)); 
-                
-                gain.gain.setValueAtTime(0.5, ctx.currentTime + (i * 0.2));
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + (i * 0.2) + 0.15);
-                
-                osc.connect(gain); 
-                gain.connect(ctx.destination);
-                
-                osc.start(ctx.currentTime + (i * 0.2)); 
-                osc.stop(ctx.currentTime + (i * 0.2) + 0.2);
-            }
-            
-            showToast("Emergency Alarm Triggered", "error");
-        }
-
-        /**
-         * 7. TRADINGVIEW WIDGET INITIALIZATION
-         * Standard live feed.
-         */
-        new TradingView.widget({
-            "autosize": true, 
-            "symbol": "OANDA:XAUUSD", 
-            "interval": "15", 
-            "theme": "dark",
-            "style": "1", 
-            "backgroundColor": "#000000", 
-            "gridColor": "#111111", 
-            "hide_top_toolbar": false,
-            "container_id": "tv_chart_main"
+        // --- LIGHTWEIGHT CHARTS (CANVAS) INITIALIZATION ---
+        const chartOptions = {
+            layout: { textColor: '#848e9c', background: { type: 'solid', color: '#0b0e11' } },
+            grid: { vertLines: { color: '#181a20' }, horzLines: { color: '#181a20' } },
+            crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+            rightPriceScale: { borderColor: '#2b3139' },
+            timeScale: { borderColor: '#2b3139', timeVisible: true }
+        };
+        
+        const chart = LightweightCharts.createChart(document.getElementById('canvas-chart'), chartOptions);
+        const candleSeries = chart.addCandlestickSeries({
+            upColor: '#0ecb81', downColor: '#f6465d', borderVisible: false,
+            wickUpColor: '#0ecb81', wickDownColor: '#f6465d'
         });
 
-        /**
-         * 8. CUSTOM REPLAY ENGINE (LIGHTWEIGHT CHARTS)
-         * Generates fake historical data and plays it candle by candle.
-         */
-        let replayActive = false;
-        let replayChart = null;
-        let replaySeries = null;
-        let historicalData = [];
-        let replayIndex = 0;
-
-        // Generate massive dummy historical data (200 candles)
-        function generateReplayData() {
-            let baseTime = Math.floor(Date.now() / 1000) - (200 * 900); // 15m intervals
-            let basePrice = 2300;
-            
-            for(let i=0; i<200; i++) {
-                let open = basePrice;
-                let close = open + (Math.random() * 6 - 3);
-                let high = Math.max(open, close) + (Math.random() * 3);
-                let low = Math.min(open, close) - (Math.random() * 3);
-                
-                historicalData.push({ 
-                    time: baseTime + (i * 900), 
-                    open: open, 
-                    high: high, 
-                    low: low, 
-                    close: close 
-                });
-                
-                basePrice = close;
-            }
+        // Generate Fake Market Data
+        let chartData = [];
+        let currentPrice = 2300;
+        let currentTime = Math.floor(Date.now() / 1000) - (200 * 900); // Past data
+        
+        for(let i=0; i<200; i++) {
+            let open = currentPrice;
+            let close = open + (Math.random() * 4 - 2);
+            let high = Math.max(open, close) + Math.random() * 2;
+            let low = Math.min(open, close) - Math.random() * 2;
+            chartData.push({ time: currentTime + (i*900), open, high, low, close });
+            currentPrice = close;
         }
         
-        generateReplayData();
-
-        function toggleReplayMode() {
-            const tvDiv = document.getElementById('tv_chart_main');
-            const lwDiv = document.getElementById('lw_chart_replay');
-            const controls = document.getElementById('replay-ui');
-            const pulse = document.getElementById('chart-pulse');
-            const label = document.getElementById('chart-label');
-            const btn = document.getElementById('btn-toggle-replay');
-
-            replayActive = !replayActive;
-
-            if(replayActive) {
-                // UI transition to Replay
-                tvDiv.style.display = 'none';
-                lwDiv.style.display = 'block';
-                controls.style.display = 'flex';
+        candleSeries.setData(chartData);
+        
+        // --- REPLAY ENGINE ---
+        let isReplay = false;
+        let replayData = [...chartData]; 
+        
+        function toggleReplay() {
+            isReplay = !isReplay;
+            const badge = document.getElementById('chart-badge');
+            const stepBtn = document.getElementById('btn-step');
+            
+            if(isReplay) {
+                badge.innerText = "REPLAY";
+                badge.style.background = "var(--gold)";
+                badge.style.color = "#000";
+                stepBtn.style.display = "block";
                 
-                pulse.style.background = 'var(--gold-accent)';
-                pulse.style.boxShadow = 'var(--gold-glow)';
-                label.innerHTML = "XAUUSD | SIMULATED REPLAY <span style='color:var(--gold-accent)'>[ACTIVE]</span>";
-                btn.style.display = 'none';
-
-                // Initialize chart if null
-                if(!replayChart) {
-                    replayChart = LightweightCharts.createChart(lwDiv, {
-                        layout: { background: { color: '#000' }, textColor: '#d1d4dc' },
-                        grid: { vertLines: { color: '#111' }, horzLines: { color: '#111' } },
-                        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-                        timeScale: { timeVisible: true }
-                    });
-                    
-                    replaySeries = replayChart.addCandlestickSeries({
-                        upColor: '#00ff73', 
-                        downColor: '#ff1a4a', 
-                        borderVisible: false, 
-                        wickUpColor: '#00ff73', 
-                        wickDownColor: '#ff1a4a'
-                    });
-                }
-                
-                // Reset state
-                replayIndex = 100; // Start at midpoint
-                replaySeries.setData(historicalData.slice(0, replayIndex));
-                showToast("Replay Engine Initialized.", "success");
-                
+                // Cut chart data to half to simulate past
+                candleSeries.setData(replayData.slice(0, 100));
+                showToast("Replay Engine Started", "var(--gold)");
             } else {
-                // UI transition to Live
-                tvDiv.style.display = 'block';
-                lwDiv.style.display = 'none';
-                controls.style.display = 'none';
-                
-                pulse.style.background = 'var(--loss-red)';
-                pulse.style.boxShadow = 'var(--loss-glow)';
-                label.innerHTML = "XAUUSD | LIVE FEED";
-                btn.style.display = 'block';
-                
-                showToast("Replay Exited. Live Feed Active.", "error");
+                badge.innerText = "LIVE";
+                badge.style.background = "var(--sell-red-dim)";
+                badge.style.color = "var(--sell-red)";
+                stepBtn.style.display = "none";
+                candleSeries.setData(replayData);
+                showToast("Returned to Live Market");
             }
         }
 
-        function stepReplay() {
-            if(replayIndex < historicalData.length) {
-                replaySeries.update(historicalData[replayIndex]);
+        let replayIndex = 100;
+        function chartStep() {
+            if(replayIndex < replayData.length) {
+                candleSeries.update(replayData[replayIndex]);
+                currentPrice = replayData[replayIndex].close;
+                document.getElementById('t-gold').innerText = currentPrice.toFixed(2);
                 replayIndex++;
-            } else {
-                showToast("End of historical array reached.", "error");
             }
         }
 
-        function pauseReplay() {
-            showToast("Replay Paused.", "success");
-        }
+        // --- EXNESS STYLE TRADE EXECUTION ---
+        const TELEGRAM_TOKEN = "8734599856:AAHu1uASF6VrpDk8Vxh_lSJh-txujrPu8Fc";
+        const TELEGRAM_CHAT = "93372553";
 
-        /**
-         * 9. DATA POPULATORS (Generates massive list for History Ledger)
-         * Ensuring the code has physical weight and realistic data load.
-         */
-        function populateLedger() {
-            const tbody = document.getElementById('history-data');
-            const types = ['LONG', 'SHORT'];
-            let currentProfit = 1200; // Base offset
+        function executeTrade(type) {
+            const lot = document.getElementById('lot-size').value;
+            if(!lot || lot <= 0) return showToast("Invalid Lot Size", "var(--sell-red)");
+
+            const color = type === 'BUY' ? '#0ecb81' : '#f6465d';
             
-            // Loop 100 times to create massive data weight
-            for(let i=0; i<100; i++) {
-                const isLong = Math.random() > 0.5;
-                const type = isLong ? 'LONG' : 'SHORT';
-                const vol = (Math.random() * 2 + 0.1).toFixed(2);
-                const entry = 2300 + (Math.random() * 50);
-                
-                let pnlOffset = (Math.random() * 1000) - 400; // Mostly winning logic
-                let exit = entry;
-                
-                if (isLong) {
-                    exit = pnlOffset > 0 ? entry + (pnlOffset/100) : entry - (Math.abs(pnlOffset)/100);
-                } else {
-                    exit = pnlOffset > 0 ? entry - (pnlOffset/100) : entry + (Math.abs(pnlOffset)/100);
-                }
+            // MAGIC: Draw Exness-style Trade Line on Canvas!
+            candleSeries.createPriceLine({
+                price: currentPrice,
+                color: color,
+                lineWidth: 2,
+                lineStyle: LightweightCharts.LineStyle.Dashed,
+                axisLabelVisible: true,
+                title: `${type} ${lot}`,
+            });
 
-                const pnlFormat = pnlOffset > 0 ? `+$${pnlOffset.toFixed(2)}` : `-$${Math.abs(pnlOffset).toFixed(2)}`;
-                const pnlColor = pnlOffset > 0 ? 'var(--profit-green)' : 'var(--loss-red)';
-                const badgeClass = type === 'LONG' ? 'badge-b' : 'badge-s';
+            showToast(`${type} Order Placed at ${currentPrice.toFixed(2)}`, color);
 
-                // Construct row string
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>2026-06-${String(Math.max(1, 9 - Math.floor(i/10))).padStart(2, '0')}</td>
-                    <td style="color:var(--gold-accent);font-weight:900;">XAUUSD</td>
-                    <td><span class="badge ${badgeClass}">${type} [SMC]</span></td>
-                    <td>${vol}</td>
-                    <td>${entry.toFixed(2)}</td>
-                    <td>${exit.toFixed(2)}</td>
-                    <td style="color:${pnlColor};font-weight:900;">${pnlFormat}</td>
-                `;
-                
-                tbody.appendChild(row);
-            }
+            // Send Telegram
+            const msg = `⚡ ALGO EXECUTED ⚡\n\nAsset: XAUUSD\nOrder: ${type}\nLot: ${lot}\nPrice: ${currentPrice.toFixed(2)}`;
+            fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT, text: msg })
+            });
         }
-        
-        populateLedger();
-
-        /**
-         * 10. JARVIS AI TYPING ENGINE
-         * Simulates backend AI thought processes in real-time.
-         */
-        const jLogs = [
-            "Scanning M15 Liquidity pools...",
-            "<span class='t-warn'>[IDM]</span> Inducement level identified at 2315.40",
-            "Checking H4 Order Blocks for Premium arrays...",
-            "<span class='t-warn'>[CHoCH]</span> Minor structural shift detected on M5.",
-            "Validating Fair Value Gap (FVG) overlap...",
-            "Liquidity Sweep confirmed. Preparing entry logic...",
-            "Checking MT5 socket latency...",
-            "<span class='t-warn'>[LATENCY]</span> 14ms ping. Normal operational parameters.",
-            "Awaiting price action close for final confirmation..."
-        ];
-        
-        let jIndex = 0;
-        setInterval(() => {
-            const term = document.getElementById('jarvis-term');
-            if(term && jIndex < jLogs.length) {
-                const newLog = document.createElement('div');
-                newLog.className = "t-line";
-                
-                const timeString = new Date().toLocaleTimeString();
-                newLog.innerHTML = `<span class="t-time">[${timeString}]</span> ${jLogs[jIndex]}`;
-                
-                term.appendChild(newLog);
-                term.scrollTop = term.scrollHeight; // Auto scroll
-                
-                jIndex++;
-                if(jIndex >= jLogs.length) {
-                    jIndex = 0; // Restart loop
-                }
-            }
-        }, 3500);
-
-        /**
-         * 11. HEADER TICKER SYSTEM
-         * Simulates live market fluctuation on the top bar.
-         */
-        setInterval(() => {
-            const tk = document.getElementById('tck-gold');
-            if(tk) {
-                const variance = (Math.random() * 2) - 1;
-                const newPrice = (2324.50 + variance).toFixed(2);
-                const isUp = variance >= 0;
-                
-                tk.innerText = newPrice + (isUp ? " ▲" : " ▼");
-                tk.className = "tick-val " + (isUp ? "up" : "down");
-            }
-        }, 1500);
-
     </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-        // Firebase Service Variables
-        const firebaseConfig = {
+        const app = initializeApp({ /* YOUR CONFIG HERE - Same as before */ 
             apiKey: "AIzaSyBTwak_MdTo_Op0NCcCBCMB8hOxLf0f1RE",
             authDomain: "fxarjun-terminal-c5ba8.firebaseapp.com",
-            projectId: "fxarjun-terminal-c5ba8",
-            storageBucket: "fxarjun-terminal-c5ba8.firebasestorage.app",
-            messagingSenderId: "876627003815",
-            appId: "1:876627003815:web:3f5f4578d861c9318fce82"
-        };
-
-        const app = initializeApp(firebaseConfig);
+            projectId: "fxarjun-terminal-c5ba8"
+        });
         const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
         const db = getFirestore(app);
 
-        // UI Element References
-        const loader = document.getElementById('auth-loader');
-        const uiName = document.getElementById('ui-user-name');
-        const uiStat = document.getElementById('ui-user-status');
-        const uiDot = document.getElementById('ui-auth-dot');
-        const uiImg = document.getElementById('ui-avatar');
-
-        /**
-         * Auth State Observer
-         * Manages UI state between Guest and Authenticated Admin
-         */
         onAuthStateChanged(auth, (user) => {
-            loader.style.display = 'none'; // Ensure loader hides
-            
-            if (user) {
-                // System Authenticated Route
-                showToast("System Authenticated Successfully.", "success");
-                
-                uiName.innerText = user.displayName.toUpperCase();
-                uiStat.innerText = "SECURE LINK ACTIVE";
-                uiStat.style.color = "var(--profit-green)";
-                uiDot.classList.add('auth-ok');
-                uiImg.innerHTML = `<img src="${user.photoURL}" alt="User">`;
-                
-                // Root Panel Unlock Check
-                if (user.email.toLowerCase() === "tradingjournalmanagement@gmail.com") {
-                    document.getElementById('admin-tab').style.display = "flex";
-                }
-
-                // Node Setup Unlock
-                document.getElementById('node-lock').style.display = 'none';
+            if(user) {
+                document.getElementById('ui-name').innerText = user.displayName;
+                document.getElementById('ui-stat').innerText = "SECURED";
+                document.getElementById('ui-dot').style.background = "var(--buy-green)";
+                document.getElementById('lock-screen').style.display = 'none';
                 document.getElementById('node-form').style.display = 'block';
-            } else {
-                // System Guest Route
-                uiName.innerText = "GUEST USER";
-                uiStat.innerText = "NOT VERIFIED";
-                uiStat.style.color = "var(--text-dim)";
-                uiDot.classList.remove('auth-ok');
-                uiImg.innerHTML = "FA";
-                
-                // Hide restricted areas
-                document.getElementById('admin-tab').style.display = "none";
-                document.getElementById('node-lock').style.display = 'flex';
-                document.getElementById('node-form').style.display = 'none';
+                showToast("System Authenticated");
             }
         });
 
-        /**
-         * Popup Auth Trigger
-         */
-        window.triggerGoogleAuth = function() {
-            loader.style.display = 'block';
-            signInWithPopup(auth, provider).catch((err) => { 
-                loader.style.display = 'none';
-                showToast(err.message, "error"); 
-            });
-        };
+        window.triggerLogin = () => signInWithPopup(auth, new GoogleAuthProvider());
+        document.getElementById('auth-btn').onclick = () => { if(!auth.currentUser) triggerLogin(); }
 
-        // UI Widget click binds
-        document.getElementById('btn-auth').addEventListener('click', () => {
-            if(!auth.currentUser) {
-                window.triggerGoogleAuth();
-            } else {
-                if(confirm("Disconnect Secure Session? System will revert to Guest Mode.")) {
-                    signOut(auth);
-                    showToast("Session Terminated", "error");
-                }
-            }
-        });
-
-        /**
-         * Secure Cloud Write Sequence
-         * Encrypts and sends form data to Firestore DB
-         */
-        document.getElementById('btn-save-node').addEventListener('click', async () => {
-            const broker = document.getElementById('n-brk').value;
-            const server = document.getElementById('n-srv').value;
-            const acc = document.getElementById('n-acc').value;
-            const pwd = document.getElementById('n-pwd').value;
-
-            // Form validation
-            if(!broker || !server || !acc || !pwd) { 
-                showToast("Data array incomplete. Please fill all fields.", "error"); 
-                return; 
-            }
-            
-            if(!auth.currentUser) {
-                showToast("Authentication missing.", "error");
-                return;
-            }
-
-            const btn = document.getElementById('btn-save-node');
-            btn.innerText = "ENCRYPTING PIPELINE..."; 
-            btn.disabled = true;
-
+        document.getElementById('btn-save').onclick = async () => {
+            const btn = document.getElementById('btn-save');
+            btn.innerText = "SAVING..."; btn.disabled = true;
             try {
-                // Await DB write
                 await addDoc(collection(db, "trading_accounts"), {
-                    uid: auth.currentUser.uid,
-                    email: auth.currentUser.email,
-                    broker: broker,
-                    server: server,
-                    accountId: acc,
-                    password: pwd, 
-                    timestamp: serverTimestamp()
+                    broker: document.getElementById('n-brk').value,
+                    server: document.getElementById('n-srv').value,
+                    acc: document.getElementById('n-acc').value,
+                    pwd: document.getElementById('n-pwd').value
                 });
-                
-                showToast("MT5 Node Successfully Deployed to Cloud!", "success");
-                
-                // Field resets
-                document.getElementById('n-brk').value = ''; 
-                document.getElementById('n-srv').value = '';
-                document.getElementById('n-acc').value = ''; 
-                document.getElementById('n-pwd').value = '';
-                
-            } catch (e) {
-                console.error("Firestore DB Fault:", e);
-                showToast("Database Permission Denied. Verify Rules.", "error");
-            } finally {
-                btn.innerText = "DEPLOY SECURE NODE TO CLOUD FIREBASE"; 
-                btn.disabled = false;
-            }
-        });
+                showToast("Node Saved in Firebase Cloud");
+                ['n-brk','n-srv','n-acc','n-pwd'].forEach(id => document.getElementById(id).value = '');
+            } catch(e) { showToast("Firebase Error. Check Rules.", "var(--sell-red)"); }
+            btn.innerText = "CONNECT TO CLOUD DB"; btn.disabled = false;
+        }
     </script>
 </body>
 </html>
