@@ -448,6 +448,9 @@
         .result-row:last-child { margin-bottom: 0; padding-top: 12px; border-top: 1px solid rgba(212,175,55,0.2); }
         .result-label { color: var(--text-dim); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .result-val { font-weight: 900; font-family: var(--font-mono); }
+        
+        /* Fullscreen Wrapper specific style */
+        #chart-wrapper:fullscreen { background: var(--bg-master); padding: 20px; }
     </style>
 </head>
 <body>
@@ -520,12 +523,12 @@
                     <div class="stat-card">
                         <div class="label">Live Equity Balance</div>
                         <div class="stat-value">$24,500.00</div>
-                        <div class="stat-sub">V Prop Trader Firm</div>
+                        <div class="stat-sub">Prop Firm Capital</div>
                     </div>
                     <div class="stat-card">
                         <div class="label">Floating P&L</div>
                         <div class="stat-value" style="color: var(--profit-green);">+$1,240.50</div>
-                        <div class="stat-sub">Active XAUUSD Long</div>
+                        <div class="stat-sub">Active XAUUSD Position</div>
                     </div>
                     <div class="stat-card">
                         <div class="label">Algorithmic Win Rate</div>
@@ -544,12 +547,13 @@
                     <div class="boundary-box" style="padding: 20px; margin-bottom: 0;">
                         <div class="header-label">
                             <span><span class="highlight">XAUUSD</span> | Primary Data Feed</span>
-                            <div>
-                                <span class="tool-badge" onclick="alert('Syncing historical data...')">Load Replay</span>
-                                <span class="tool-badge" style="background:var(--gold-dim); color:var(--gold-accent); border-color:var(--gold-accent);">Clean Chart</span>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="tool-badge" id="fullscreen-btn" style="background:var(--profit-green-dim); color:var(--profit-green); border-color:var(--profit-green);">[ ] Full Screen</button>
+                                <button class="tool-badge" onclick="alert('Replay requires Python Backend to push tick-data to a Lightweight Chart API. Standard TV Widget blocks native replay.')">Load Replay</button>
+                                <button class="tool-badge" style="background:var(--gold-dim); color:var(--gold-accent); border-color:var(--gold-accent);">Clean Chart</button>
                             </div>
                         </div>
-                        <div style="height: 550px; width: 100%; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                        <div id="chart-wrapper" style="height: 550px; width: 100%; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); background: #000;">
                             <div class="tradingview-widget-container" style="height:100%;width:100%">
                                 <div id="tv_chart_main" style="height:100%;width:100%"></div>
                                 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -711,26 +715,6 @@
                                     <td style="color: var(--profit-green); font-weight: bold;">+$1160.00</td>
                                     <td style="color: var(--text-dim);">4H ChoCh Confirmation</td>
                                 </tr>
-                                <tr>
-                                    <td>2026-06-04 13:20</td>
-                                    <td style="font-weight: bold; color: var(--gold-accent);">XAUUSD</td>
-                                    <td><span class="badge badge-buy">LONG</span></td>
-                                    <td>0.50</td>
-                                    <td>2288.00</td>
-                                    <td>2285.00</td>
-                                    <td style="color: var(--loss-red); font-weight: bold;">-$150.00</td>
-                                    <td style="color: var(--text-dim);">Aggressive FVG Entry</td>
-                                </tr>
-                                <tr>
-                                    <td>2026-06-02 10:10</td>
-                                    <td style="font-weight: bold; color: var(--gold-accent);">XAUUSD</td>
-                                    <td><span class="badge badge-sell">SHORT</span></td>
-                                    <td>1.00</td>
-                                    <td>2305.50</td>
-                                    <td>2290.50</td>
-                                    <td style="color: var(--profit-green); font-weight: bold;">+$1500.00</td>
-                                    <td style="color: var(--text-dim);">London Session Liquidity Grab</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -768,7 +752,7 @@
                         <div style="border: 1px solid var(--border-color); padding: 24px; background: var(--bg-primary); border-radius: 8px;">
                             <div style="color: var(--gold-accent); font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px; letter-spacing: 1px;">Algorithmic Bias</div>
                             <p style="font-size: 13px; color: var(--text-main); line-height: 1.8;">
-                                <strong style="color: var(--loss-red);">CAUTION:</strong> Approaching high timeframe premium array. Look for internal sweeps before committing to long positions. Wait for M5 ChoCh confirmation inside the 2310-2315 POI (Point of Interest).
+                                <strong style="color: var(--loss-red);">CAUTION:</strong> Approaching high timeframe premium array. Look for internal sweeps before committing to long positions. Wait for M5 ChoCh confirmation inside the POI (Point of Interest).
                             </p>
                         </div>
                     </div>
@@ -802,29 +786,11 @@
                                     <td>0.4%</td>
                                 </tr>
                                 <tr>
-                                    <td>Today</td>
-                                    <td>18:00</td>
-                                    <td style="font-weight: bold;">USD</td>
-                                    <td>CPI (YoY)</td>
-                                    <td><span class="badge badge-high">RED FOLDER</span></td>
-                                    <td>3.4%</td>
-                                    <td>3.5%</td>
-                                </tr>
-                                <tr>
                                     <td>Tomorrow</td>
                                     <td>23:30</td>
                                     <td style="font-weight: bold;">USD</td>
                                     <td>FOMC Economic Projections</td>
                                     <td><span class="badge badge-high">EXTREME VOLATILITY</span></td>
-                                    <td>--</td>
-                                    <td>--</td>
-                                </tr>
-                                <tr>
-                                    <td>Tomorrow</td>
-                                    <td>00:00</td>
-                                    <td style="font-weight: bold;">USD</td>
-                                    <td>Fed Chair Powell Speaks</td>
-                                    <td><span class="badge badge-high">RED FOLDER</span></td>
                                     <td>--</td>
                                     <td>--</td>
                                 </tr>
@@ -860,7 +826,7 @@
                             <label>Password (Investor/Master)</label>
                             <input type="password" id="account-pass" class="input-field" placeholder="••••••••••••">
                         </div>
-                        <button class="action-btn full-width" onclick="window.secureConnectNode()">Deploy & Secure Node Connection</button>
+                        <button class="action-btn full-width" id="connect-node-btn">Deploy & Secure Node Connection</button>
                     </div>
                 </div>
             </div>
@@ -894,11 +860,9 @@
         </div> </div> <script>
         // --- 1. Navigation & Tab Switching ---
         window.switchTab = function(btn, tabId) {
-            // Remove active states from buttons
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
-            // Hide all pages, show target
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const targetPage = document.getElementById(tabId);
             if (targetPage) targetPage.classList.add('active');
@@ -916,29 +880,24 @@
                 return;
             }
             
-            // Core Formula
             const cashRisk = capital * (riskPct / 100);
             const pipsRisk = Math.abs(entry - sl);
-            // Assuming Gold (XAUUSD) standard lot calculation where 1 pip = $10 per lot
-            // Adjust multiplier based on broker specification if needed. Using standard 100 multiplier for XAU.
             const standardLots = cashRisk / (pipsRisk * 100); 
             
-            // Update UI
             document.getElementById('res-cash').innerText = "$" + cashRisk.toFixed(2);
             document.getElementById('res-pips').innerText = pipsRisk.toFixed(2) + " Points";
             document.getElementById('res-lots').innerText = standardLots.toFixed(2) + " Lots";
             document.getElementById('risk-result').style.display = "block";
             
-            // Auto-sync calculated lot size to the Dashboard Execution Panel
             const execLotInput = document.getElementById('exec-lot');
             if(execLotInput) {
                 execLotInput.value = standardLots.toFixed(2);
                 execLotInput.style.backgroundColor = "rgba(0, 230, 118, 0.1)";
-                setTimeout(() => { execLotInput.style.backgroundColor = ""; }, 1000);
+                setTimeout(() => { execLotInput.style.backgroundColor = "var(--bg-primary)"; }, 1000);
             }
         };
 
-        // --- 3. 1-Click Execution Logic (NO TERMUX) ---
+        // --- 3. 1-Click Execution Logic ---
         window.executeTrade = function(type) {
             const lot = document.getElementById('exec-lot').value;
             const sl = document.getElementById('exec-sl').value || "Not Set";
@@ -949,7 +908,6 @@
                 return; 
             }
             
-            // Directly sending alert that it's going to the PC backend/Vercel server
             const msg = `[TRADE SIGNAL GENERATED]\n\nPair: XAUUSD\nOrder: ${type} MARKET\nVolume: ${lot} Lots\nStop Loss: ${sl}\nTake Profit: ${tp}\n\nCommand sent to secure Backend API. MT5 Node will execute immediately.`;
             alert(msg);
         };
@@ -960,7 +918,7 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-        // Firebase Configuration (Keep these as they map to your Vercel project)
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBTwak_MdTo_Op0NCcCBCMB8hOxLf0f1RE",
             authDomain: "fxarjun-terminal-c5ba8.firebaseapp.com",
@@ -978,50 +936,53 @@
 
         // --- Google Login Flow ---
         window.triggerGoogleLogin = function() {
-            signInWithPopup(auth, provider)
-            .then((result) => {
+            signInWithPopup(auth, provider).then((result) => {
                 const user = result.user;
-                
-                // Update UI upon successful login
                 document.getElementById('user-name-display').innerText = user.displayName.toUpperCase();
                 document.getElementById('user-status-text').innerText = "SECURE LINK ACTIVE";
                 document.getElementById('user-status-text').style.color = "var(--profit-green)";
                 document.getElementById('user-status-dot').classList.add('online');
                 document.getElementById('user-avatar-display').innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
 
-                // Admin specific logic
                 if (user.email.toLowerCase() === "tradingjournalmanagement@gmail.com") {
                     document.getElementById('mgmt-nav-btn').style.display = "flex";
-                } else {
-                    document.getElementById('mgmt-nav-btn').style.display = "none";
                 }
-            }).catch((error) => {
-                console.error("Login Error:", error);
-                alert("Authentication Failed: " + error.message);
-            });
+            }).catch((error) => { alert("Auth Failed: " + error.message); });
         };
 
-        // --- Secure Database Save (Firestore) ---
-        window.secureConnectNode = async function() {
+        // --- FULL SCREEN API LOGIC ---
+        document.getElementById('fullscreen-btn').addEventListener('click', () => {
+            const chartWrapper = document.getElementById('chart-wrapper');
+            if (chartWrapper.requestFullscreen) {
+                chartWrapper.requestFullscreen();
+            } else if (chartWrapper.webkitRequestFullscreen) { /* Safari */
+                chartWrapper.webkitRequestFullscreen();
+            } else if (chartWrapper.msRequestFullscreen) { /* IE11 */
+                chartWrapper.msRequestFullscreen();
+            }
+        });
+
+        // --- SECURE DATABASE SAVE (Event Listener attached directly to ID) ---
+        document.getElementById('connect-node-btn').addEventListener('click', async () => {
             const broker = document.getElementById('broker-name').value;
             const server = document.getElementById('server-name').value;
             const accountId = document.getElementById('account-id').value;
             const password = document.getElementById('account-pass').value;
 
-            // Form Validation
             if(!broker || !server || !accountId || !password) {
-                alert("SYSTEM ALERT: All fields must be filled to establish MT5 connection.");
+                alert("SYSTEM ALERT: Please fill all node fields to connect.");
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (!user) {
+                alert("SECURITY BLOCK: You must login via Google Profile top right before securing an MT5 node.");
                 return;
             }
 
             try {
-                const user = auth.currentUser;
-                if (!user) {
-                    alert("SECURITY BLOCK: You must authenticate via Google Login before connecting an MT5 node.");
-                    return;
-                }
-
-                // Add document to Firestore 'trading_accounts' collection
+                document.getElementById('connect-node-btn').innerText = "Encrypting & Saving to Firebase...";
+                
                 await addDoc(collection(db, "trading_accounts"), {
                     uid: user.uid,
                     email: user.email,
@@ -1033,24 +994,19 @@
                     timestamp: serverTimestamp()
                 });
 
-                alert("SUCCESS: MT5 Node Credentials securely encrypted and stored in Cloud Database!\n\nAwaiting backend Python API to establish connection.");
+                alert("SUCCESS: MT5 Node Secured in Cloud Database!\n\nAwaiting backend API link.");
                 
-                // Clear input fields for security
                 document.getElementById('broker-name').value = '';
                 document.getElementById('server-name').value = '';
                 document.getElementById('account-id').value = '';
                 document.getElementById('account-pass').value = '';
+                document.getElementById('connect-node-btn').innerText = "Deploy & Secure Node Connection";
 
             } catch (e) {
-                console.error("Firestore Write Error: ", e);
-                
-                // CRITICAL ERROR TRACKER FOR DEBUGGING
-                let errorMsg = "DATABASE WRITE FAILED.\n\nError Message: " + e.message;
-                errorMsg += "\n\nTROUBLESHOOTING:\nIf the error says 'Missing or insufficient permissions', you need to go to Firebase Console -> Firestore Database -> Rules and change 'allow read, write: if false;' to 'allow read, write: if true;'";
-                
-                alert(errorMsg);
+                document.getElementById('connect-node-btn').innerText = "Deploy & Secure Node Connection";
+                alert("DATABASE ERROR: " + e.message + "\n\nDid you update the Firestore Rules to 'allow read, write: if true;'?");
             }
-        };
+        });
     </script>
 </body>
 </html>
