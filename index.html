@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX_ARJUN | PC TRADING TERMINAL V5.0</title>
+    <title>FX_ARJUN | PC TRADING TERMINAL V5.1</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -293,7 +293,6 @@
             overflow: hidden;
         }
 
-        /* Top Border Highlight for Boundary Boxes */
         .boundary-box::before {
             content: '';
             position: absolute;
@@ -358,11 +357,7 @@
         .stat-value { font-size: 32px; font-weight: 900; margin-top: 12px; letter-spacing: -1px; font-family: var(--font-mono); }
         .stat-sub { font-size: 12px; color: var(--gold-accent); margin-top: 8px; font-weight: 600; letter-spacing: 0.5px; }
 
-        .dashboard-split-tv { 
-            display: grid; 
-            grid-template-columns: 3fr 1fr; 
-            gap: 30px; 
-        }
+        .dashboard-split-tv { display: grid; grid-template-columns: 3fr 1fr; gap: 30px; }
 
         /* ==========================================================================
            TABLES (HISTORY & CALENDAR)
@@ -403,7 +398,6 @@
             transition: var(--transition-speed); 
         }
         .input-field:focus { border-color: var(--gold-accent); background-color: #000; box-shadow: 0 0 10px rgba(212, 175, 55, 0.1); }
-        .input-field::placeholder { color: var(--text-muted); }
         
         .action-btn { 
             background-color: var(--gold-accent); 
@@ -422,7 +416,6 @@
         .action-btn:hover { background-color: #e6c240; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
         .action-btn.full-width { grid-column: span 2; }
 
-        /* 1-Click Execution Buttons */
         .exec-panel { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
         .exec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
         
@@ -449,8 +442,21 @@
         .result-label { color: var(--text-dim); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .result-val { font-weight: 900; font-family: var(--font-mono); }
         
-        /* Fullscreen Wrapper specific style */
         #chart-wrapper:fullscreen { background: var(--bg-master); padding: 20px; }
+
+        /* Lock Screen Styling */
+        .auth-lock-overlay {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--bg-card);
+            border: 1px dashed var(--loss-red);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .lock-icon { font-size: 50px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -485,7 +491,7 @@
             </button>
         </div>
         <div class="sidebar-footer">
-            <div>VERSION 5.0 - PC BUILD</div>
+            <div>VERSION 5.1 - PC BUILD</div>
             <div class="system-status">
                 <div class="pulse-dot"></div>
                 <span>SYSTEM ONLINE</span>
@@ -503,7 +509,7 @@
                 <div class="ticker-item"><span class="ticker-symbol">US30</span><span class="ticker-price up">38950.00 ▲</span></div>
             </div>
 
-            <div class="profile-widget" onclick="window.triggerGoogleLogin()">
+            <div class="profile-widget" id="login-widget">
                 <div class="profile-info">
                     <span class="profile-name" id="user-name-display">GUEST_USER</span>
                     <span class="profile-status">
@@ -518,7 +524,6 @@
         <div class="pages-container">
             
             <div id="dash" class="page active">
-                
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="label">Live Equity Balance</div>
@@ -543,14 +548,12 @@
                 </div>
                 
                 <div class="dashboard-split-tv">
-                    
                     <div class="boundary-box" style="padding: 20px; margin-bottom: 0;">
                         <div class="header-label">
                             <span><span class="highlight">XAUUSD</span> | Primary Data Feed</span>
                             <div style="display: flex; gap: 10px;">
                                 <button class="tool-badge" id="fullscreen-btn" style="background:var(--profit-green-dim); color:var(--profit-green); border-color:var(--profit-green);">[ ] Full Screen</button>
-                                <button class="tool-badge" onclick="alert('Replay requires Python Backend to push tick-data to a Lightweight Chart API. Standard TV Widget blocks native replay.')">Load Replay</button>
-                                <button class="tool-badge" style="background:var(--gold-dim); color:var(--gold-accent); border-color:var(--gold-accent);">Clean Chart</button>
+                                <button class="tool-badge" onclick="alert('Replay functionality is managed by Python Backend injections.')">Load Replay</button>
                             </div>
                         </div>
                         <div id="chart-wrapper" style="height: 550px; width: 100%; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); background: #000;">
@@ -573,11 +576,7 @@
                                     "hide_legend": false,
                                     "save_image": false,
                                     "container_id": "tv_chart_main",
-                                    "disabled_features": [
-                                        "header_symbol_search", 
-                                        "header_compare",
-                                        "volume_force_overlay"
-                                    ]
+                                    "disabled_features": ["header_symbol_search", "header_compare", "volume_force_overlay"]
                                 });
                                 </script>
                             </div>
@@ -623,9 +622,6 @@
             <div id="risk" class="page">
                 <div class="boundary-box">
                     <div class="header-label">Strict Risk Management Engine</div>
-                    <div style="margin-bottom: 24px; color: var(--text-dim); font-size: 13px; line-height: 1.6;">
-                        Professional trading requires emotional detachment. Use this calculator to define strict parameters based on 1% risk rules. Values sync directly to the execution panel.
-                    </div>
                     <div class="calculator-grid">
                         <div class="input-group">
                             <label>Account Equity (USD)</label>
@@ -643,7 +639,6 @@
                             <label>Invalidation / SL Level</label>
                             <input type="number" id="calc-sl" class="input-field" value="2315.00" step="0.01">
                         </div>
-                        
                         <button class="action-btn full-width" onclick="window.calculateRiskMetrics()">Compute Trade Parameters</button>
                         
                         <div id="risk-result" class="calc-result-box">
@@ -666,10 +661,7 @@
 
             <div id="hist" class="page">
                 <div class="boundary-box">
-                    <div class="header-label">
-                        <span>Algorithmic Execution Log</span>
-                        <span class="tool-badge" onclick="alert('Exporting full ledger to .CSV format...')">Download CSV</span>
-                    </div>
+                    <div class="header-label">Algorithmic Execution Log</div>
                     <div class="table-container">
                         <table>
                             <thead>
@@ -681,7 +673,6 @@
                                     <th>Entry</th>
                                     <th>Exit</th>
                                     <th>P&L (USD)</th>
-                                    <th>SMC Strategy Tag</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -693,27 +684,6 @@
                                     <td>2312.40</td>
                                     <td>2320.80</td>
                                     <td style="color: var(--profit-green); font-weight: bold;">+$420.00</td>
-                                    <td style="color: var(--text-dim);">15m IDM Sweep + OB</td>
-                                </tr>
-                                <tr>
-                                    <td>2026-06-07 09:15</td>
-                                    <td style="font-weight: bold; color: var(--gold-accent);">XAUUSD</td>
-                                    <td><span class="badge badge-sell">SHORT</span></td>
-                                    <td>1.20</td>
-                                    <td>2331.00</td>
-                                    <td>2332.25</td>
-                                    <td style="color: var(--loss-red); font-weight: bold;">-$150.00</td>
-                                    <td style="color: var(--text-dim);">Asia High Sweep (Failed)</td>
-                                </tr>
-                                <tr>
-                                    <td>2026-06-05 18:45</td>
-                                    <td style="font-weight: bold; color: var(--gold-accent);">XAUUSD</td>
-                                    <td><span class="badge badge-buy">LONG</span></td>
-                                    <td>0.80</td>
-                                    <td>2295.50</td>
-                                    <td>2310.00</td>
-                                    <td style="color: var(--profit-green); font-weight: bold;">+$1160.00</td>
-                                    <td style="color: var(--text-dim);">4H ChoCh Confirmation</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -724,151 +694,74 @@
             <div id="ai" class="page">
                 <div class="boundary-box">
                     <div class="header-label">Jarvis AI: Smart Money Concepts Engine</div>
-                    <div style="padding: 20px; background: rgba(0, 230, 118, 0.05); border-left: 4px solid var(--profit-green); border-radius: 4px; margin-bottom: 24px;">
-                        <div style="color: var(--profit-green); font-weight: 800; font-size: 14px; margin-bottom: 5px;">SYSTEM ACTIVE & SCANNING</div>
-                        <div style="color: var(--text-main); font-size: 13px; line-height: 1.6;">
-                            Backend connection established. Continuously analyzing XAUUSD M15 and H1 timeframes for structural shifts and liquidity voids.
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                        <div style="border: 1px solid var(--border-color); padding: 24px; background: var(--bg-primary); border-radius: 8px;">
-                            <div style="color: var(--gold-accent); font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px; letter-spacing: 1px;">Live Structural Data</div>
-                            
-                            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color);">
-                                <span style="color: var(--text-dim); font-size: 13px;">Macro Trend (H4)</span>
-                                <span style="color: var(--profit-green); font-weight: bold; font-family: var(--font-mono);">BULLISH</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color);">
-                                <span style="color: var(--text-dim); font-size: 13px;">Change of Character (M15)</span>
-                                <span style="color: var(--text-main); font-weight: bold; font-family: var(--font-mono);">FORMING...</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; padding: 12px 0;">
-                                <span style="color: var(--text-dim); font-size: 13px;">Nearest Inducement (IDM)</span>
-                                <span style="color: var(--gold-accent); font-weight: bold; font-family: var(--font-mono);">2312.80</span>
-                            </div>
-                        </div>
-
-                        <div style="border: 1px solid var(--border-color); padding: 24px; background: var(--bg-primary); border-radius: 8px;">
-                            <div style="color: var(--gold-accent); font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px; letter-spacing: 1px;">Algorithmic Bias</div>
-                            <p style="font-size: 13px; color: var(--text-main); line-height: 1.8;">
-                                <strong style="color: var(--loss-red);">CAUTION:</strong> Approaching high timeframe premium array. Look for internal sweeps before committing to long positions. Wait for M5 ChoCh confirmation inside the POI (Point of Interest).
-                            </p>
-                        </div>
-                    </div>
+                    <p style="color:var(--text-dim);">Live algorithmic tracking of structural liquidity points.</p>
                 </div>
             </div>
 
             <div id="calendar" class="page">
                 <div class="boundary-box">
-                    <div class="header-label">Global Macroeconomic Events (High Impact)</div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Time (IST)</th>
-                                    <th>Currency</th>
-                                    <th>Event Description</th>
-                                    <th>Impact</th>
-                                    <th>Forecast</th>
-                                    <th>Previous</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Today</td>
-                                    <td>18:00</td>
-                                    <td style="font-weight: bold;">USD</td>
-                                    <td>Core CPI (MoM)</td>
-                                    <td><span class="badge badge-high">RED FOLDER</span></td>
-                                    <td>0.3%</td>
-                                    <td>0.4%</td>
-                                </tr>
-                                <tr>
-                                    <td>Tomorrow</td>
-                                    <td>23:30</td>
-                                    <td style="font-weight: bold;">USD</td>
-                                    <td>FOMC Economic Projections</td>
-                                    <td><span class="badge badge-high">EXTREME VOLATILITY</span></td>
-                                    <td>--</td>
-                                    <td>--</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="header-label">Global Macroeconomic Events</div>
+                    <p style="color:var(--text-dim);">Awaiting live API data stream for news events.</p>
                 </div>
             </div>
 
             <div id="acc" class="page">
                 <div class="boundary-box">
-                    <div class="header-label">
-                        <span>Terminal -> Broker Synchronization Node</span>
-                    </div>
-                    <div style="margin-bottom: 24px; color: var(--text-dim); font-size: 13px; line-height: 1.6;">
-                        Securely link your MetaTrader 5 account credentials. Data is encrypted and stored in Firebase Cloud Firestore. Ensure you are logged in via Google Auth before connecting.
-                    </div>
+                    <div class="header-label">Terminal -> Broker Synchronization Node</div>
                     
-                    <div class="calculator-grid">
-                        <div class="input-group">
-                            <label>Prop Firm / Broker Name</label>
-                            <input type="text" id="broker-name" class="input-field" placeholder="e.g., FTMO, V Prop Trader, XM">
+                    <div id="auth-lock-screen" class="auth-lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <h2 style="color: var(--loss-red); margin-bottom: 10px; font-weight: 900; letter-spacing: 2px;">ACCESS DENIED</h2>
+                        <p style="color: var(--text-dim); font-size: 14px; max-width: 400px; margin-bottom: 20px; line-height: 1.6;">
+                            Broker synchronization is highly sensitive. You must authenticate via Google Auth (Top Right) to unlock this module.
+                        </p>
+                        <button class="action-btn" onclick="window.triggerGoogleLogin()" style="padding: 15px 30px;">LOGIN TO UNLOCK</button>
+                    </div>
+
+                    <div id="secure-node-form" style="display: none;">
+                        <div style="margin-bottom: 24px; color: var(--profit-green); font-size: 13px; line-height: 1.6; border-left: 3px solid var(--profit-green); padding-left: 10px;">
+                            Verification Complete. You may now securely link your MT5 account credentials to the Cloud Database.
                         </div>
-                        <div class="input-group">
-                            <label>Server Name (Exact Match)</label>
-                            <input type="text" id="server-name" class="input-field" placeholder="e.g., Broker-Live01">
+                        
+                        <div class="calculator-grid">
+                            <div class="input-group">
+                                <label>Prop Firm / Broker Name</label>
+                                <input type="text" id="broker-name" class="input-field" placeholder="e.g., FTMO, V Prop Trader, XM">
+                            </div>
+                            <div class="input-group">
+                                <label>Server Name (Exact Match)</label>
+                                <input type="text" id="server-name" class="input-field" placeholder="e.g., Broker-Live01">
+                            </div>
+                            <div class="input-group">
+                                <label>MT5 Account ID</label>
+                                <input type="number" id="account-id" class="input-field" placeholder="Enter Numeric Login ID">
+                            </div>
+                            <div class="input-group">
+                                <label>Password (Investor/Master)</label>
+                                <input type="password" id="account-pass" class="input-field" placeholder="••••••••••••">
+                            </div>
+                            <button class="action-btn full-width" id="connect-node-btn">Deploy & Secure Node Connection</button>
                         </div>
-                        <div class="input-group">
-                            <label>MT5 Account ID</label>
-                            <input type="number" id="account-id" class="input-field" placeholder="Enter Numeric Login ID">
-                        </div>
-                        <div class="input-group">
-                            <label>Password (Investor/Master)</label>
-                            <input type="password" id="account-pass" class="input-field" placeholder="••••••••••••">
-                        </div>
-                        <button class="action-btn full-width" id="connect-node-btn">Deploy & Secure Node Connection</button>
                     </div>
                 </div>
             </div>
 
             <div id="peoples" class="page">
                 <div class="boundary-box">
-                    <div class="header-label">Management Overview | Network Analytics</div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>User Profile</th>
-                                    <th>Registered UID / Email</th>
-                                    <th>Clearance Level</th>
-                                    <th>System Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="font-weight: 800; color: var(--gold-accent);">Fx_arjun (Creator)</td>
-                                    <td>tradingjournalmanagement@gmail.com</td>
-                                    <td><span class="badge badge-med">ROOT ADMIN</span></td>
-                                    <td><span style="color:var(--profit-green)">● Online</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="header-label">Management Overview</div>
+                    <p style="color:var(--text-dim);">Admin Root Access Panel.</p>
                 </div>
             </div>
 
         </div> </div> <script>
-        // --- 1. Navigation & Tab Switching ---
         window.switchTab = function(btn, tabId) {
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const targetPage = document.getElementById(tabId);
             if (targetPage) targetPage.classList.add('active');
         };
 
-        // --- 2. Risk Management Core Logic ---
         window.calculateRiskMetrics = function() {
             const capital = parseFloat(document.getElementById('calc-balance').value);
             const riskPct = parseFloat(document.getElementById('calc-risk').value);
@@ -876,8 +769,7 @@
             const sl = parseFloat(document.getElementById('calc-sl').value);
             
             if (isNaN(capital) || isNaN(riskPct) || isNaN(entry) || isNaN(sl) || entry === sl) {
-                alert("SYSTEM HALT: Please enter valid numerical data for calculations."); 
-                return;
+                alert("SYSTEM HALT: Please enter valid numerical data."); return;
             }
             
             const cashRisk = capital * (riskPct / 100);
@@ -897,28 +789,18 @@
             }
         };
 
-        // --- 3. 1-Click Execution Logic ---
         window.executeTrade = function(type) {
             const lot = document.getElementById('exec-lot').value;
-            const sl = document.getElementById('exec-sl').value || "Not Set";
-            const tp = document.getElementById('exec-tp').value || "Not Set";
-
-            if(!lot || lot <= 0) { 
-                alert("EXECUTION HALT: Lot size cannot be zero. Run Risk Manager first."); 
-                return; 
-            }
-            
-            const msg = `[TRADE SIGNAL GENERATED]\n\nPair: XAUUSD\nOrder: ${type} MARKET\nVolume: ${lot} Lots\nStop Loss: ${sl}\nTake Profit: ${tp}\n\nCommand sent to secure Backend API. MT5 Node will execute immediately.`;
-            alert(msg);
+            if(!lot || lot <= 0) { alert("EXECUTION HALT: Lot size cannot be zero."); return; }
+            alert(`[TRADE SIGNAL GENERATED]\n\nOrder: ${type} MARKET\nVolume: ${lot} Lots\n\nCommand sent to backend.`);
         };
     </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBTwak_MdTo_Op0NCcCBCMB8hOxLf0f1RE",
             authDomain: "fxarjun-terminal-c5ba8.firebaseapp.com",
@@ -934,10 +816,10 @@
         const provider = new GoogleAuthProvider();
         const db = getFirestore(app);
 
-        // --- Google Login Flow ---
-        window.triggerGoogleLogin = function() {
-            signInWithPopup(auth, provider).then((result) => {
-                const user = result.user;
+        // --- AUTH GUARD: Listen for Login Status automatically ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // UI Updates for logged in user
                 document.getElementById('user-name-display').innerText = user.displayName.toUpperCase();
                 document.getElementById('user-status-text').innerText = "SECURE LINK ACTIVE";
                 document.getElementById('user-status-text').style.color = "var(--profit-green)";
@@ -947,22 +829,35 @@
                 if (user.email.toLowerCase() === "tradingjournalmanagement@gmail.com") {
                     document.getElementById('mgmt-nav-btn').style.display = "flex";
                 }
-            }).catch((error) => { alert("Auth Failed: " + error.message); });
-        };
 
-        // --- FULL SCREEN API LOGIC ---
-        document.getElementById('fullscreen-btn').addEventListener('click', () => {
-            const chartWrapper = document.getElementById('chart-wrapper');
-            if (chartWrapper.requestFullscreen) {
-                chartWrapper.requestFullscreen();
-            } else if (chartWrapper.webkitRequestFullscreen) { /* Safari */
-                chartWrapper.webkitRequestFullscreen();
-            } else if (chartWrapper.msRequestFullscreen) { /* IE11 */
-                chartWrapper.msRequestFullscreen();
+                // UNLOCK THE NODE SETUP PAGE
+                document.getElementById('auth-lock-screen').style.display = 'none';
+                document.getElementById('secure-node-form').style.display = 'block';
+            } else {
+                // LOCK THE NODE SETUP PAGE
+                document.getElementById('auth-lock-screen').style.display = 'flex';
+                document.getElementById('secure-node-form').style.display = 'none';
             }
         });
 
-        // --- SECURE DATABASE SAVE (Event Listener attached directly to ID) ---
+        // Trigger Login Manually
+        window.triggerGoogleLogin = function() {
+            signInWithPopup(auth, provider).catch((error) => { alert("Auth Failed: " + error.message); });
+        };
+        
+        // Ensure clicking profile triggers login if offline
+        document.getElementById('login-widget').addEventListener('click', () => {
+            if(!auth.currentUser) window.triggerGoogleLogin();
+        });
+
+        // Full Screen Logic
+        document.getElementById('fullscreen-btn').addEventListener('click', () => {
+            const chartWrapper = document.getElementById('chart-wrapper');
+            if (chartWrapper.requestFullscreen) { chartWrapper.requestFullscreen(); }
+            else if (chartWrapper.webkitRequestFullscreen) { chartWrapper.webkitRequestFullscreen(); }
+        });
+
+        // Save Data to Firestore with Timeout Protection
         document.getElementById('connect-node-btn').addEventListener('click', async () => {
             const broker = document.getElementById('broker-name').value;
             const server = document.getElementById('server-name').value;
@@ -970,20 +865,23 @@
             const password = document.getElementById('account-pass').value;
 
             if(!broker || !server || !accountId || !password) {
-                alert("SYSTEM ALERT: Please fill all node fields to connect.");
-                return;
+                alert("SYSTEM ALERT: Please fill all fields."); return;
             }
 
             const user = auth.currentUser;
-            if (!user) {
-                alert("SECURITY BLOCK: You must login via Google Profile top right before securing an MT5 node.");
-                return;
-            }
+            if (!user) return; // Should not happen due to lock screen
+
+            const btn = document.getElementById('connect-node-btn');
+            btn.innerText = "Encrypting & Saving to Firebase...";
+            btn.disabled = true;
+
+            // Timeout safety to prevent infinite hanging
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error("Timeout: Firebase could not connect. Check Firestore Rules or Database initialization in Console.")), 10000)
+            );
 
             try {
-                document.getElementById('connect-node-btn').innerText = "Encrypting & Saving to Firebase...";
-                
-                await addDoc(collection(db, "trading_accounts"), {
+                const savePromise = addDoc(collection(db, "trading_accounts"), {
                     uid: user.uid,
                     email: user.email,
                     broker: broker,
@@ -994,17 +892,21 @@
                     timestamp: serverTimestamp()
                 });
 
-                alert("SUCCESS: MT5 Node Secured in Cloud Database!\n\nAwaiting backend API link.");
+                // Race between saving and timeout
+                await Promise.race([savePromise, timeoutPromise]);
+
+                alert("SUCCESS: MT5 Node Secured in Cloud Database!");
                 
                 document.getElementById('broker-name').value = '';
                 document.getElementById('server-name').value = '';
                 document.getElementById('account-id').value = '';
                 document.getElementById('account-pass').value = '';
-                document.getElementById('connect-node-btn').innerText = "Deploy & Secure Node Connection";
-
+                
             } catch (e) {
-                document.getElementById('connect-node-btn').innerText = "Deploy & Secure Node Connection";
-                alert("DATABASE ERROR: " + e.message + "\n\nDid you update the Firestore Rules to 'allow read, write: if true;'?");
+                alert("DATABASE ERROR:\n" + e.message);
+            } finally {
+                btn.innerText = "Deploy & Secure Node Connection";
+                btn.disabled = false;
             }
         });
     </script>
