@@ -1,29 +1,18 @@
-<div class="terminal-panel" style="margin-top: 30px;">
-    <div class="terminal-header">
-        <span>Apex Universal Execution Node</span>
-        <span id="node-status" style="color:var(--neon-buy)">● LIVE GATEWAY READY</span>
+<div class="terminal-panel" style="margin-top: 30px; background: #0B0E14; border: 1px solid var(--border-dim); border-radius: 12px; padding: 25px;">
+    <div class="terminal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-dim); padding-bottom: 12px; margin-bottom: 20px;">
+        <span>Apex Live MT5 Operational Hub</span>
+        <span style="color:var(--neon-buy); font-weight: bold;">● SECURE TUNNEL ACTIVE</span>
     </div>
     
-    <div id="apex_webterminal" style="width: 100%; height: 600px; border-radius: 6px; background: #000;"></div>
+    <div style="width: 100%; height: 650px; border-radius: 8px; overflow: hidden; background: #000; border: 1px solid #1F2533;">
+        <iframe 
+            src="https://trade.mql5.com/trade?servers=&trade=1&demo=1&lang=en" 
+            width="100%" 
+            height="100%" 
+            frameborder="0"
+            referrerpolicy="no-referrer-when-downgrade"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+            style="border: none; background: #000;">
+        </iframe>
+    </div>
 </div>
-
-<script type="text/javascript">
-    (function() {
-        const script = document.createElement('script');
-        script.src = "https://trade.mql5.com/trade/widget.js";
-        script.async = true;
-        
-        script.onload = function() {
-            new MetaQuotes.WT({
-                container: 'apex_webterminal',
-                lang: 'en',
-                server: '', 
-                demo: false,
-                trade: true,
-                utm_source: 'fx_arjun_apex',
-                colorScheme: 'black_and_white'
-            });
-        };
-        document.body.appendChild(script);
-    })();
-</script>
