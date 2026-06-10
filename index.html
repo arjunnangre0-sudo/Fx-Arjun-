@@ -1,24 +1,15 @@
-<div id="dash" class="page active">
-    <div class="stats-grid">
-        </div>
-    
-    <div class="chart-box">
-        </div>
-
-    <div class="panel-box" style="margin-top: 30px;">
-        <div class="panel-header">
-            <span>Live MetaTrader Terminal</span>
-            <span style="color:var(--accent-primary)">Sync Active</span>
-        </div>
+<div class="panel-box" style="margin-top: 30px; text-align: center; border: 1px solid var(--gold);">
+    <div class="panel-header">
+        <span>Execution Environment</span>
+        <span style="color:var(--neon-buy)">● LIVE GATEWAY</span>
+    </div>
+    <div style="padding: 40px;">
+        <h2 style="margin-bottom:15px;">Apex MT5 Web Terminal</h2>
+        <p style="color:var(--text-dim); margin-bottom:25px;">Securely connect to your XM/Exness MT5 Node to execute trades instantly.</p>
         
-        <div style="width: 100%; height: 500px; background: #000; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-dim);">
-            <iframe 
-                src="https://trade.mql5.com/trade?servers=XMGlobal-MT5" 
-                width="100%" 
-                height="100%" 
-                frameborder="0"
-                style="filter: invert(1) hue-rotate(180deg);"> 
-                </iframe>
-        </div>
+        <button class="btn-primary" 
+                onclick="window.open('https://trade.mql5.com/trade?servers=XMGlobal-MT5', '_blank', 'width=1200,height=800')">
+            LAUNCH TERMINAL GATEWAY
+        </button>
     </div>
 </div>
