@@ -1,22 +1,29 @@
-<div class="terminal-panel">
+<div class="terminal-panel" style="margin-top: 30px;">
     <div class="terminal-header">
         <span>Apex Universal Execution Node</span>
-        <span id="node-status" style="color:var(--neon-buy)">● BROKER SEARCH ACTIVE</span>
+        <span id="node-status" style="color:var(--neon-buy)">● LIVE GATEWAY READY</span>
     </div>
     
-    <div id="apex_webterminal" style="width: 100%; height: 600px; border-radius: 6px; overflow: hidden; background: #000;"></div>
+    <div id="apex_webterminal" style="width: 100%; height: 600px; border-radius: 6px; background: #000;"></div>
 </div>
 
-<script type="text/javascript" src="https://trade.mql5.com/trade/widget.js"></script>
-<script>
-    // Universal Broker Bridge Logic
-    new MetaQuotes.WT({
-        container: 'apex_webterminal',
-        lang: 'en',
-        server: '', // Empty = User can search and select ANY broker in the world
-        demo: false, // Set false to allow REAL account login
-        trade: true, // Enable trading functionality
-        utm_source: 'fx_arjun_apex',
-        colorScheme: 'black_and_white' // Matches your Apex dark theme perfectly
-    });
+<script type="text/javascript">
+    (function() {
+        const script = document.createElement('script');
+        script.src = "https://trade.mql5.com/trade/widget.js";
+        script.async = true;
+        
+        script.onload = function() {
+            new MetaQuotes.WT({
+                container: 'apex_webterminal',
+                lang: 'en',
+                server: '', 
+                demo: false,
+                trade: true,
+                utm_source: 'fx_arjun_apex',
+                colorScheme: 'black_and_white'
+            });
+        };
+        document.body.appendChild(script);
+    })();
 </script>
