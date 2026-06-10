@@ -1,24 +1,17 @@
-<div class="terminal-panel" style="margin-top: 30px; background: #0B0E14; border: 1px solid var(--border-dim); border-radius: 12px; padding: 25px;">
-    <div class="terminal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-dim); padding-bottom: 12px; margin-bottom: 20px;">
-        <span>Apex Institutional MT5 Terminal</span>
-        <span id="node-status" style="color:var(--neon-buy); font-weight: bold;">● INITIALIZING...</span>
+<div class="terminal-panel" style="margin-top: 30px; background: #000; border: 1px solid var(--border-dim); border-radius: 12px; padding: 25px;">
+    <div class="terminal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1F2533; padding-bottom: 12px; margin-bottom: 20px;">
+        <span style="color:var(--text-main);">Apex Core Terminal Gateway</span>
+        <span style="color:var(--neon-buy); font-weight: bold;">● STATUS: MT5 NODE SECURED</span>
     </div>
 
-    <div id="apex_webterminal" style="width: 100%; height: 650px; border-radius: 8px; background: #000; border: 1px solid #1F2533;"></div>
+    <div style="width: 100%; height: 650px; border-radius: 8px; overflow: hidden; background: #000;">
+        <iframe 
+            src="https://trade.mql5.com/trade?servers=*&trade=1&demo=1&lang=en&version=5" 
+            width="100%" 
+            height="100%" 
+            frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+            style="border: none;">
+        </iframe>
+    </div>
 </div>
-
-<script type="text/javascript" src="https://trade.mql5.com/trade/widget.js"></script>
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function() {
-        new MetaQuotes.WT({
-            container: 'apex_webterminal',
-            lang: 'en',
-            server: '', // Empty = Broker Search Active
-            demo: false, // Set false for real account support
-            trade: true,
-            utm_source: 'fx_arjun_apex',
-            colorScheme: 'black_and_white'
-        });
-        document.getElementById('node-status').innerText = "LIVE NODE ACTIVE";
-    });
-</script>
