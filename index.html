@@ -1,15 +1,22 @@
-<div class="panel-box" style="margin-top: 30px; text-align: center; border: 1px solid var(--gold);">
-    <div class="panel-header">
-        <span>Execution Environment</span>
-        <span style="color:var(--neon-buy)">● LIVE GATEWAY</span>
+<div class="panel-box" style="margin-top: 30px; background: #0B0E14; border: 1px solid var(--border-dim); border-radius: 8px; padding: 20px;">
+    <div class="panel-header" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 12px; font-weight: 600; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px;">Apex Live MT5 WebTerminal</span>
+        <span style="color: #00C087; font-size: 11px;">● SYSTEM READY</span>
     </div>
-    <div style="padding: 40px;">
-        <h2 style="margin-bottom:15px;">Apex MT5 Web Terminal</h2>
-        <p style="color:var(--text-dim); margin-bottom:25px;">Securely connect to your XM/Exness MT5 Node to execute trades instantly.</p>
-        
-        <button class="btn-primary" 
-                onclick="window.open('https://trade.mql5.com/trade?servers=XMGlobal-MT5', '_blank', 'width=1200,height=800')">
-            LAUNCH TERMINAL GATEWAY
-        </button>
-    </div>
+
+    <div id="webterminal" style="width: 100%; height: 600px; border-radius: 6px; overflow: hidden; border: 1px solid #1F2533;"></div>
 </div>
+
+<script type="text/javascript" src="https://trade.mql5.com/trade/widget.js"></script>
+<script type="text/javascript">
+    // WebTerminal Configuration Object
+    new MetaQuotes.WT({
+        container: 'webterminal', // Jis Div ID mein load karna hai
+        lang: 'en',               // Language English
+        server: '',               // Isko empty chhodoge toh user apna server khud select kar payega (Just like Traders Paradise)
+        demo: true,               // Demo accounts allow karne ke liye
+        trade: true,              // Real trading accounts allow karne ke liye
+        utm_source: 'fx_arjun',   // Tumhara custom platform identifier
+        colorScheme: 'black_and_white' // Themes: 'light', 'dark', ya 'black_and_white' (Abhay bhai ne yahi dark overlay use kiya hai)
+    });
+</script>
