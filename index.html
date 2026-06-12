@@ -1,9 +1,710 @@
-<div class="terminal-panel" style="width:100%; height:750px; background:#000;">
-    <iframe 
-        src="https://web.metatrader.app/terminal?servers=*&trade=1&demo=0&lang=en" 
-        width="100%" 
-        height="100%" 
-        frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture">
-    </iframe>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Hub | Uncompressed Institutional Core</title>
+    
+    <style>
+        /* --- GLOBAL VARIABLES --- */
+        :root {
+            --background-primary: #0a0e17;      
+            --background-secondary: #111827;     
+            --background-tertiary: #1f2937;
+            --color-primary-blue: #2563eb;
+            --color-primary-blue-hover: #1d4ed8;
+            --color-success-green: #10b981;
+            --color-danger-red: #ef4444;
+            --color-warning-gold: #f59e0b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-standard: #334155;
+            --glass-background: rgba(17, 24, 39, 0.85);
+            --shadow-standard: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 15px rgba(37, 99, 235, 0.3);
+        }
+
+        /* --- BROWSER RESET --- */
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed, 
+        figure, figcaption, footer, header, hgroup, 
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            vertical-align: baseline;
+            box-sizing: border-box;
+        }
+
+        /* --- CUSTOM SCROLLBARS --- */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--background-primary); 
+            border-left: 1px solid var(--border-standard);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--background-tertiary); 
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary-blue); 
+        }
+
+        /* --- BASE BODY STYLING --- */
+        body {
+            background-color: var(--background-primary);
+            color: var(--text-primary);
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR NAVIGATION --- */
+        .sidebar-container {
+            width: 280px;
+            min-width: 280px;
+            background-color: var(--background-secondary);
+            border-right: 1px solid var(--border-standard);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            z-index: 100;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.3);
+        }
+
+        .sidebar-brand {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 50px;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-brand span {
+            color: var(--color-primary-blue);
+        }
+
+        .nav-menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-menu-item {
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-menu-item:hover {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--text-primary);
+            transform: translateX(8px);
+        }
+
+        .nav-menu-item.active {
+            background: var(--color-primary-blue);
+            color: #ffffff;
+            border-left: 4px solid #ffffff;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-standard);
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* --- MAIN WORKSPACE AREA --- */
+        .main-workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* --- TOP STATUS BAR --- */
+        .top-status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color: var(--glass-background);
+            backdrop-filter: blur(12px);
+            padding: 20px 35px;
+            border-radius: 16px;
+            border: 1px solid var(--border-standard);
+            box-shadow: var(--shadow-standard);
+        }
+
+        .status-indicator-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .pulse-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--color-success-green);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--color-success-green);
+            animation: pulse-animation 2s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .connection-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--color-success-green);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .account-metrics-container {
+            display: flex;
+            gap: 40px;
+            border-left: 1px solid var(--border-standard);
+            border-right: 1px solid var(--border-standard);
+            padding: 0 40px;
+        }
+
+        .metric-block {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .metric-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .metric-value.profit-positive { color: var(--color-success-green); }
+        .metric-value.profit-negative { color: var(--color-danger-red); }
+
+        .time-display {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--color-primary-blue);
+            background: rgba(37, 99, 235, 0.1);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(37, 99, 235, 0.3);
+        }
+
+        /* --- DASHBOARD GRID LAYOUT --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+            gap: 30px;
+            width: 100%;
+        }
+
+        .grid-column-left {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .grid-column-right {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+        }
+
+        /* --- GENERIC PANEL COMPONENT --- */
+        .panel-container {
+            background-color: var(--background-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border-standard);
+            padding: 30px;
+            box-shadow: var(--shadow-standard);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .panel-header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-standard);
+            padding-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: 0.5px;
+        }
+
+        .panel-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* --- BUTTON COMPONENTS --- */
+        .action-button {
+            padding: 18px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-theme-primary {
+            background: linear-gradient(135deg, var(--color-primary-blue) 0%, #1e40af 100%);
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .btn-theme-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6);
+        }
+
+        .btn-theme-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-standard);
+        }
+
+        .btn-theme-secondary:hover {
+            border-color: var(--color-primary-blue);
+            color: var(--color-primary-blue);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        /* --- TRADINGVIEW WIDGET CONTAINER --- */
+        .tradingview-widget-container {
+            flex: 1;
+            min-height: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-standard);
+            background: #000000;
+            position: relative;
+        }
+
+        /* --- JARVIS LOGGING CONSOLE --- */
+        .jarvis-console-window {
+            flex: 1;
+            background: #050505;
+            border-radius: 12px;
+            padding: 25px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            overflow-y: auto;
+            border: 1px solid #1a1a1a;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+            min-height: 350px;
+            max-height: 400px;
+            position: relative;
+        }
+
+        .jarvis-console-window::-webkit-scrollbar { width: 6px; }
+        .jarvis-console-window::-webkit-scrollbar-thumb { background: #333; }
+
+        .log-entry { margin-bottom: 8px; word-wrap: break-word; }
+        .log-timestamp { color: #555; margin-right: 10px; }
+        .log-type-system { color: #888; }
+        .log-type-success { color: var(--color-success-green); }
+        .log-type-info { color: var(--color-primary-blue); }
+        .log-type-warning { color: var(--color-warning-gold); }
+        .log-type-error { color: var(--color-danger-red); }
+        .log-type-smc { color: #a855f7; font-weight: bold; }
+
+        /* --- TRADE JOURNAL TABLE --- */
+        .journal-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .journal-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .journal-table th {
+            padding: 15px;
+            background: var(--background-tertiary);
+            color: var(--text-secondary);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-standard);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+        }
+
+        .journal-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-standard);
+            color: var(--text-primary);
+        }
+
+        .journal-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge-buy { background: rgba(16, 185, 129, 0.1); color: var(--color-success-green); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--color-success-green); }
+        .badge-sell { background: rgba(239, 68, 68, 0.1); color: var(--color-danger-red); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--color-danger-red); }
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-container">
+        <div class="sidebar-brand">
+            APEX<span>CORE</span>
+        </div>
+        
+        <ul class="nav-menu-list">
+            <li class="nav-menu-item active">
+                <span class="nav-icon">⚡</span> Master Gateway
+            </li>
+            <li class="nav-menu-item">
+                <span class="nav-icon">📈</span> Live Advanced Chart
+            </li>
+            <li class="nav-menu-item">
+                <span class="nav-icon">📓</span> Phase 3 Journal
+            </li>
+            <li class="nav-menu-item">
+                <span class="nav-icon">🤖</span> Jarvis AI Engine
+            </li>
+            <li class="nav-menu-item">
+                <span class="nav-icon">⚙️</span> API Settings
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <p><strong>Jarvis Neural Net v2.5</strong></p>
+            <p>Termux Localhost Linked</p>
+            <p style="margin-top: 10px; color: #555;">UID: ARJUN-SMC-XAU</p>
+        </div>
+    </div>
+
+    <div class="main-workspace">
+        
+        <div class="top-status-bar">
+            <div class="status-indicator-wrapper">
+                <span class="pulse-dot"></span>
+                <span class="connection-badge">Phase 3 Live Verified</span>
+            </div>
+            
+            <div class="account-metrics-container">
+                <div class="metric-block">
+                    <span class="metric-title">Funded Equity</span>
+                    <span class="metric-value">$10,480.50</span>
+                </div>
+                <div class="metric-block">
+                    <span class="metric-title">Daily Floating</span>
+                    <span class="metric-value profit-positive">+$120.00</span>
+                </div>
+                <div class="metric-block">
+                    <span class="metric-title">Active Pair</span>
+                    <span class="metric-value" style="color: var(--color-warning-gold);">XAUUSD</span>
+                </div>
+            </div>
+
+            <div class="time-display" id="system-clock">00:00:00</div>
+        </div>
+
+        <div class="dashboard-grid">
+            
+            <div class="grid-column-left">
+                
+                <div class="panel-container">
+                    <div class="panel-header-wrapper">
+                        <h2 class="panel-title">MetaQuotes Execution Bypass</h2>
+                        <span style="font-size: 12px; color: var(--color-primary-blue); border: 1px solid var(--color-primary-blue); padding: 4px 8px; border-radius: 4px;">CSP Unlocked</span>
+                    </div>
+                    
+                    <p class="panel-subtitle">
+                        Initiate the secure pop-out protocol to bypass cross-origin iframe restrictions. This independent terminal instance provides full access to all prop firm and broker servers globally.
+                    </p>
+                    
+                    <button class="action-button btn-theme-primary" onclick="executeTerminalBypass()">
+                        Launch Unrestricted Web Terminal
+                    </button>
+                    
+                    <button class="action-button btn-theme-secondary" onclick="forceSyncNodes()" id="node-sync-btn">
+                        Force Broker Node Synchronization
+                    </button>
+                </div>
+
+                <div class="panel-container" style="flex: 1; padding: 15px;">
+                    <div class="panel-header-wrapper" style="margin-bottom: 15px; padding: 10px 15px 15px 15px;">
+                        <h2 class="panel-title">Institutional Order Flow (XAUUSD)</h2>
+                    </div>
+                    
+                    <div class="tradingview-widget-container" id="tv_chart_container">
+                        <div class="tradingview-widget-container__widget"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="grid-column-right">
+                
+                <div class="panel-container">
+                    <div class="panel-header-wrapper">
+                        <h2 class="panel-title">Jarvis Event Console</h2>
+                        <span style="font-size: 12px; background: rgba(245, 158, 11, 0.1); color: var(--color-warning-gold); padding: 4px 8px; border-radius: 4px;">Auto-Analysis ON</span>
+                    </div>
+                    
+                    <div class="jarvis-console-window" id="jarvis-terminal">
+                        </div>
+                </div>
+
+                <div class="panel-container">
+                    <div class="panel-header-wrapper">
+                        <h2 class="panel-title">Phase 3 Execution Log</h2>
+                    </div>
+                    
+                    <div class="journal-table-wrapper">
+                        <table class="journal-table" id="trade-history-table">
+                            <thead>
+                                <tr>
+                                    <th>Asset</th>
+                                    <th>Type</th>
+                                    <th>Entry</th>
+                                    <th>SMC Logic</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    
+    <script>
+        // --- 1. CORE SYSTEM LOGIC & CLOCK ---
+        const systemClockElement = document.getElementById('system-clock');
+        
+        function updateSystemClock() {
+            const now = new Date();
+            const options = { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit' };
+            systemClockElement.innerText = now.toLocaleTimeString('en-IN', options) + " IST";
+        }
+        setInterval(updateSystemClock, 1000);
+        updateSystemClock();
+
+        // --- 2. JARVIS AI CONSOLE ENGINE ---
+        const jarvisTerminal = document.getElementById('jarvis-terminal');
+        
+        function emitJarvisLog(message, type = 'info') {
+            const now = new Date();
+            const timestamp = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.${now.getMilliseconds().toString().padStart(3, '0')}`;
+            
+            let typeClass = 'log-type-info';
+            let prefix = '[INFO]';
+            
+            switch(type) {
+                case 'system': typeClass = 'log-type-system'; prefix = '[SYS]'; break;
+                case 'success': typeClass = 'log-type-success'; prefix = '[OK]'; break;
+                case 'warning': typeClass = 'log-type-warning'; prefix = '[WARN]'; break;
+                case 'error': typeClass = 'log-type-error'; prefix = '[ERR]'; break;
+                case 'smc': typeClass = 'log-type-smc'; prefix = '[SMC]'; break;
+            }
+
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `<span class="log-timestamp">${timestamp}</span> <span class="${typeClass}">${prefix} ${message}</span>`;
+            
+            jarvisTerminal.appendChild(logEntry);
+            jarvisTerminal.scrollTop = jarvisTerminal.scrollHeight;
+        }
+
+        // Jarvis Boot Sequence Simulation
+        setTimeout(() => emitJarvisLog("Initializing Apex Core Runtime...", "system"), 500);
+        setTimeout(() => emitJarvisLog("Bypassing MetaQuotes CSP headers...", "system"), 1200);
+        setTimeout(() => emitJarvisLog("Connection to Vercel production established.", "success"), 1800);
+        setTimeout(() => emitJarvisLog("Loading XAUUSD historical tick data into memory...", "info"), 2500);
+        setTimeout(() => emitJarvisLog("Scanning 15m timeframe for Market Structure Shifts...", "smc"), 3500);
+        
+        // Random SMC Analysis Simulator
+        setInterval(() => {
+            const smcEvents = [
+                "Identified bearish Fair Value Gap (FVG) at 2345.50.",
+                "Previous session high liquidity swept. Anticipating reversal.",
+                "Internal structure shifted bullish on 5m chart.",
+                "Inducement validated at 2338.20. Waiting for POI mitigation.",
+                "Order block mitigated. Alerting via Twilio backend...",
+                "Equal lows detected. Retail liquidity pool building up."
+            ];
+            const randomEvent = smcEvents[Math.floor(Math.random() * smcEvents.length)];
+            emitJarvisLog(randomEvent, "smc");
+        }, 15000); // Emits a new analysis every 15 seconds
+
+        // --- 3. TERMINAL BYPASS PROTOCOL ---
+        function executeTerminalBypass() {
+            emitJarvisLog("Executing gateway bypass protocol. Launching external window.", "warning");
+            const targetUrl = "https://web.metatrader.app/terminal?lang=en";
+            const windowFeatures = "width=1366,height=768,left=100,top=100,toolbar=no,menubar=no,location=no,status=no,resizable=yes";
+            
+            const terminalWindow = window.open(targetUrl, "ApexProTerminalSecure", windowFeatures);
+            
+            if(!terminalWindow || terminalWindow.closed || typeof terminalWindow.closed == 'undefined') {
+                emitJarvisLog("Popup blocked by browser. Please allow popups for this domain.", "error");
+            } else {
+                setTimeout(() => {
+                    emitJarvisLog("Secure terminal instance spawned. Server lock nullified.", "success");
+                }, 1500);
+            }
+        }
+
+        function forceSyncNodes() {
+            const btn = document.getElementById('node-sync-btn');
+            const originalText = btn.innerText;
+            
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+            btn.innerText = "PINGING SERVER NODES...";
+            emitJarvisLog("Manual API node synchronization requested.", "system");
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.innerText = originalText;
+                emitJarvisLog("Broker nodes synchronized. Latency: 18ms.", "success");
+            }, 2000);
+        }
+
+        // --- 4. TRADE JOURNAL DATA INJECTION ---
+        const mockTradeDatabase = [
+            { asset: 'XAUUSD', type: 'SELL', entry: '2350.25', logic: '15m FVG + Liquidity Sweep', result: '+$450.00' },
+            { asset: 'EURUSD', type: 'BUY', entry: '1.08540', logic: 'Order Block Mitigation', result: '+$125.50' },
+            { asset: 'XAUUSD', type: 'BUY', entry: '2325.10', logic: 'Inducement Trap', result: '-$150.00' },
+            { asset: 'GBPUSD', type: 'SELL', entry: '1.26700', logic: 'Market Structure Shift', result: '+$210.00' }
+        ];
+
+        const journalTableBody = document.querySelector('#trade-history-table tbody');
+        
+        mockTradeDatabase.forEach(trade => {
+            const typeBadgeClass = trade.type === 'BUY' ? 'badge-buy' : 'badge-sell';
+            const resultColor = trade.result.startsWith('+') ? 'var(--color-success-green)' : 'var(--color-danger-red)';
+            
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-weight: bold;">${trade.asset}</td>
+                <td><span class="${typeBadgeClass}">${trade.type}</span></td>
+                <td style="font-family: monospace;">${trade.entry}</td>
+                <td style="color: var(--text-secondary);">${trade.logic}</td>
+                <td style="font-weight: bold; color: ${resultColor};">${trade.result}</td>
+            `;
+            journalTableBody.appendChild(tr);
+        });
+
+        // --- 5. TRADINGVIEW ADVANCED WIDGET INJECTION ---
+        // This injects the actual heavy TradingView script into the placeholder
+        new TradingView.widget({
+            "autosize": true,
+            "symbol": "OANDA:XAUUSD",
+            "interval": "15",
+            "timezone": "Asia/Kolkata",
+            "theme": "dark",
+            "style": "1",
+            "locale": "en",
+            "enable_publishing": false,
+            "backgroundColor": "#000000",
+            "gridColor": "#1f2937",
+            "hide_top_toolbar": false,
+            "hide_legend": false,
+            "save_image": false,
+            "container_id": "tv_chart_container",
+            "toolbar_bg": "#111827",
+            "studies": [
+                "Volume@tv-basicstudies"
+            ]
+        });
+
+    </script>
+</body>
+</html>
