@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Master Dashboard | Final Expanded Build</title>
-    
+    <title>Apex Hub - Original Base</title>
     <style>
-        /* COLOR PALETTE (ORIGINAL 10/7 BASE) */
+        /* ========================================= */
+        /* TERA ORIGINAL 10/7 CSS BINA KISI CHANGE KE */
+        /* ========================================= */
         :root {
             --bg-dark: #0a0e17;
             --panel-bg: #111827;
             --accent-blue: #3b82f6;
             --accent-green: #10b981;
-            --accent-red: #ef4444;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
             --border-color: #1f2937;
         }
 
-        /* GLOBAL RESET AND FONTS */
         * {
             margin: 0;
             padding: 0;
@@ -26,23 +25,16 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* FULL VIEWPORT BODY SETUP TO PREVENT COLLAPSING */
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
             display: flex;
             height: 100vh;
-            width: 100vw;
             overflow: hidden;
         }
 
-        /* ======================================================= */
-        /* SIDEBAR COMPONENT                                       */
-        /* ======================================================= */
         .sidebar {
             width: 250px;
-            min-width: 250px;
-            height: 100%;
             background-color: var(--panel-bg);
             border-right: 1px solid var(--border-color);
             display: flex;
@@ -55,79 +47,45 @@
             font-weight: bold;
             color: var(--accent-blue);
             margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: block;
         }
 
         .nav-item {
-            padding: 15px 20px;
-            margin-bottom: 12px;
-            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.05);
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            font-weight: 500;
-            display: block;
-            width: 100%;
         }
 
-        .nav-item:hover, .nav-item.active {
+        .nav-item.active {
             background: var(--accent-blue);
-            color: #ffffff;
+            color: white;
         }
 
-        /* ======================================================= */
-        /* MAIN WORKSPACE AND LAYOUT CONTAINERS                    */
-        /* ======================================================= */
         .workspace {
             flex: 1;
             display: flex;
             flex-direction: column;
             padding: 20px;
-            height: 100%;
             overflow-y: auto;
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-bottom: 25px;
             background-color: var(--panel-bg);
             padding: 15px 25px;
             border-radius: 12px;
             border: 1px solid var(--border-color);
-            width: 100%;
-            min-height: 70px;
         }
 
-        .clock {
-            font-family: monospace;
-            font-size: 1.2rem;
-            color: var(--accent-green);
-            font-weight: bold;
-        }
-
-        /* STRICT GRID TO ENSURE SECTIONS OPEN PROPERLY */
         .grid-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 20px;
-            height: calc(100% - 95px); /* Fills remaining space exactly */
-            min-height: 600px;
         }
 
-        .left-column {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: 100%;
-        }
-
-        /* ======================================================= */
-        /* PANEL STRUCTURES                                        */
-        /* ======================================================= */
         .panel {
             background-color: var(--panel-bg);
             border-radius: 12px;
@@ -135,141 +93,51 @@
             padding: 25px;
             display: flex;
             flex-direction: column;
-            width: 100%;
-        }
-
-        /* explicitly defining flex to make panels stretch */
-        .panel.flex-fill {
-            flex: 1;
-            min-height: 400px; /* Prevents collapsing */
         }
 
         .panel-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--text-muted);
             margin-bottom: 20px;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-            display: block;
-            width: 100%;
+            padding-bottom: 10px;
         }
 
-        /* ======================================================= */
-        /* BUTTONS AND CONTROLS                                    */
-        /* ======================================================= */
+        /* ========================================= */
+        /* SIRF NAYE BUTTONS KE SIMPLE STYLES        */
+        /* ========================================= */
         .btn {
-            padding: 15px 25px;
+            padding: 12px 20px;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .btn-launch {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            margin-bottom: 10px;
             color: white;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
-            margin-bottom: 15px;
-        }
-
-        .btn-sync {
-            background: transparent;
-            color: var(--accent-blue);
-            border: 1px solid var(--accent-blue);
-        }
-
-        /* ======================================================= */
-        /* MARKET REPLAY SPECIFIC UI                               */
-        /* ======================================================= */
-        .replay-toolbar {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
             width: 100%;
         }
-
-        .replay-select, .replay-date {
-            padding: 12px;
-            background: #000000;
-            color: #ffffff;
-            border: 1px solid #333333;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .replay-select { flex: 1; }
-
-        .replay-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            background: #000000;
+        .btn-blue { background: var(--accent-blue); }
+        .btn-outline { background: transparent; border: 1px solid var(--accent-blue); color: var(--accent-blue); }
+        
+        .replay-bar { display: flex; gap: 10px; margin-bottom: 15px; }
+        .replay-bar select, .replay-bar input { padding: 10px; background: #000; color: white; border: 1px solid #333; border-radius: 5px; }
+        
+        .ai-log {
+            background: #000;
             padding: 15px;
             border-radius: 8px;
-            width: 100%;
-        }
-
-        .replay-btn {
-            background: #374151;
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .replay-btn:hover { background: #4b5563; }
-        
-        .play-btn { background: var(--accent-green); color: #000000; }
-        .play-btn:hover { background: #059669; }
-
-        .chart-container {
-            margin-top: 20px;
-            background: #000000;
-            flex: 1;
-            width: 100%;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #333333;
-            position: relative;
-        }
-
-        /* ======================================================= */
-        /* JARVIS AI TERMINAL UI                                   */
-        /* ======================================================= */
-        .ai-log-container {
-            background: #000000;
-            border-radius: 8px;
-            padding: 20px;
-            font-family: 'Courier New', Courier, monospace;
-            flex: 1;
+            font-family: monospace;
+            height: 400px; /* Force section to stay open */
             overflow-y: auto;
-            font-size: 14px;
-            line-height: 1.6;
-            border: 1px solid #111111;
-            width: 100%;
-            height: 100%;
+            border: 1px solid #111;
         }
-
-        .log-entry { margin-bottom: 5px; display: block; }
-        .log-timestamp { color: #555555; margin-right: 10px; }
-        .log-system { color: var(--text-muted); }
-        .log-success { color: var(--accent-green); }
-        .log-info { color: var(--accent-blue); }
-        .log-error { color: var(--accent-red); }
-
+        
+        .chart-box {
+            background: #000;
+            height: 400px; /* Force section to stay open */
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
     </style>
 </head>
 <body>
@@ -283,80 +151,43 @@
     </div>
 
     <div class="workspace">
-        
         <div class="top-bar">
-            <div style="font-size: 16px;">
-                <strong>System Status:</strong> <span style="color: var(--accent-green); margin-left: 10px;">Phase 3 Live / Connected</span>
-            </div>
-            <div class="clock" id="ist-clock">00:00:00 IST</div>
+            <div><strong>Status:</strong> <span style="color: var(--accent-green);">Phase 3 Live</span></div>
+            <div style="color: var(--accent-green); font-family: monospace;">00:00:00 IST</div>
         </div>
 
         <div class="grid-container">
             
-            <div class="left-column">
+            <div style="display: flex; flex-direction: column; gap: 20px;">
                 
                 <div class="panel">
-                    <h2 class="panel-title">Master Execution Gateway (Bypass Mode)</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 25px; line-height: 1.5;">
-                        MT5 standard iframe is restricted by MetaQuotes. Use the Pop-Out terminal to launch an independent secure window. This unlocks server selection for all brokers.
-                    </p>
-                    
-                    <button class="btn btn-launch" onclick="launchPopOutTerminal()">
-                        ⚡ LAUNCH SECURE TERMINAL (NEW TAB)
+                    <h2 class="panel-title">Execution Gateway</h2>
+                    <button class="btn btn-blue" onclick="window.open('https://web.metatrader.app/terminal?lang=en', '_blank', 'width=1200,height=800')">
+                        LAUNCH TERMINAL (NEW TAB)
                     </button>
-                    
-                    <button class="btn btn-sync" onclick="syncSystemUI()" id="sync-btn-element">
-                        🔄 FORCE SYNC INTERFACE
+                    <button class="btn btn-outline" onclick="alert('System Synced')">
+                        🔄 SYNC INTERFACE
                     </button>
-                    
-                    <p id="sync-status-msg" style="text-align: center; margin-top: 15px; font-size: 14px; font-weight: bold; color: var(--accent-green); display: none;">
-                        System Synced Successfully.
-                    </p>
                 </div>
 
-                <div class="panel flex-fill">
-                    <h2 class="panel-title">SMC Market Replay & Charting</h2>
-                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px;">
-                        Load historical data to backtest Market Structure Shifts and FVG.
-                    </p>
-                    
-                    <div class="replay-toolbar">
-                        <select class="replay-select" id="asset-selector">
-                            <option value="XAUUSD">XAUUSD (Gold)</option>
-                            <option value="EURUSD">EURUSD</option>
-                        </select>
-                        
-                        <input type="date" class="replay-date" value="2026-06-01">
-                        
-                        <button class="btn btn-launch" style="width: auto; margin: 0; padding: 0 25px;" onclick="logToJarvis('Loading historical XAUUSD chart data...', 'info')">
-                            Load Data
-                        </button>
-                    </div>
-
-                    <div class="replay-controls">
-                        <button class="replay-btn">⏪ Rewind</button>
-                        <button class="replay-btn play-btn">▶ Play</button>
-                        <button class="replay-btn">⏸ Pause</button>
-                        <button class="replay-btn">⏩ Forward</button>
-                        <span style="color: white; margin-left: auto; align-self: center; font-family: monospace;">Speed: 1x</span>
+                <div class="panel">
+                    <h2 class="panel-title">Market Replay (XAUUSD)</h2>
+                    <div class="replay-bar">
+                        <select><option>XAUUSD</option></select>
+                        <input type="date" value="2026-06-01">
+                        <button class="btn btn-blue" style="width: auto; margin: 0;">Play Chart</button>
                     </div>
                     
-                    <div class="chart-container">
-                        <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
-                          <div id="tradingview_chart_window" style="height: 100%; width: 100%;"></div>
-                        </div>
-                    </div>
+                    <div class="chart-box" id="tv_chart"></div>
                 </div>
-
             </div>
 
-            <div class="panel flex-fill">
-                <h2 class="panel-title">Jarvis Event Console</h2>
-                <div class="ai-log-container" id="jarvis-log-window">
-                    <span class="log-entry"><span class="log-timestamp">00:00:01</span><span class="log-system">[System] Apex Core Initialized.</span></span>
-                    <span class="log-entry"><span class="log-timestamp">00:00:02</span><span class="log-system">[System] Environment: Vercel Production.</span></span>
-                    <span class="log-entry"><span class="log-timestamp">00:00:03</span><span class="log-info">[Jarvis] Awaiting execution commands...</span></span>
-                    <br>
+            <div class="panel">
+                <h2 class="panel-title">Jarvis Event Log</h2>
+                <div class="ai-log">
+                    <span style="color: #9ca3af;">[System] Apex Core Initialized.</span><br>
+                    <span style="color: var(--accent-green);">[Success] MetaQuotes Bypass Ready.</span><br>
+                    <span style="color: var(--accent-blue);">[Jarvis] Awaiting Market Data...</span><br>
                 </div>
             </div>
 
@@ -364,81 +195,7 @@
     </div>
 
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-    
-    <script>
-        // --- 1. POP-OUT TERMINAL LOGIC ---
-        function launchPopOutTerminal() {
-            logToJarvis("Initiating secure pop-out terminal bypass protocol...", "info");
-            
-            const terminalUrl = "https://web.metatrader.app/terminal?lang=en";
-            const windowFeatures = "width=1366,height=768,left=100,top=100,toolbar=no,menubar=no,location=no,status=no";
-            
-            window.open(terminalUrl, "ApexLiveTerminal", windowFeatures);
-            
-            setTimeout(() => {
-                logToJarvis("Terminal spawned successfully.", "success");
-                logToJarvis("Broker server selection is completely UNLOCKED.", "success");
-            }, 1200);
-        }
-
-        // --- 2. SYSTEM SYNC LOGIC ---
-        function syncSystemUI() {
-            const btn = document.getElementById("sync-btn-element");
-            const statusMsg = document.getElementById("sync-status-msg");
-            
-            btn.innerText = "🔄 SYNCING...";
-            statusMsg.style.display = "block";
-            statusMsg.innerText = "Connecting to broker API nodes...";
-            statusMsg.style.color = "var(--text-muted)";
-            
-            logToJarvis("Manual UI Sync triggered by user.", "info");
-
-            setTimeout(() => {
-                statusMsg.innerText = "System Synced Successfully. Latency: 22ms.";
-                statusMsg.style.color = "var(--accent-green)";
-                btn.innerText = "🔄 FORCE SYNC INTERFACE";
-                
-                logToJarvis("Ping stable. Interface data refreshed.", "success");
-                
-                setTimeout(() => { 
-                    statusMsg.style.display = "none"; 
-                }, 4000);
-            }, 1500);
-        }
-
-        // --- 3. JARVIS AI LOGGER LOGIC ---
-        function logToJarvis(message, messageType) {
-            const logWindow = document.getElementById("jarvis-log-window");
-            
-            const now = new Date();
-            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
-            
-            let colorClass = "log-success"; 
-            if (messageType === "info") colorClass = "log-info";
-            if (messageType === "error") colorClass = "log-error";
-            if (messageType === "system") colorClass = "log-system";
-
-            const newLog = document.createElement("span");
-            newLog.className = "log-entry";
-            newLog.innerHTML = `<span class="log-timestamp">${timeStr}</span><span class="${colorClass}">${message}</span>`;
-            
-            logWindow.appendChild(newLog);
-            
-            // Auto-scroll to the bottom of the log
-            logWindow.scrollTop = logWindow.scrollHeight; 
-        }
-
-        // --- 4. LIVE CLOCK UPDATER ---
-        function updateClock() {
-            const options = { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit' };
-            const timeString = new Date().toLocaleTimeString('en-IN', options);
-            document.getElementById('ist-clock').innerText = timeString + " IST";
-        }
-        setInterval(updateClock, 1000);
-        updateClock(); // Initial call
-
-        // --- 5. INITIALIZE TRADINGVIEW WIDGET ---
-        // This explicitly injects the chart into the flex container
+    <script type="text/javascript">
         new TradingView.widget({
             "autosize": true,
             "symbol": "OANDA:XAUUSD",
@@ -449,11 +206,8 @@
             "locale": "en",
             "enable_publishing": false,
             "backgroundColor": "#000000",
-            "gridColor": "#1f2937",
             "hide_top_toolbar": true,
-            "hide_legend": false,
-            "save_image": false,
-            "container_id": "tradingview_chart_window"
+            "container_id": "tv_chart"
         });
     </script>
 </body>
