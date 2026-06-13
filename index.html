@@ -3,85 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Hub | Master Desktop Terminal</title>
+    <title>Apex Hub | Institutional Master Terminal</title>
     
+    <!-- ========================================================================= -->
+    <!-- EXTERNAL FONTS (FOR PREMIUM INSTITUTIONAL LOOK)                           -->
+    <!-- ========================================================================= -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- ========================================================================= -->
+    <!-- MASTER STYLESHEET (PREMIUM FINTECH UI)                                    -->
+    <!-- ========================================================================= -->
     <style>
         /* * COLOR PALETTE 
-         * Institutional dark theme colors mapping
+         * Deep, muted tones mimicking top-tier prop firm dashboards
          */
         :root {
-            --bg-dark: #0a0e17;
-            --panel-bg: #111827;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --border-color: #1f2937;
-            --trade-buy: #10b981;
-            --trade-sell: #ef4444;
-            --text-white: #ffffff;
+            --bg-base: #0B0E14;         /* Deep rich black for background */
+            --bg-panel: #151A22;        /* Slightly lighter for panels */
+            --bg-hover: #1E2532;        /* Hover states */
+            --accent-primary: #2962FF;  /* Sophisticated TradingView Blue */
+            --accent-glow: rgba(41, 98, 255, 0.25);
+            --accent-green: #00E676;    /* Crisp execution green */
+            --accent-red: #FF3D00;      /* Sharp risk red */
+            --text-primary: #E0E3EB;    /* Off-white for readability */
+            --text-muted: #848E9C;      /* Slate grey for secondary text */
+            --border-light: rgba(255, 255, 255, 0.08); /* Seamless borders */
+            --border-strong: rgba(255, 255, 255, 0.15);
         }
 
-        /* * GLOBAL RESET
-         * Ensuring zero collapse across all browser engines
-         */
+        /* * GLOBAL RESET */
         * { 
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Inter', sans-serif; 
         }
 
-        /* * BODY STRUCTURE
-         * Full viewport lock to prevent unwanted scrolling
-         */
+        /* * SCROLLBAR STYLING FOR PREMIUM FEEL */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* * BODY STRUCTURE */
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
             display: flex;
             height: 100vh;
             width: 100vw;
             overflow: hidden;
+            font-size: 14px;
         }
 
         /* ========================================================================= */
         /* SIDEBAR COMPONENT                                                         */
         /* ========================================================================= */
         .sidebar {
-            width: 250px;
-            background-color: var(--panel-bg);
-            border-right: 1px solid var(--border-color);
+            width: 260px;
+            background-color: var(--bg-panel);
+            border-right: 1px solid var(--border-light);
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 25px 20px;
             z-index: 50;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.2);
         }
 
         .brand { 
-            font-size: 24px; 
-            font-weight: bold; 
-            color: var(--accent-blue); 
+            font-size: 22px; 
+            font-weight: 800; 
+            color: var(--text-primary); 
             margin-bottom: 40px; 
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
+        .brand span { color: var(--accent-primary); }
+        
         .nav-item {
-            padding: 15px 20px;
-            margin-bottom: 12px;
-            background: rgba(255,255,255,0.03);
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            background: transparent;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 15px;
-            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            border: 1px solid transparent;
         }
 
-        .nav-item:hover, 
+        .nav-item:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
         .nav-item.active { 
-            background: var(--accent-blue); 
-            color: var(--text-white); 
+            background: linear-gradient(90deg, rgba(41, 98, 255, 0.15) 0%, transparent 100%);
+            color: var(--accent-primary); 
+            border-left: 3px solid var(--accent-primary);
+            font-weight: 600;
         }
 
         /* ========================================================================= */
@@ -91,46 +117,48 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 25px 35px;
             overflow-y: auto;
+            background: radial-gradient(circle at top right, #10141d 0%, var(--bg-base) 100%);
         }
 
-        /* * TOP STATUS BAR
-         * Contains live metrics, simulated P&L, and clock
-         */
+        /* * TOP STATUS BAR */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            background-color: var(--panel-bg);
+            margin-bottom: 30px;
+            background-color: rgba(21, 26, 34, 0.7);
+            backdrop-filter: blur(10px);
             padding: 15px 25px;
             border-radius: 12px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
         }
 
         .status-section {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 30px;
         }
 
         .status-badge { 
-            background: rgba(16, 185, 129, 0.1); 
+            background: rgba(0, 230, 118, 0.08); 
             color: var(--accent-green); 
-            padding: 6px 12px; 
-            border-radius: 20px; 
-            font-size: 14px;
-            font-weight: bold; 
-            border: 1px solid var(--accent-green); 
+            padding: 6px 14px; 
+            border-radius: 6px; 
+            font-size: 12px;
+            font-weight: 700; 
+            border: 1px solid rgba(0, 230, 118, 0.2); 
             display: flex;
             align-items: center;
             gap: 8px;
+            letter-spacing: 0.5px;
         }
 
         .online-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background-color: var(--text-muted);
         }
@@ -143,6 +171,8 @@
         .metric-block {
             display: flex;
             flex-direction: column;
+            border-left: 1px solid var(--border-light);
+            padding-left: 20px;
         }
 
         .metric-label {
@@ -150,19 +180,25 @@
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-bottom: 4px;
         }
 
         .metric-value {
-            font-size: 16px;
-            font-weight: bold;
-            font-family: monospace;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-primary);
         }
 
         .clock { 
-            font-family: 'Courier New', Courier, monospace; 
-            font-size: 1.3rem; 
-            font-weight: bold; 
-            color: var(--accent-blue); 
+            font-family: 'JetBrains Mono', monospace; 
+            font-size: 1.2rem; 
+            font-weight: 700; 
+            color: var(--text-primary); 
+            background: var(--bg-hover);
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border-light);
         }
 
         /* ========================================================================= */
@@ -171,137 +207,172 @@
         .grid-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            height: 100%;
+            gap: 25px;
+            height: calc(100% - 90px);
+            min-height: 650px;
         }
 
-        .column-left { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 20px; 
-        }
+        .column-left { display: flex; flex-direction: column; gap: 25px; }
 
         /* ========================================================================= */
         /* PANELS AND CONTAINERS                                                     */
         /* ========================================================================= */
         .panel {
-            background-color: var(--panel-bg);
+            background-color: var(--bg-panel);
             border-radius: 12px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-light);
             padding: 25px;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
         .panel-title { 
-            font-size: 1.1rem; 
-            color: var(--text-muted); 
+            font-size: 14px; 
+            color: var(--text-primary); 
             margin-bottom: 20px; 
-            border-bottom: 1px solid var(--border-color); 
-            padding-bottom: 10px; 
+            border-bottom: 1px solid var(--border-light); 
+            padding-bottom: 15px; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         /* ========================================================================= */
-        /* BUTTONS AND CONTROLS                                                      */
+        /* BUTTONS AND CONTROLS (THE PREMIUM UPGRADE)                                */
         /* ========================================================================= */
         .btn-launch {
-            padding: 15px 25px;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            border: none;
+            padding: 16px 25px;
+            background: linear-gradient(180deg, #2962FF 0%, #1E4BD8 100%);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            color: var(--text-white);
+            color: #ffffff;
             margin-bottom: 15px;
             width: 100%;
             transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px var(--accent-glow);
         }
 
         .btn-launch:hover { 
             transform: translateY(-2px); 
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); 
+            box-shadow: 0 6px 16px rgba(41, 98, 255, 0.4); 
+            background: linear-gradient(180deg, #3A70FF 0%, #2962FF 100%);
         }
 
         .btn-sync {
-            padding: 15px 25px;
-            background: transparent;
-            color: var(--accent-blue);
-            border: 1px solid var(--accent-blue);
+            padding: 14px 25px;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            border: 1px solid var(--border-strong);
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             width: 100%;
             transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn-sync:hover {
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--bg-hover);
+            border-color: var(--text-muted);
         }
 
         .replay-toolbar {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .replay-toolbar select, 
         .replay-toolbar input {
-            padding: 10px;
-            background: #000;
-            color: var(--text-white);
-            border: 1px solid #333;
-            border-radius: 5px;
+            padding: 12px 15px;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            border: 1px solid var(--border-strong);
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .replay-toolbar select:focus, 
+        .replay-toolbar input:focus {
+            border-color: var(--accent-primary);
         }
 
         /* ========================================================================= */
-        /* JARVIS CONSOLE AND LOGGING                                                */
+        /* JARVIS CONSOLE (HACKER / TERMINAL AESTHETIC)                              */
         /* ========================================================================= */
         .ai-log {
-            background: #000000;
+            background: #090B10; /* Extra dark for the console */
             border-radius: 8px;
-            padding: 15px;
-            font-family: 'Courier New', monospace;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace; /* Pro dev font */
             flex: 1;
             overflow-y: auto;
-            font-size: 14px;
-            line-height: 1.6;
-            border: 1px solid #222;
+            font-size: 12px;
+            line-height: 1.8;
+            border: 1px solid var(--border-light);
+            box-shadow: inset 0 4px 12px rgba(0,0,0,0.5);
         }
 
-        .log-timestamp { color: #555; margin-right: 10px; }
+        .log-entry { display: block; margin-bottom: 6px; }
+        .log-timestamp { color: #4A5568; margin-right: 12px; font-size: 11px; }
         .log-sys { color: var(--text-muted); }
         .log-ok { color: var(--accent-green); }
         .log-err { color: var(--accent-red); }
-        .log-info { color: var(--accent-blue); }
+        .log-info { color: var(--accent-primary); }
 
     </style>
 </head>
 <body>
 
+    <!-- ========================================================================= -->
+    <!-- SIDEBAR NAVIGATION                                                        -->
+    <!-- ========================================================================= -->
     <div class="sidebar">
-        <div class="brand">APEX HUD</div>
-        <div class="nav-item active" onclick="window.triggerGoogleLogin()">🚀 Live Execution</div>
+        <div class="brand">APEX<span>HUD</span></div>
+        <div class="nav-item active" onclick="window.triggerGoogleLogin()">⚡ Live Execution</div>
         <div class="nav-item">⏪ Market Replay</div>
         <div class="nav-item">📊 Trade Journal</div>
         <div class="nav-item">🤖 Jarvis Settings</div>
     </div>
 
+    <!-- ========================================================================= -->
+    <!-- MAIN WORKSPACE CONTAINER                                                  -->
+    <!-- ========================================================================= -->
     <div class="workspace">
         
+        <!-- 
+             TOP BAR: 
+             Contains User details, Equity, Live P&L, and Clock
+        -->
         <div class="top-bar">
             <div class="status-section">
+                <!-- User Status Badge -->
                 <div class="status-badge">
                     <div class="online-dot" id="user-status-dot"></div>
-                    <span id="user-status-text">OFFLINE</span>
+                    <span id="user-status-text">SYSTEM STANDBY</span>
                 </div>
                 
+                <!-- Simulated Equity -->
                 <div class="metric-block">
-                    <span class="metric-label" id="user-name-display">GUEST_USER</span>
-                    <span class="metric-value" id="stat-equity">$0.00</span>
+                    <span class="metric-label" id="user-name-display">GUEST_ACCESS</span>
+                    <span class="metric-value" id="stat-equity" style="color: var(--text-muted);">$0.00</span>
                 </div>
 
+                <!-- Simulated P&L -->
                 <div class="metric-block">
                     <span class="metric-label">Floating P/L</span>
                     <span class="metric-value" id="stat-pnl" style="color: var(--text-muted);">---</span>
@@ -311,41 +382,53 @@
             <div class="clock" id="ist-clock">00:00:00 IST</div>
         </div>
 
+        <!-- ========================================================================= -->
+        <!-- DASHBOARD GRID LAYOUT                                                     -->
+        <!-- ========================================================================= -->
         <div class="grid-container">
             
+            <!-- LEFT COLUMN: GATEWAY & REPLAY -->
             <div class="column-left">
                 
-                <div class="panel">
-                    <h2 class="panel-title">Master Execution Gateway (Bypass Mode)</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 20px;">
-                        MT5 standard iframe is restricted. Use the Pop-Out terminal to access unlocked broker servers globally.
+                <!-- MASTER EXECUTION GATEWAY -->
+                <div class="panel" style="flex: 0 1 auto;">
+                    <h2 class="panel-title">
+                        <span style="color: var(--accent-primary);">⚡</span> Master Execution Gateway
+                    </h2>
+                    <p style="color: var(--text-muted); margin-bottom: 25px; line-height: 1.6; font-size: 13px;">
+                        Standard web iframes are restricted by broker security policies. Utilize the secure Pop-Out terminal to bypass these restrictions and execute trades globally with zero latency.
                     </p>
                     
                     <button class="btn-launch" onclick="launchPopOutTerminal()">
-                        ⚡ LAUNCH LIVE TERMINAL (NEW TAB)
+                        Launch Secure Terminal (New Tab)
                     </button>
                     
                     <button class="btn-sync" onclick="syncSystemUI()" id="sync-btn">
-                        🔄 SYNC / REFRESH INTERFACE
+                        Force Sync Connection
                     </button>
-                    <p id="sync-status" style="text-align: center; margin-top: 10px; font-size: 14px; color: var(--accent-green); display: none;"></p>
+                    <p id="sync-status" style="text-align: center; margin-top: 15px; font-size: 12px; font-weight: 600; color: var(--accent-green); display: none;"></p>
                 </div>
 
+                <!-- SMC MARKET REPLAY SIMULATOR -->
                 <div class="panel" style="flex: 1;">
-                    <h2 class="panel-title">SMC Market Replay Simulator</h2>
+                    <h2 class="panel-title">
+                        <span style="color: var(--accent-primary);">📈</span> Market Structure Analysis
+                    </h2>
                     
                     <div class="replay-toolbar">
                         <select style="flex: 1;">
-                            <option>XAUUSD (Gold)</option>
-                            <option>EURUSD</option>
+                            <option>XAUUSD (Gold Spot)</option>
+                            <option>EURUSD (Euro / US Dollar)</option>
+                            <option>BTCUSD (Bitcoin)</option>
                         </select>
                         <input type="date" value="2026-06-01">
-                        <button class="btn-launch" style="width: auto; margin: 0; padding: 10px 20px;" onclick="logToJarvis('Loading historical XAUUSD data...', 'info')">
-                            Load Chart
+                        <button class="btn-launch" style="width: auto; margin: 0; padding: 0 25px; box-shadow: none;" onclick="logToJarvis('Requesting historical XAUUSD tick data...', 'info')">
+                            Load
                         </button>
                     </div>
                     
-                    <div style="margin-top: 15px; background: #000; height: 350px; border-radius: 8px; overflow: hidden; border: 1px solid #333;">
+                    <!-- REAL CHART WIDGET CONTAINER -->
+                    <div style="flex: 1; background: #000; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-light);">
                         <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
                           <div id="tv_chart" style="height: 100%; width: 100%;"></div>
                         </div>
@@ -354,17 +437,27 @@
 
             </div>
 
+            <!-- RIGHT COLUMN: JARVIS EVENT LOG -->
             <div class="panel">
-                <h2 class="panel-title">Jarvis Event Log</h2>
+                <h2 class="panel-title">
+                    <span style="color: var(--accent-primary);">🤖</span> Jarvis Diagnostics Console
+                </h2>
                 <div class="ai-log" id="jarvis-log">
-                    </div>
+                    <!-- Logs injected via JS -->
+                </div>
             </div>
 
         </div>
     </div>
 
+    <!-- ========================================================================= -->
+    <!-- EXTERNAL LIBRARIES                                                        -->
+    <!-- ========================================================================= -->
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     
+    <!-- ========================================================================= -->
+    <!-- MASTER JAVASCRIPT ENGINE (LOGIC UNTOUCHED)                                -->
+    <!-- ========================================================================= -->
     <script>
         
         /**
@@ -380,7 +473,7 @@
             if (type === "ok") colorClass = "log-ok";
             if (type === "err") colorClass = "log-err";
 
-            const logEntry = `<div><span class="log-timestamp">[${time}]</span> <span class="${colorClass}">${message}</span></div>`;
+            const logEntry = `<div class="log-entry"><span class="log-timestamp">[${time}]</span> <span class="${colorClass}">${message}</span></div>`;
             logBox.innerHTML += logEntry;
             
             // Auto scroll to latest entry
@@ -388,8 +481,9 @@
         }
 
         // Initial Boot Logs
-        setTimeout(() => logToJarvis("Apex Core Environment Initialized.", "sys"), 500);
-        setTimeout(() => logToJarvis("Awaiting manual connection sync...", "info"), 1000);
+        setTimeout(() => logToJarvis("Apex Core Environment v3.0 Initialized.", "sys"), 500);
+        setTimeout(() => logToJarvis("Mounting UI Components... OK", "sys"), 800);
+        setTimeout(() => logToJarvis("Awaiting manual connection sync...", "info"), 1200);
 
         /**
          * 2. LIVE CLOCK SYNCHRONIZATION
@@ -410,12 +504,12 @@
             logToJarvis("Initiating secure pop-out terminal bypass...", "info");
             
             const terminalUrl = "https://web.metatrader.app/terminal?lang=en";
-            const winFeatures = "width=1280,height=800,left=100,top=100,toolbar=no,menubar=no,location=no,status=no";
+            const winFeatures = "width=1366,height=768,left=100,top=100,toolbar=no,menubar=no,location=no,status=no";
             
             window.open(terminalUrl, "ApexLiveTerminal", winFeatures);
             
             setTimeout(() => {
-                logToJarvis("Terminal spawned successfully. Ready for execution.", "ok");
+                logToJarvis("Terminal spawned successfully. Ready for institutional execution.", "ok");
             }, 1000);
         }
 
@@ -427,22 +521,22 @@
             const btn = document.getElementById("sync-btn");
             const statusText = document.getElementById("sync-status");
             
-            btn.innerText = "Syncing...";
+            btn.innerText = "Syncing Node Data...";
             statusText.style.display = "block";
-            statusText.innerText = "Connecting to broker nodes...";
+            statusText.innerText = "Pinging proprietary broker nodes...";
             statusText.style.color = "var(--text-muted)";
             
-            logToJarvis("Manual UI Sync triggered.", "info");
+            logToJarvis("Manual UI Sync and Node Handshake triggered.", "info");
 
             setTimeout(() => {
-                statusText.innerText = "System Synced Successfully.";
+                statusText.innerText = "Connection Established. Latency: 18ms";
                 statusText.style.color = "var(--accent-green)";
-                btn.innerText = "🔄 SYNC / REFRESH INTERFACE";
+                btn.innerText = "Force Sync Connection";
                 
-                logToJarvis("Ping stable. Interface synchronized.", "ok");
+                logToJarvis("Ping stable. Interface fully synchronized.", "ok");
                 
-                setTimeout(() => { statusText.style.display = "none"; }, 3000);
-            }, 1200);
+                setTimeout(() => { statusText.style.display = "none"; }, 4000);
+            }, 1500);
         }
 
         /**
@@ -458,19 +552,20 @@
             "style": "1",
             "locale": "en",
             "enable_publishing": false,
-            "backgroundColor": "#000000",
-            "hide_top_toolbar": true,
+            "backgroundColor": "#0B0E14", /* Matches new bg-base */
+            "gridColor": "#151A22",
+            "hide_top_toolbar": false,
             "container_id": "tv_chart"
         });
 
         // ========================================================================= //
-        // 6. ARJUN_TRADER FAKE LOGIN & P&L SIMULATION (FROM SCREENSHOT)             //
+        // 6. ARJUN_TRADER FAKE LOGIN & P&L SIMULATION (UNTOUCHED LOGIC)             //
         // ========================================================================= //
         
         let pnlInterval; // Store interval ID
 
         window.triggerGoogleLogin = function() {
-            logToJarvis("Authenticating user profile...", "sys");
+            logToJarvis("Authenticating user profile via secure channel...", "sys");
             
             const statusText = document.getElementById('user-status-text');
             statusText.innerText = "SYNCING...";
@@ -486,14 +581,14 @@
                 // Update Equity Balance
                 const equity = document.getElementById('stat-equity');
                 equity.innerText = "$50,000.00";
-                equity.style.color = "var(--text-white)";
+                equity.style.color = "var(--text-primary)";
                 
-                logToJarvis("Node Handshake Success: Welcome to the Institutional Network.", "ok");
+                logToJarvis("Node Handshake Success: Welcome to the Apex Institutional Network.", "ok");
                 
                 // Start Live Floating P&L Simulation
                 startPnLSimulation();
 
-            }, 1000);
+            }, 1200);
         };
 
         function startPnLSimulation() {
@@ -512,11 +607,11 @@
                 pnlElement.innerText = `${sign}$${Math.abs(currentPnl).toFixed(2)}`;
                 
                 // Apply dynamic color mapping
-                pnlElement.style.color = currentPnl >= 0 ? 'var(--trade-buy)' : 'var(--trade-sell)';
+                pnlElement.style.color = currentPnl >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
                 
             }, 1500);
             
-            logToJarvis("Live P&L data stream connected.", "info");
+            logToJarvis("Live P&L data stream connected and tracking.", "info");
         }
 
     </script>
